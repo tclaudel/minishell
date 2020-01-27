@@ -21,7 +21,7 @@ HEADER			=	includes/
 
 OBJ_NAME		=	${SRCS_NAME:.c=.o}
 
-OBJ_PATH		=	bin/
+OBJ_PATH		=	obj/
 
 OBJ				=	$(addprefix $(OBJ_PATH), $(OBJ_NAME))
 
@@ -44,7 +44,7 @@ $(NAME): $(OBJ) $(HEADER)
 	@printf "	\033[2K\r$(DARK_BLUE)minishell\t:\t$(LIGHT_GREEN)Updated\n\033[0m"
 
 $(OBJ_PATH):
-	@mkdir -p bin/ 2> /dev/null
+	@mkdir -p obj/ 2> /dev/null
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADER) Makefile
 	@printf "\033[2K\r$(LIGHT_RED)Compiling...	\033[37m$<\033[36m \033[0m"
