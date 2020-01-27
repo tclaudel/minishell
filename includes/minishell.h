@@ -15,5 +15,5 @@ typedef struct		s_sh
 }					t_sh;
 
 void				parsing(t_sh *sh, char *str);
-
+void				exec_cmd(char **cmd);
 #endif
