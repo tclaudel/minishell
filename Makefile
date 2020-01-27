@@ -11,7 +11,7 @@ GREY = \033[3;90m
 ORANGE = \033[3;91m
 YELLOW = \033[0;33m
 
-SRCS_NAME		=	minishell.c
+SRCS_NAME		=	main.c
 
 SRC_PATH		=	srcs/
 
