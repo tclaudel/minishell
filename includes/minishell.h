@@ -5,12 +5,15 @@
 # include "libft.h"
 # include <stdlib.h>
 # include <stdio.h>
+# include <sys/types.h>
+# include <signal.h>
 
-void				parsing(char *str);
 
 typedef struct		s_sh
 {
 	char	**cmd;
 }					t_sh;
+
+void				parsing(t_sh *sh, char *str);
 
 #endif
