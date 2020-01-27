@@ -3,6 +3,13 @@
 
 int		main(void)
 {
-	ft_printf("le coca c'est trop cher !\n");
+	char *buf;
+
+	ft_dprintf(1, "minishell $> ");
+	while (get_next_line(0, &buf) > 0)
+	{
+		ft_dprintf(1, "%s\n", buf);
+		ft_dprintf(1, "minishell $> ");
+	}
 	return (1);
 }
