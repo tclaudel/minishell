@@ -8,10 +8,12 @@
 # include <sys/types.h>
 # include <signal.h>
 # include <unistd.h>
+#include <dirent.h>
 
 
 typedef struct		s_sh
 {
+	char	cd;
 	char	**cmd;
 }					t_sh;
 

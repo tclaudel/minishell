@@ -10,9 +10,10 @@ int		main(void)
 	ft_dprintf(1, "minishell $> ");
 	while (get_next_line(0, &buf) > 0)
 	{
+		sh->cd = 0;
 		parsing(sh, buf);
 		ft_strdel(&buf);
-		if (sh->cmd[0])
+		if (sh->cmd[0] && sh->cd == 0)
 			exec_cmd(sh->cmd);
 		ft_free_tab(sh->cmd);
 		ft_dprintf(1, "minishell $> ");

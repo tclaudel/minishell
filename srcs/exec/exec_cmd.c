@@ -2,8 +2,8 @@
 
 void	cd(char *path)
 {
-	(void)path;
-	chdir("/libft/");
+	if (chdir(path) == -1)
+		perror("cd");
 }
 
 void	exec_cmd(char **cmd)
@@ -24,8 +24,10 @@ void	exec_cmd(char **cmd)
 	{
 		if (execve(cmd[0], cmd, NULL) == -1)
 		{
-			perror("shell");
-			exit(EXIT_FAILURE);
+			cmd[0] = ft_strfjoin("/usr/", cmd[0], 2);
+			if (execve(cmd[0], cmd, NULL) == -1)
+				perror("shell");
+				exit(EXIT_FAILURE);
 		}
 	}
 }
