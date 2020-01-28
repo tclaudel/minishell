@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+void	cd(char *path)
+{
+	(void)path;
+	chdir("/libft/");
+}
+
 void	exec_cmd(char **cmd)
 {
 	pid_t	pid;
