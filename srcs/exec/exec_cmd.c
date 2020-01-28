@@ -6,13 +6,16 @@ void	cd(char *path)
 		perror("cd");
 }
 
-void	exec_cmd(char **cmd)
+int	exec_cmd(t_sh *sh, char **cmd)
 {
 	pid_t	pid;
+	size_t	i;
+	char	*current_cmd;
 	int		status;
 
 	status = 0;
 	pid = 0;
+	i = 0;
 	if ((pid = fork()) == -1)
 		perror("fork");
 	if (pid > 0)
@@ -22,12 +25,17 @@ void	exec_cmd(char **cmd)
 	}
 	else
 	{
-		if (execve(cmd[0], cmd, NULL) == -1)
+		current_cmd = ft_strfjoin("/", cmd[0], 2);
+		while (sh->path[i])
 		{
-			cmd[0] = ft_strfjoin("/usr/", cmd[0], 2);
-			if (execve(cmd[0], cmd, NULL) == -1)
-				perror("shell");
-				exit(EXIT_FAILURE);
+			cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
+			if (execve(cmd[0], cmd, NULL) != -1)
+					return (0);
+			i++;
+			ft_strdel(&cmd[0]);
 		}
+		perror("shell");
+		exit(EXIT_FAILURE);
 	}
+	return (1);
 }
