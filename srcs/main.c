@@ -47,7 +47,7 @@ int		main(int ac, char **av, char **env)
 		parsing(sh, buf);
 		ft_strdel(&buf);
 		if (sh->cmd[0])
-			exec_cmd(sh, sh->cmd);
+			exec_cmd(sh, sh->cmd, env);
 		ft_free_tab(sh->cmd);
 		ft_dprintf(1, "minishell $> ");
 	}
