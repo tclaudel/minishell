@@ -6,9 +6,19 @@ void	parsing(t_sh *sh, char *str)
 
 	i = 0;
 	sh->cmd = ft_split(str, ' ');
-	// while (sh->cmd[i])
-	// {
-	// 	printf("cmd[i]\t: %s\n", sh->cmd[i]);
-	// 	i++;
-	// }
+	if (sh->cmd[0])
+	{
+		if (!ft_strncmp(sh->cmd[0], "cd", 3))
+		{
+			if (sh->cmd[1])
+				cd(sh->cmd[1]);
+		}
+		if (!ft_strncmp(sh->cmd[0], "exit", 5))
+		{
+			ft_dprintf(1, "%s\n", "exit");
+			ft_free_tab(sh->cmd);
+			exit(EXIT_SUCCESS);
+		}
+		sh->cmd[0] = ft_strfjoin("/bin/", sh->cmd[0], 2);
+	}
 }

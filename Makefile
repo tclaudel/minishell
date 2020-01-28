@@ -13,7 +13,9 @@ YELLOW = \033[0;33m
 
 SRCS_PARSING	=	$(addprefix parsing/, parsing.c)
 
-SRCS_NAME		=	main.c $(SRCS_PARSING)
+SRCS_EXEC	=	$(addprefix exec/, exec_cmd.c)
+
+SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC)
 
 SRC_PATH		=	srcs/
 
@@ -48,6 +50,7 @@ $(NAME): $(OBJ) $(HEADER)
 $(OBJ_PATH):
 	@mkdir -p obj/ 2> /dev/null
 	@mkdir -p obj/parsing 2> /dev/null
+	@mkdir -p obj/exec 2> /dev/null
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADER) Makefile
 	@printf "\033[2K\r$(LIGHT_RED)Compiling...	\033[37m$<\033[36m \033[0m"
