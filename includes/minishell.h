@@ -23,6 +23,6 @@ typedef struct		s_sh
 void				parsing(t_sh *sh, char *str);
 int					exec_cmd(t_sh *sh, char **cmd, char **env);
 void				builtin_env(t_sh *sh);
-void				cd(char *path);
+void				cd(t_sh *sh, char *path);
 
 #endif
