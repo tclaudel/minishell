@@ -31,9 +31,8 @@ int		get_env_var(t_sh *sh, char **env)
 
 void	print_prompt(t_strhash *hash)
 {
-	ft_dprintf(1, DARK_BLUE);
-	ft_dprintf(1, "minishell/%s $> ", ft_get_hash_value(hash, "USER"));
-	ft_dprintf(1, RESET);
+	ft_dprintf(1, ""DARK_BLUE "minishell/%s $> " RESET"",
+		ft_get_hash_value(hash, "USER"));
 }
 
 int		main(int ac, char **av, char **env)
