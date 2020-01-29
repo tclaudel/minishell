@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-int		get_env_var(t_sh *sh, char **env)
+static int		get_env_var(t_sh *sh, char **env)
 {
 	size_t i;
 	size_t j;
@@ -29,14 +29,27 @@ int		get_env_var(t_sh *sh, char **env)
 	exit(EXIT_FAILURE);
 }
 
-void	print_prompt(t_strhash *hash)
+static void		print_prompt(t_strhash *hash)
 {
 	ft_dprintf(1, ""YELLOW "%s: %s $> " RESET"",
 		ft_get_hash_value(hash, "USER"),
 		ft_strrchr(ft_get_hash_value(hash, "PWD"), '/'));
 }
 
-int		main(int ac, char **av, char **env)
+static void		free_commands(t_sh *sh)
+{
+	size_t i;
+
+	i = 0;
+	while (sh->cmd[i])
+	{
+		ft_free_tab(sh->cmd[i]);
+		i++;
+	}
+	free(sh->cmd);
+}
+
+int				main(int ac, char **av, char **env)
 {
 	t_sh	*sh;
 	size_t	i;
@@ -59,6 +72,7 @@ int		main(int ac, char **av, char **env)
 				exec_cmd(sh, sh->cmd[i], env);
 			i++;
 		}
+		free_commands(sh);
 		print_prompt(sh->env);
 	}
 	return (1);

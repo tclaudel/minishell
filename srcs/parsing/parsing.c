@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	***split_commands(char *str, char c)
+static char		***alloc_commands(char *str, char c)
 {
 	char		***cmd;
 	size_t		i;
@@ -18,7 +18,21 @@ char	***split_commands(char *str, char c)
 	return (cmd);
 }
 
-void	parsing(t_sh *sh, char *str)
+static void		exec_builtin(t_sh *sh, size_t j)
+{
+	if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
+		cd(sh, sh->cmd[j][1]);
+	if (!ft_strncmp(sh->cmd[j][0], "env", 4))
+		builtin_env(sh);
+	else if (!ft_strncmp(sh->cmd[j][0], "exit", 5))
+	{
+		ft_dprintf(1, "%s\n", "exit");
+		ft_free_tab(sh->path);
+		exit(EXIT_SUCCESS);
+	}
+}
+
+void			parsing(t_sh *sh, char *str)
 {
 	size_t	i;
 	size_t	j;
@@ -26,25 +40,14 @@ void	parsing(t_sh *sh, char *str)
 
 	i = 0;
 	j = 0;
-	sh->cmd = split_commands(str, ';');
+	sh->cmd = alloc_commands(str, ';');
 	entries = ft_split(str, ';');
 	while (entries[j])
 	{
 		sh->cmd[j] = ft_split(entries[j], ' ');
 		if (sh->cmd[j][0])
-		{
-			if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
-				cd(sh, sh->cmd[j][1]);
-			if (!ft_strncmp(sh->cmd[j][0], "env", 4))
-				builtin_env(sh);
-			else if (!ft_strncmp(sh->cmd[j][0], "exit", 5))
-			{
-				ft_dprintf(1, "%s\n", "exit");
-				// ft_free_tab(sh->cmd[j]);
-				ft_free_tab(sh->path);
-				exit(EXIT_SUCCESS);
-			}
-		}
+			exec_builtin(sh, j);
 		j++;
 	}
+	ft_free_tab(entries);
 }
