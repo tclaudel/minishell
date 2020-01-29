@@ -6,7 +6,7 @@ void	cd(char *path)
 		perror("cd");
 }
 
-int	exec_cmd(t_sh *sh, char **cmd, char **env)
+int		exec_cmd(t_sh *sh, char **cmd, char **env)
 {
 	pid_t	pid;
 	size_t	i;
@@ -30,7 +30,7 @@ int	exec_cmd(t_sh *sh, char **cmd, char **env)
 		{
 			cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
 			if (execve(cmd[0], cmd, env) != -1)
-					return (0);
+				return (0);
 			i++;
 			ft_strdel(&cmd[0]);
 		}

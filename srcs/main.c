@@ -29,9 +29,16 @@ int		get_env_var(t_sh *sh, char **env)
 	exit(EXIT_FAILURE);
 }
 
+void	print_prompt(t_strhash *hash)
+{
+	ft_dprintf(1, ""DARK_BLUE "minishell/%s $> " RESET"",
+		ft_get_hash_value(hash, "USER"));
+}
+
 int		main(int ac, char **av, char **env)
 {
 	t_sh	*sh;
+	size_t	i;
 	char	*buf;
 
 	(void)av[ac];
@@ -39,17 +46,19 @@ int		main(int ac, char **av, char **env)
 	get_env_var(sh, env);
 	sh->env = ft_strhash(sh->key, sh->value);
 	sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
-	// ft_dprintf(2, "\033[34;01m%s\033[00m\n", ft_get_hash_value(sh->env, "PATH"));
-	ft_dprintf(1, "minishell $> ");
+	print_prompt(sh->env);
 	while (get_next_line(0, &buf) > 0)
 	{
-		// sh->cd = 0;
 		parsing(sh, buf);
 		ft_strdel(&buf);
-		if (sh->cmd[0])
-			exec_cmd(sh, sh->cmd, env);
-		ft_free_tab(sh->cmd);
-		ft_dprintf(1, "minishell $> ");
+		i = 0;
+		while (sh->cmd[i])
+		{
+			if (sh->cmd[i][0])
+				exec_cmd(sh, sh->cmd[i], env);
+			i++;
+		}
+		print_prompt(sh->env);
 	}
 	return (1);
 }
