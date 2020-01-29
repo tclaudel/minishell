@@ -15,7 +15,7 @@ typedef struct		s_sh
 	char		cd;
 	char		**key;
 	char		**value;
-	char		**cmd;
+	char		***cmd;
 	char		**path;
 	t_strhash	*env;
 }					t_sh;

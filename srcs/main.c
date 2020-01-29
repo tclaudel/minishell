@@ -38,6 +38,7 @@ void	print_prompt(t_strhash *hash)
 int		main(int ac, char **av, char **env)
 {
 	t_sh	*sh;
+	size_t	i;
 	char	*buf;
 
 	(void)av[ac];
@@ -50,9 +51,13 @@ int		main(int ac, char **av, char **env)
 	{
 		parsing(sh, buf);
 		ft_strdel(&buf);
-		if (sh->cmd[0])
-			exec_cmd(sh, sh->cmd, env);
-		ft_free_tab(sh->cmd);
+		i = 0;
+		while (sh->cmd[i])
+		{
+			if (sh->cmd[i][0])
+				exec_cmd(sh, sh->cmd[i], env);
+			i++;
+		}
 		print_prompt(sh->env);
 	}
 	return (1);
