@@ -9,16 +9,15 @@ void	parsing(t_sh *sh, char *str)
 	if (sh->cmd[0])
 	{
 		if (!ft_strncmp(sh->cmd[0], "cd", 3))
-		{
-			if (sh->cmd[1])
-				cd(sh->cmd[1]);
-		}
-		if (!ft_strncmp(sh->cmd[0], "exit", 5))
+			cd(sh->cmd[1]);
+		if (!ft_strncmp(sh->cmd[0], "env", 4))
+			builtin_env(sh);
+		else if (!ft_strncmp(sh->cmd[0], "exit", 5))
 		{
 			ft_dprintf(1, "%s\n", "exit");
 			ft_free_tab(sh->cmd);
+			ft_free_tab(sh->path);
 			exit(EXIT_SUCCESS);
 		}
-		sh->cmd[0] = ft_strfjoin("/bin/", sh->cmd[0], 2);
 	}
 }
