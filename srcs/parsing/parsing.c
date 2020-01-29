@@ -34,7 +34,7 @@ void	parsing(t_sh *sh, char *str)
 		if (sh->cmd[j][0])
 		{
 			if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
-				cd(sh->cmd[j][1]);
+				cd(sh, sh->cmd[j][1]);
 			if (!ft_strncmp(sh->cmd[j][0], "env", 4))
 				builtin_env(sh);
 			else if (!ft_strncmp(sh->cmd[j][0], "exit", 5))

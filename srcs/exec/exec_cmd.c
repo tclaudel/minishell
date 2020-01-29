@@ -1,9 +1,13 @@
 #include "minishell.h"
 
-void	cd(char *path)
+void	cd(t_sh *sh, char *path)
 {
+	char *str;
+
+	str = malloc(1024);
 	if (chdir(path) == -1)
 		perror("cd");
+	change_value(sh->env, "PWD", getcwd(str, 1024));
 }
 
 int		exec_cmd(t_sh *sh, char **cmd, char **env)
