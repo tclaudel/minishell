@@ -40,7 +40,7 @@ int		main(int ac, char **av, char **env)
 	sh->env = ft_strhash(sh->key, sh->value);
 	sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
 	// ft_dprintf(2, "\033[34;01m%s\033[00m\n", ft_get_hash_value(sh->env, "PATH"));
-	ft_dprintf(1, "minishell $> ");
+	ft_dprintf(1, "minishell/%s $> ", ft_get_hash_value(sh->env, "USER"));
 	while (get_next_line(0, &buf) > 0)
 	{
 		// sh->cd = 0;
@@ -49,7 +49,7 @@ int		main(int ac, char **av, char **env)
 		if (sh->cmd[0])
 			exec_cmd(sh, sh->cmd, env);
 		ft_free_tab(sh->cmd);
-		ft_dprintf(1, "minishell $> ");
+		ft_dprintf(1, "minishell/%s $> ", ft_get_hash_value(sh->env, "USER"));
 	}
 	return (1);
 }
