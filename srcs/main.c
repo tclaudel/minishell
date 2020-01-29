@@ -43,7 +43,6 @@ int		main(int ac, char **av, char **env)
 	ft_dprintf(1, "minishell $> ");
 	while (get_next_line(0, &buf) > 0)
 	{
-		// sh->cd = 0;
 		parsing(sh, buf);
 		ft_strdel(&buf);
 		if (sh->cmd[0])
