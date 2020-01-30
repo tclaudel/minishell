@@ -1,16 +1,6 @@
 #include "minishell.h"
 
-void	cd(t_sh *sh, char *path)
-{
-	char *str;
-
-	str = (char *)malloc(sizeof(&str) * 1024);
-	if (chdir(path) == -1)
-		perror("cd");
-	change_value(sh->env, "PWD", getcwd(str, 1024));
-}
-
-static int	search_path(t_sh *sh, char **cmd, char **env)
+static void	search_path(t_sh *sh, char **cmd, char **env)
 {
 	size_t	i;
 	char	*current_cmd;
@@ -23,14 +13,35 @@ static int	search_path(t_sh *sh, char **cmd, char **env)
 		{
 			cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
 			if (execve(cmd[0], cmd, env) != -1)
-				return (0);
+				exit(EXIT_SUCCESS);
 			i++;
 			ft_strdel(&cmd[0]);
 		}
-		perror("shell");
+		if (errno == ENOENT)
+			ft_dprintf(2, "minishell: %s: command not found\n", current_cmd);
+		else
+			ft_dprintf(2, "%s\n", strerror(errno));
+		ft_strdel(&current_cmd);
 		exit(EXIT_FAILURE);
 	}
-	return (0);
+}
+
+void		exec_builtin(t_sh *sh, size_t j)
+{
+	if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
+		builtin_cd(sh, sh->cmd[j][1]);
+	else if (!ft_strncmp(sh->cmd[j][0], "pwd", 4))
+		ft_dprintf(1, "%s\n", ft_get_hash_value(sh->env, "PWD"));
+	else if (!ft_strncmp(sh->cmd[j][0], "env", 4))
+		builtin_env(sh);
+	else if (!ft_strncmp(sh->cmd[j][0], "echo", 5))
+		builtin_echo(sh->cmd[j]);
+	else if (!ft_strncmp(sh->cmd[j][0], "exit", 5))
+	{
+		ft_dprintf(1, "%s\n", "exit");
+		ft_free_tab(sh->path);
+		exit(EXIT_SUCCESS);
+	}
 }
 
 int			exec_cmd(t_sh *sh, char **cmd, char **env)
@@ -38,16 +49,17 @@ int			exec_cmd(t_sh *sh, char **cmd, char **env)
 	pid_t	pid;
 	int		status;
 
+	(void)env;
 	status = 0;
 	pid = 0;
 	if ((pid = fork()) == -1)
-		perror("fork");
+		ft_dprintf(2, "%s\n", strerror(errno));
 	if (pid > 0)
 	{
 		waitpid(pid, &status, 0);
 		kill(pid, SIGTERM);
 	}
 	else
-		search_path(sh, cmd, env);
+		search_path(sh, cmd, NULL);
 	return (1);
 }
