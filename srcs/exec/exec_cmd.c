@@ -34,8 +34,9 @@ int			ft_fork_process(t_sh *sh, char **cmd, char **env)
 		ft_dprintf(2, "%s\n", strerror(errno));
 	if (pid > 0)
 	{
+		handle_sigint(pid);
 		waitpid(pid, &status, 0);
-		kill(pid, SIGTERM);
+		handle_sigint(0);
 	}
 	else
 	{
