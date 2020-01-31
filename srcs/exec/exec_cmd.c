@@ -2,10 +2,12 @@
 
 void		exec_builtin(t_sh *sh, size_t j)
 {
+	char str[1024];
+
 	if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
 		builtin_cd(sh, sh->cmd[j][1]);
 	else if (!ft_strncmp(sh->cmd[j][0], "pwd", 4))
-		ft_dprintf(1, "%s\n", ft_get_hash_value(sh->env, "PWD"));
+		ft_dprintf(1, "%s\n", getcwd(str, 1024));
 	else if (!ft_strncmp(sh->cmd[j][0], "env", 4))
 		builtin_env(sh);
 	else if (!ft_strncmp(sh->cmd[j][0], "echo", 5))
@@ -22,7 +24,7 @@ void		exec_builtin(t_sh *sh, size_t j)
 	}
 }
 
-int			ft_fork_process(t_sh *sh, char **cmd, char **env, size_t i)
+int			ft_fork_process(t_sh *sh, char **cmd, char **env)
 {
 	pid_t	pid;
 	int		status;
@@ -40,9 +42,6 @@ int			ft_fork_process(t_sh *sh, char **cmd, char **env, size_t i)
 	}
 	else
 	{
-		if (cmd && is_builtin(cmd[0]))
-			exec_builtin(sh, i);
-		else if (sh->cmd)
 			exec_cmd(sh, cmd, env);
 	}
 	return (1);
@@ -54,13 +53,14 @@ void		exec_cmd(t_sh *sh, char **cmd, char **env)
 	char	*current_cmd;
 
 	i = 0;
+	(void)env;
 	if (execve(cmd[0], cmd, env) == -1)
 	{
 		current_cmd = ft_strfjoin("/", cmd[0], 2);
 		while (sh->path[i])
 		{
 			cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
-			if (execve(cmd[0], cmd, env) != -1)
+			if (execve(cmd[0], cmd, NULL) != -1)
 				exit(EXIT_SUCCESS);
 			i++;
 			ft_strdel(&cmd[0]);
