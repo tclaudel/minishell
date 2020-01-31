@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 void		print_prompt(t_strhash *hash)
@@ -60,8 +59,8 @@ void			get_entry(t_sh *sh, char *buf)
 
 t_sh	*get_sh_info(void)
 {
-	static t_sh	sh = {NULL,NULL,NULL,NULL,NULL};
-
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL};
+	
 	return (&sh);
 }
 

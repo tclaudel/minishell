@@ -40,15 +40,13 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 		handle_sigint(0);
 	}
 	else
-	{
-			exec_cmd(sh, cmd);
-	}
+		exec_cmd(sh, cmd);
 	return (1);
 }
 
 static char	**cpy_environ(t_sh *sh)
 {
-	size_t i;
+	size_t	i;
 	char	**env_cpy;
 
 	i = 0;
