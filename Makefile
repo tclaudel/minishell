@@ -13,7 +13,7 @@ YELLOW = \033[0;33m
 
 SRCS_PARSING	=	$(addprefix parsing/, parsing.c)
 
-SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c)
+SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c)
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
@@ -39,13 +39,13 @@ FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
-all: $(OBJ_PATH) $(LIBFT) $(NAME)
+all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
 
 $(LIBFT):
 	@make -C libft/
 
-$(NAME): $(OBJ) $(HEADER)
+$(NAME): $(OBJ)
 	@gcc $(FLAG) $(LIBFT) $(OBJ) -o $(NAME)
 	@printf "	\033[2K\r$(DARK_BLUE)minishell\t:\t$(LIGHT_GREEN)Updated\n\033[0m"
 
@@ -55,7 +55,7 @@ $(OBJ_PATH):
 	@mkdir -p obj/exec 2> /dev/null
 	@mkdir -p obj/var 2> /dev/null
 
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADER) Makefile
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADER)/minishell.h Makefile
 	@printf "\033[2K\r$(LIGHT_RED)Compiling...	\033[37m$<\033[36m \033[0m"
 	@gcc $(FLAG) -I $(HEADER) -I libft/includes/ -c $< -o $@
 
@@ -82,7 +82,10 @@ clean:
 fclean: clean
 	@${RM} ${NAME}
 
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@make -C libft/ re
+	@$(MAKE) all
 
 norme:
 	@norminette $(SRC_PATH) $(HEADER) | grep -v "101 header"

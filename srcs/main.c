@@ -40,16 +40,27 @@ static int		is_builtin(char *cmd)
 	return (0);
 }
 
-static void			handle_sigint(int sig)
+void			get_entry(t_sh *sh, char *buf, char **env)
 {
-	if (sig == SIGINT)
-		exit(1);
+	size_t	i;
+
+	i = 0;
+	parsing(sh, buf);
+	while (sh->cmd[i])
+	{
+		if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
+			exec_builtin(sh, i);
+		else if (sh->cmd[i][0])
+			ft_fork_process(sh, sh->cmd[i], env);
+		i++;
+	}
+	free_commands(sh);
+	print_prompt(sh->env);
 }
 
 int				main(int ac, char **av, char **env)
 {
 	t_sh	*sh;
-	size_t	i;
 	char	*buf;
 
 	(void)av[ac];
@@ -60,18 +71,7 @@ int				main(int ac, char **av, char **env)
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
 	{
-		parsing(sh, buf);
-		i = 0;
-		while (sh->cmd[i])
-		{
-			if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
-				exec_builtin(sh, i);
-			else if (sh->cmd[i][0])
-				exec_cmd(sh, sh->cmd[i], env);
-			i++;
-		}
-		free_commands(sh);
-		print_prompt(sh->env);
+		get_entry(sh, buf, env);
 	}
 	return (1);
 }

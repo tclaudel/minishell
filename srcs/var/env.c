@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int		get_env_var(t_sh *sh, char **env)
+int			get_env_var(t_sh *sh, char **env)
 {
 	static size_t	i = 0;
 	size_t			j;
@@ -27,4 +27,21 @@ int		get_env_var(t_sh *sh, char **env)
 		return (0);
 	}
 	exit(EXIT_FAILURE);
+}
+
+t_strhash	*realloc_hash(t_strhash *hash, size_t size)
+{
+	size_t		i;
+	t_strhash	*new;
+
+	i = 0;
+	if (!(new = (t_strhash *)ft_calloc(size, 1)))
+		return (NULL);
+	while (hash[i].key)
+	{
+		new[i] = hash[i];
+		i++;
+	}
+	free(hash);
+	return (new);
 }
