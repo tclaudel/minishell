@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 void		handle_sigint(int sig)
 {
 	static int  pid;	
@@ -15,11 +13,11 @@ void		handle_sigint(int sig)
 	{
 		if (pid)
 		{
+			kill(pid, sig);
 			if (sig == SIGINT)
 				ft_printf("\n");
 			if (sig == SIGQUIT)
-				ft_printf("[1]\t%d quit\n", pid);
-			kill(pid, sig);
+				ft_printf("\n[1]\t%d quit\n", pid);
 		}
 		else
 		{
