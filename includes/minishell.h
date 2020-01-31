@@ -10,7 +10,7 @@
 # include <unistd.h>
 # include <dirent.h>
 # include <string.h>
-# include "errno.h"
+# include <errno.h>
 
 typedef struct		s_sh
 {

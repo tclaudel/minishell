@@ -3,9 +3,15 @@
 
 static void		print_prompt(t_strhash *hash)
 {
-	ft_dprintf(1, ""YELLOW_BOLD "%s: %s $> " RESET"",
-		ft_get_hash_value(hash, "USER"),
-		ft_strrchr(ft_get_hash_value(hash, "PWD"), '/'));
+	if (ft_get_hash_value(hash, "PWD"))
+	{
+		ft_dprintf(1, ""YELLOW_BOLD "%s: %s $> " RESET"",
+			ft_get_hash_value(hash, "USER"),
+			ft_strrchr(ft_get_hash_value(hash, "PWD"), '/'));
+	}
+	else
+		ft_dprintf(1, ""YELLOW_BOLD "%s: %s $> " RESET"",
+			ft_get_hash_value(hash, "USER"), NULL);
 }
 
 static void		free_commands(t_sh *sh)
