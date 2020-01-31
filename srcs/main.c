@@ -48,13 +48,10 @@ void			get_entry(t_sh *sh, char *buf, char **env)
 	parsing(sh, buf);
 	while (sh->cmd[i])
 	{
-		if (!ft_strcmp(sh->cmd[i][0], "exit"))
-		{
-			ft_dprintf(1, "%s\n", "exit");
-			ft_free_tab(sh->path);
-			exit(EXIT_SUCCESS);
-		}
-		ft_fork_process(sh, sh->cmd[i], env, i);
+		if (sh->cmd[i] && is_builtin(sh->cmd[i][0]))
+			exec_builtin(sh, i);
+		else if (sh->cmd[i])
+			ft_fork_process(sh, sh->cmd[i], env);
 		i++;
 	}
 	free_commands(sh);
