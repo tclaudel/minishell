@@ -22,7 +22,7 @@ void		exec_builtin(t_sh *sh, size_t j)
 	}
 }
 
-int			ft_fork_process(t_sh *sh, char **cmd, char **env)
+int			ft_fork_process(t_sh *sh, char **cmd, char **env, size_t i)
 {
 	pid_t	pid;
 	int		status;
@@ -40,7 +40,10 @@ int			ft_fork_process(t_sh *sh, char **cmd, char **env)
 	}
 	else
 	{
-		exec_cmd(sh, cmd, env);
+		if (cmd && is_builtin(cmd[0]))
+			exec_builtin(sh, i);
+		else if (sh->cmd)
+			exec_cmd(sh, cmd, env);
 	}
 	return (1);
 }

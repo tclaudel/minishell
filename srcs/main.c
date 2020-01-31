@@ -3,9 +3,15 @@
 
 void		print_prompt(t_strhash *hash)
 {
-	ft_dprintf(1, ""YELLOW_BOLD "%s: %s $> " RESET"",
-		ft_get_hash_value(hash, "USER"),
-		ft_strrchr(ft_get_hash_value(hash, "PWD"), '/'));
+	if (ft_get_hash_value(hash, "PWD"))
+	{
+		ft_dprintf(1, ""YELLOW_BOLD "%s: %s $> " RESET"",
+			ft_get_hash_value(hash, "USER"),
+			ft_strrchr(ft_get_hash_value(hash, "PWD"), '/'));
+	}
+	else
+		ft_dprintf(1, ""YELLOW_BOLD "%s: %s $> " RESET"",
+			ft_get_hash_value(hash, "USER"), NULL);
 }
 
 static void		free_commands(t_sh *sh)
@@ -21,7 +27,7 @@ static void		free_commands(t_sh *sh)
 	free(sh->cmd);
 }
 
-static int		is_builtin(char *cmd)
+int		is_builtin(char *cmd)
 {
 	if (!ft_strcmp(cmd, "cd") ||
 	!ft_strcmp(cmd, "env") ||
@@ -42,10 +48,13 @@ void			get_entry(t_sh *sh, char *buf, char **env)
 	parsing(sh, buf);
 	while (sh->cmd[i])
 	{
-		if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
-			exec_builtin(sh, i);
-		else if (sh->cmd[i][0])
-			ft_fork_process(sh, sh->cmd[i], env);
+		if (!ft_strcmp(sh->cmd[i][0], "exit"))
+		{
+			ft_dprintf(1, "%s\n", "exit");
+			ft_free_tab(sh->path);
+			exit(EXIT_SUCCESS);
+		}
+		ft_fork_process(sh, sh->cmd[i], env, i);
 		i++;
 	}
 	free_commands(sh);
@@ -71,8 +80,9 @@ int				main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
-	{
 		get_entry(sh, buf, env);
-	}
+	ft_dprintf(1, "%s\n", "exit");
+	ft_free_tab(sh->path);
+	exit(EXIT_SUCCESS);
 	return (1);
 }

@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 void		handle_sigint(int sig)
 {
 	static int  pid;	
@@ -21,10 +19,10 @@ void		handle_sigint(int sig)
 				ft_printf("[1]\t%d quit\n", pid);
 			kill(pid, sig);
 		}
-		else
-		{
-			ft_printf("\n");
-			print_prompt(get_sh_info()->env);
-		}
+		// else
+		// {
+		// 	ft_printf("\n");
+		// 	print_prompt(get_sh_info()->env);
+		// }
 	}
 }
