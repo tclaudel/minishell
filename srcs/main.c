@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-static void		print_prompt(t_strhash *hash)
+void		print_prompt(t_strhash *hash)
 {
 	if (ft_get_hash_value(hash, "PWD"))
 	{
@@ -48,14 +48,24 @@ void			get_entry(t_sh *sh, char *buf, char **env)
 	parsing(sh, buf);
 	while (sh->cmd[i])
 	{
-		// if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
-		// 	exec_builtin(sh, i);
-		// else if (sh->cmd[i][0])
-			ft_fork_process(sh, sh->cmd[i], env, i);
+		if (!ft_strcmp(sh->cmd[i][0], "exit"))
+		{
+			ft_dprintf(1, "%s\n", "exit");
+			ft_free_tab(sh->path);
+			exit(EXIT_SUCCESS);
+		}
+		ft_fork_process(sh, sh->cmd[i], env, i);
 		i++;
 	}
 	free_commands(sh);
 	print_prompt(sh->env);
+}
+
+t_sh	*get_sh_info(void)
+{
+	static t_sh	sh = {NULL,NULL,NULL,NULL,NULL};
+
+	return (&sh);
 }
 
 int				main(int ac, char **av, char **env)
@@ -64,15 +74,13 @@ int				main(int ac, char **av, char **env)
 	char	*buf;
 
 	(void)av[ac];
-	sh = malloc(sizeof(t_sh));
+	sh = get_sh_info();
 	get_env_var(sh, env);
 	print_prompt(sh->env);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
-	{
 		get_entry(sh, buf, env);
-	}
 	ft_dprintf(1, "%s\n", "exit");
 	ft_free_tab(sh->path);
 	exit(EXIT_SUCCESS);
