@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	builtin_env(t_sh *sh)
+void		builtin_env(t_sh *sh)
 {
 	size_t	i;
 
@@ -14,24 +14,7 @@ void	builtin_env(t_sh *sh)
 	}
 }
 
-t_strhash	*realloc_hash(t_strhash *hash, size_t size)
-{
-	size_t	i;
-	t_strhash *new;
-
-	i = 0;
-	if (!(new = (t_strhash *)ft_calloc(size, 1)))
-		return (NULL);
-	while (hash[i].key)
-	{
-		new[i] = hash[i];
-		i++;
-	}
-	free(hash);
-	return (new);
-}
-
-void	builtin_export(t_sh *sh, char **key)
+void		builtin_export(t_sh *sh, char **key)
 {
 	size_t j;
 	size_t k;
@@ -49,7 +32,7 @@ void	builtin_export(t_sh *sh, char **key)
 	{
 		k = 0;
 		while (key[j][k] && key[j][k] != '=')
-				k++;
+			k++;
 		sh->env[i].key = ft_strndup(key[j], k);
 		sh->env[i].value = ft_strdup(key[j] + k + 1);
 		i++;
@@ -57,15 +40,12 @@ void	builtin_export(t_sh *sh, char **key)
 	}
 }
 
-void	builtin_unset(t_sh *sh, char **key)
+void		builtin_unset(t_sh *sh, char **key, size_t i, size_t j)
 {
-	size_t		i;
-	size_t		j;
 	int			tmp;
 	t_strhash	buf;
 
-	j = 1;
-	while (key[j])
+	while (key[++j])
 	{
 		tmp = -1;
 		i = 0;
@@ -86,11 +66,10 @@ void	builtin_unset(t_sh *sh, char **key)
 			sh->env[tmp] = sh->env[i];
 			sh->env[i] = buf;
 		}
-		j++;
 	}
 }
 
-void	builtin_echo(char **cmd)
+void		builtin_echo(char **cmd)
 {
 	size_t i;
 
@@ -108,7 +87,7 @@ void	builtin_echo(char **cmd)
 		write(1, "\n", 1);
 }
 
-void	builtin_cd(t_sh *sh, char *path)
+void		builtin_cd(t_sh *sh, char *path)
 {
 	char str[1024];
 	char *old_pwd;
