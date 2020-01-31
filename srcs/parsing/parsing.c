@@ -18,20 +18,6 @@ static char		***alloc_commands(char *str, char c)
 	return (cmd);
 }
 
-static void		exec_builtin(t_sh *sh, size_t j)
-{
-	if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
-		cd(sh, sh->cmd[j][1]);
-	if (!ft_strncmp(sh->cmd[j][0], "env", 4))
-		builtin_env(sh);
-	else if (!ft_strncmp(sh->cmd[j][0], "exit", 5))
-	{
-		ft_dprintf(1, "%s\n", "exit");
-		ft_free_tab(sh->path);
-		exit(EXIT_SUCCESS);
-	}
-}
-
 void			parsing(t_sh *sh, char *str)
 {
 	size_t	i;
@@ -45,9 +31,8 @@ void			parsing(t_sh *sh, char *str)
 	while (entries[j])
 	{
 		sh->cmd[j] = ft_split(entries[j], ' ');
-		if (sh->cmd[j][0])
-			exec_builtin(sh, j);
 		j++;
 	}
 	ft_free_tab(entries);
+	ft_strdel(&str);
 }
