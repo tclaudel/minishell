@@ -33,5 +33,7 @@ void				builtin_export(t_sh *sh, char **key);
 void				handle_sigint(int sig);
 t_strhash			*realloc_hash(t_strhash *hash, size_t size);
 int					ft_fork_process(t_sh *sh, char **cmd, char **env);
+void				print_prompt(t_strhash *hash);
+t_sh				*get_sh_info(void);
 
 #endif
