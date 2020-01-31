@@ -27,7 +27,7 @@ static void		free_commands(t_sh *sh)
 	free(sh->cmd);
 }
 
-static int		is_builtin(char *cmd)
+int		is_builtin(char *cmd)
 {
 	if (!ft_strcmp(cmd, "cd") ||
 	!ft_strcmp(cmd, "env") ||
@@ -48,10 +48,10 @@ void			get_entry(t_sh *sh, char *buf, char **env)
 	parsing(sh, buf);
 	while (sh->cmd[i])
 	{
-		if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
-			exec_builtin(sh, i);
-		else if (sh->cmd[i][0])
-			ft_fork_process(sh, sh->cmd[i], env);
+		// if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
+		// 	exec_builtin(sh, i);
+		// else if (sh->cmd[i][0])
+			ft_fork_process(sh, sh->cmd[i], env, i);
 		i++;
 	}
 	free_commands(sh);
@@ -73,5 +73,8 @@ int				main(int ac, char **av, char **env)
 	{
 		get_entry(sh, buf, env);
 	}
+	ft_dprintf(1, "%s\n", "exit");
+	ft_free_tab(sh->path);
+	exit(EXIT_SUCCESS);
 	return (1);
 }
