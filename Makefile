@@ -82,7 +82,10 @@ clean:
 fclean: clean
 	@${RM} ${NAME}
 
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@make -C libft/ re
+	@$(MAKE) all
 
 norme:
 	@norminette $(SRC_PATH) $(HEADER) | grep -v "101 header"
