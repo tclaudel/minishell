@@ -1,31 +1,5 @@
 #include "minishell.h"
 
-static void	search_path(t_sh *sh, char **cmd, char **env)
-{
-	size_t	i;
-	char	*current_cmd;
-
-	i = 0;
-	if (execve(cmd[0], cmd, env) == -1)
-	{
-		current_cmd = ft_strfjoin("/", cmd[0], 2);
-		while (sh->path[i])
-		{
-			cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
-			if (execve(cmd[0], cmd, env) != -1)
-				exit(EXIT_SUCCESS);
-			i++;
-			ft_strdel(&cmd[0]);
-		}
-		if (errno == ENOENT)
-			ft_dprintf(2, "minishell: %s: command not found\n", current_cmd);
-		else
-			ft_dprintf(2, "%s\n", strerror(errno));
-		ft_strdel(&current_cmd);
-		exit(EXIT_FAILURE);
-	}
-}
-
 void		exec_builtin(t_sh *sh, size_t j)
 {
 	if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
@@ -36,6 +10,10 @@ void		exec_builtin(t_sh *sh, size_t j)
 		builtin_env(sh);
 	else if (!ft_strncmp(sh->cmd[j][0], "echo", 5))
 		builtin_echo(sh->cmd[j]);
+	else if (!ft_strncmp(sh->cmd[j][0], "unset", 5))
+		builtin_unset(sh, sh->cmd[j]);
+	else if (!ft_strncmp(sh->cmd[j][0], "export", 7))
+		builtin_export(sh, sh->cmd[j]);
 	else if (!ft_strncmp(sh->cmd[j][0], "exit", 5))
 	{
 		ft_dprintf(1, "%s\n", "exit");
@@ -46,6 +24,8 @@ void		exec_builtin(t_sh *sh, size_t j)
 
 int			exec_cmd(t_sh *sh, char **cmd, char **env)
 {
+	size_t	i;
+	char	*current_cmd;
 	pid_t	pid;
 	int		status;
 
@@ -60,6 +40,26 @@ int			exec_cmd(t_sh *sh, char **cmd, char **env)
 		kill(pid, SIGTERM);
 	}
 	else
-		search_path(sh, cmd, NULL);
+	{
+		i = 0;
+		if (execve(cmd[0], cmd, env) == -1)
+		{
+			current_cmd = ft_strfjoin("/", cmd[0], 2);
+			while (sh->path[i])
+			{
+				cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
+				if (execve(cmd[0], cmd, env) != -1)
+					exit(EXIT_SUCCESS);
+				i++;
+				ft_strdel(&cmd[0]);
+			}
+			if (errno == ENOENT)
+				ft_dprintf(2, "minishell: %s: command not found\n", current_cmd);
+			else
+				ft_dprintf(2, "%s\n", strerror(errno));
+			ft_strdel(&current_cmd);
+			exit(EXIT_FAILURE);
+		}
+	}
 	return (1);
 }

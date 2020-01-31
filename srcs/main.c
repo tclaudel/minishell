@@ -26,9 +26,18 @@ static int		is_builtin(char *cmd)
 	if (!ft_strcmp(cmd, "cd") ||
 	!ft_strcmp(cmd, "env") ||
 	!ft_strcmp(cmd, "pwd") ||
-	!ft_strcmp(cmd, "exit") || !ft_strcmp(cmd, "echo"))
+	!ft_strcmp(cmd, "exit") ||
+	!ft_strcmp(cmd, "echo") ||
+	!ft_strcmp(cmd, "unset") ||
+	!ft_strcmp(cmd, "export"))
 		return (1);
 	return (0);
+}
+
+static void			handle_sigint(int sig)
+{
+	if (sig == SIGINT)
+		exit(1);
 }
 
 int				main(int ac, char **av, char **env)
@@ -41,6 +50,8 @@ int				main(int ac, char **av, char **env)
 	sh = malloc(sizeof(t_sh));
 	get_env_var(sh, env);
 	print_prompt(sh->env);
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
 	{
 		parsing(sh, buf);
