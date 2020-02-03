@@ -19,11 +19,11 @@ void		print_prompt(t_strhash *hash)
 {
 	if (ft_get_hash_value(hash, "PWD"))
 	{
-		ft_dprintf(1, ""YELLOW_BOLD "%s: "GREY"%s : " RESET"",
+		ft_dprintf(1, ""YELLOW_BOLD "%s: "DARK_BLUE"%s : " RESET"",
 			ft_get_hash_value(hash, "USER"),
 			ft_strrchr(ft_get_hash_value(hash, "PWD"), '/'));
 	}
 	else
-		ft_dprintf(1, ""YELLOW_BOLD "%s: "GREY"%s : " RESET"",
+		ft_dprintf(1, ""YELLOW_BOLD "%s: "DARK_BLUE"%s : " RESET"",
 			ft_get_hash_value(hash, "USER"), NULL);
 }

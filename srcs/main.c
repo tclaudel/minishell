@@ -26,7 +26,7 @@ int				is_builtin(char *cmd)
 	return (0);
 }
 
-void			get_entry(t_sh *sh, char *buf)
+void			main_loop(t_sh *sh, char *buf)
 {
 	size_t	i;
 
@@ -64,8 +64,9 @@ int				main(int ac, char **av, char **env)
 	print_prompt(sh->env);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
+	// signal(SIGCHLD, children_slained);
 	while (get_next_line(0, &buf) > 0)
-		get_entry(sh, buf);
+		main_loop(sh, buf);
 	ft_dprintf(1, "%s\n", "exit");
 	ft_free_tab(sh->path);
 	exit(EXIT_SUCCESS);
