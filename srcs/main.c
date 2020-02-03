@@ -64,7 +64,6 @@ int				main(int ac, char **av, char **env)
 	print_prompt(sh->env);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
-	// signal(SIGCHLD, children_slained);
 	while (get_next_line(0, &buf) > 0)
 		main_loop(sh, buf);
 	ft_dprintf(1, "%s\n", "exit");
