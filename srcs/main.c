@@ -32,6 +32,7 @@ void			get_entry(t_sh *sh, char *buf)
 
 	i = 0;
 	parsing(sh, buf);
+	sh->signal_applied = 0;
 	while (sh->cmd[i])
 	{
 		if (sh->cmd[i] && is_builtin(sh->cmd[i][0]))
@@ -46,7 +47,7 @@ void			get_entry(t_sh *sh, char *buf)
 
 t_sh			*get_sh_info(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, 0};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0};
 
 	return (&sh);
 }
@@ -59,7 +60,6 @@ int				main(int ac, char **av, char **env)
 	(void)av[ac];
 	printf_welcome();
 	sh = get_sh_info();
-	sh->childrens = 0;
 	get_env_var(sh, env);
 	print_prompt(sh->env);
 	signal(SIGINT, handle_sigint);

@@ -2,7 +2,8 @@
 
 void		handle_sigint(int sig)
 {
-	static int pid;
+	static int		pid;
+	static char		signal_applied = 0;
 
 	if (sig == 0 || sig > 32)
 	{
@@ -14,14 +15,15 @@ void		handle_sigint(int sig)
 		if (pid)
 		{
 			kill(pid, sig);
-			get_sh_info()->childrens--;
+			signal_applied++;
 			if (sig == SIGQUIT)
 				ft_printf("\n[1]\t%d quit\n", pid);
 		}
-		else if (get_sh_info()->childrens == get_sh_info()->oldchilds)
+		if (!pid && signal_applied == 0)
 		{
 			ft_printf("\n");
 			print_prompt(get_sh_info()->env);
 		}
+		//dprintf(1, "signal_applied : %d", signal_applied);
 	}
 }
