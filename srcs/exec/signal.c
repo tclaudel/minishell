@@ -2,7 +2,7 @@
 
 void		children_slained(int sig)
 {
-		sig = 0;
+	if (SIGKILL == sig);
 		dprintf(1, "a child as been slained");
 }
 
@@ -15,7 +15,7 @@ void		handle_sigint(int sig)
 		pid = sig;
 		return ;
 	}
-	//signal(SIGCHLD, children_slained);
+	signal(SIGKILL, children_slained);
 	if ((sig == SIGINT || sig == SIGQUIT))
 	{
 		if (pid)
