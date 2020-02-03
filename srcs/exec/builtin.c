@@ -74,6 +74,11 @@ void		builtin_echo(char **cmd)
 	size_t i;
 
 	i = 1;
+	if (!cmd[1])
+	{
+		write(1, "\n", 1);
+		return ;
+	}
 	if (!ft_strncmp(cmd[1], "-n", 3))
 		i++;
 	while (cmd[i])

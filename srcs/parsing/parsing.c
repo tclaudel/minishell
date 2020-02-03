@@ -18,7 +18,30 @@ static char		***alloc_commands(char *str, char c)
 	return (cmd);
 }
 
-void			parsing(t_sh *sh, char *str)
+char		**parse(char *s, char *tmp)
+{
+	char		*cmd[1024];
+	size_t		i;
+	size_t		j;
+
+	i = 0;
+	j = 0;
+	dprintf(1, "entries\t: %s\n", s);
+	tmp = ft_strtrim(s, " \n\t");
+	free (s);
+	while (s[i])
+	{
+		
+	}
+	cmd[j] = NULL;
+	
+	
+
+
+	return (cmd);
+}
+
+void		parsing(t_sh *sh, char *str)
 {
 	size_t	i;
 	size_t	j;
