@@ -18,30 +18,55 @@ static char		***alloc_commands(char *str, char c)
 	return (cmd);
 }
 
-char		**parse(char *s, char *tmp)
+char		*is_a_symbol(char c)
 {
-	char		*cmd[1024];
-	size_t		i;
-	size_t		j;
-
-	i = 0;
-	j = 0;
-	dprintf(1, "entries\t: %s\n", s);
-	tmp = ft_strtrim(s, " \n\t");
-	free (s);
-	while (s[i])
-	{
-		
-	}
-	cmd[j] = NULL;
-	
-	
-
-
-	return (cmd);
+	return (ft_strchr(" \t\n\'\"", c));
 }
 
-void		parsing(t_sh *sh, char *str)
+static size_t	bloc_counter(char *s, size_t i)
+{
+	size_t	block;
+
+	block = 1;
+	while (s[i])
+	{
+		if (s[i] == ' ')
+		{
+			block++;
+			while (s[i] && s[i] != ' ')
+				i++;
+		}
+		else if (s[i] == '\"')
+		{
+			block++;
+			while (s[i] && s[i] != '\"')
+				i++;
+		}
+		else if (s[i] == '\'')
+		{
+			block++;
+			while (s[i] && s[i] != '\'')
+				i++;
+		}
+		i++;
+	}
+	return (block);
+}
+
+
+void			parse(char *s)
+{
+	// char			**cmd;
+	size_t			nb;
+
+	dprintf(1, "entries\t: %s\n", s);
+	nb = bloc_counter(s, 0);
+	printf("nb\t: %zu\n", nb);
+	//cmd = (char **)malloc(sizeof(char *) * (nb + 1);
+	// return (cmd);
+}
+
+void			parsing(t_sh *sh, char *str)
 {
 	size_t	i;
 	size_t	j;
@@ -54,6 +79,7 @@ void		parsing(t_sh *sh, char *str)
 	while (entries[j])
 	{
 		sh->cmd[j] = ft_split(entries[j], ' ');
+		parse(entries[j]);
 		j++;
 	}
 	ft_free_tab(entries);
