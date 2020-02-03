@@ -17,7 +17,9 @@ SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c)
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
-SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC) $(SRCS_VAR)
+SRCS_DISPLAY	=	$(addprefix display/, display.c)
+
+SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC) $(SRCS_VAR) $(SRCS_DISPLAY)
 
 SRC_PATH		=	srcs/
 
@@ -47,13 +49,14 @@ $(LIBFT):
 
 $(NAME): $(OBJ)
 	@gcc $(FLAG) $(LIBFT) $(OBJ) -o $(NAME)
-	@printf "	\033[2K\r$(DARK_BLUE)minishell\t:\t$(LIGHT_GREEN)Updated\n\033[0m"
+	@printf "	\033[2K\r$(DARK_BLUE)minishell\t: $(LIGHT_GREEN)Updated\n\033[0m"
 
 $(OBJ_PATH):
 	@mkdir -p obj/ 2> /dev/null
 	@mkdir -p obj/parsing 2> /dev/null
 	@mkdir -p obj/exec 2> /dev/null
 	@mkdir -p obj/var 2> /dev/null
+	@mkdir -p obj/display 2> /dev/null
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADER)/minishell.h Makefile
 	@printf "\033[2K\r$(LIGHT_RED)Compiling...	\033[37m$<\033[36m \033[0m"

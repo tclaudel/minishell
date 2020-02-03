@@ -1,18 +1,5 @@
 #include "minishell.h"
 
-void		print_prompt(t_strhash *hash)
-{
-	if (ft_get_hash_value(hash, "PWD"))
-	{
-		ft_dprintf(1, ""YELLOW_BOLD "%s: %s $> " RESET"",
-			ft_get_hash_value(hash, "USER"),
-			ft_strrchr(ft_get_hash_value(hash, "PWD"), '/'));
-	}
-	else
-		ft_dprintf(1, ""YELLOW_BOLD "%s: %s $> " RESET"",
-			ft_get_hash_value(hash, "USER"), NULL);
-}
-
 static void		free_commands(t_sh *sh)
 {
 	size_t i;
@@ -26,7 +13,7 @@ static void		free_commands(t_sh *sh)
 	free(sh->cmd);
 }
 
-int		is_builtin(char *cmd)
+int				is_builtin(char *cmd)
 {
 	if (!ft_strcmp(cmd, "cd") ||
 	!ft_strcmp(cmd, "env") ||
@@ -57,10 +44,10 @@ void			get_entry(t_sh *sh, char *buf)
 	print_prompt(sh->env);
 }
 
-t_sh	*get_sh_info(void)
+t_sh			*get_sh_info(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL};
-	
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, 0};
+
 	return (&sh);
 }
 
@@ -70,7 +57,9 @@ int				main(int ac, char **av, char **env)
 	char	*buf;
 
 	(void)av[ac];
+	printf_welcome();
 	sh = get_sh_info();
+	sh->childrens = 0;
 	get_env_var(sh, env);
 	print_prompt(sh->env);
 	signal(SIGINT, handle_sigint);

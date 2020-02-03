@@ -19,6 +19,8 @@ typedef struct		s_sh
 	char		***cmd;
 	char		**path;
 	t_strhash	*env;
+	ssize_t		oldchilds;
+	ssize_t		childrens;
 }					t_sh;
 
 void				parsing(t_sh *sh, char *str);
@@ -36,5 +38,7 @@ int					ft_fork_process(t_sh *sh, char **cmd);
 void				print_prompt(t_strhash *hash);
 t_strhash			*realloc_hash(t_strhash *hash, size_t size);
 t_sh				*get_sh_info(void);
+void				printf_welcome(void);
+void				print_prompt(t_strhash *hash);
 
 #endif
