@@ -24,7 +24,7 @@ typedef struct		s_sh
 }					t_sh;
 
 void				parsing(t_sh *sh, char *str);
-void				exec_cmd(t_sh *sh, char **cmd, char **env);
+void				exec_cmd(t_sh *sh, char **cmd);
 void				builtin_env(t_sh *sh);
 void				exec_builtin(t_sh *sh, size_t j);
 void				builtin_cd(t_sh *sh, char *path);
@@ -34,7 +34,7 @@ void				builtin_unset(t_sh *sh, char **key, size_t i, size_t j);
 void				builtin_export(t_sh *sh, char **key);
 void				handle_sigint(int sig);
 int					is_builtin(char *cmd);
-int					ft_fork_process(t_sh *sh, char **cmd, char **env);
+int					ft_fork_process(t_sh *sh, char **cmd);
 void				print_prompt(t_strhash *hash);
 t_strhash			*realloc_hash(t_strhash *hash, size_t size);
 t_sh				*get_sh_info(void);

@@ -24,12 +24,11 @@ void		exec_builtin(t_sh *sh, size_t j)
 	}
 }
 
-int			ft_fork_process(t_sh *sh, char **cmd, char **env)
+int			ft_fork_process(t_sh *sh, char **cmd)
 {
 	pid_t	pid;
 	int		status;
 
-	(void)env;
 	status = 0;
 	pid = 0;
 	if ((pid = fork()) == -1)
@@ -43,24 +42,45 @@ int			ft_fork_process(t_sh *sh, char **cmd, char **env)
 		handle_sigint(0);
 	}
 	else
-		exec_cmd(sh, cmd, env);
+		exec_cmd(sh, cmd);
 	return (1);
 }
 
-void		exec_cmd(t_sh *sh, char **cmd, char **env)
+static char	**cpy_environ(t_sh *sh)
+{
+	size_t	i;
+	char	**env_cpy;
+
+	i = 0;
+	while (sh->env[i].key)
+		i++;
+	env_cpy = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (sh->env[i].key)
+	{
+		env_cpy[i] = ft_strjoin(sh->env[i].key, "=");
+		env_cpy[i] = ft_strfjoin(env_cpy[i], sh->env[i].value, 1);
+		i++;
+	}
+	env_cpy[i] = NULL;
+	return (env_cpy);
+}
+
+void		exec_cmd(t_sh *sh, char **cmd)
 {
 	size_t	i;
 	char	*current_cmd;
+	char	**env_cpy;
 
 	i = 0;
-	(void)env;
-	if (execve(cmd[0], cmd, env) == -1)
+	env_cpy = cpy_environ(sh);
+	if (execve(cmd[0], cmd, env_cpy) == -1)
 	{
 		current_cmd = ft_strfjoin("/", cmd[0], 2);
 		while (sh->path[i])
 		{
 			cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
-			if (execve(cmd[0], cmd, NULL) != -1)
+			if (execve(cmd[0], cmd, env_cpy) != -1)
 				exit(EXIT_SUCCESS);
 			i++;
 			ft_strdel(&cmd[0]);
@@ -69,6 +89,7 @@ void		exec_cmd(t_sh *sh, char **cmd, char **env)
 			ft_dprintf(2, "minishell: %s: command not found\n", current_cmd);
 		else
 			ft_dprintf(2, "%s\n", strerror(errno));
+		ft_free_tab(env_cpy);
 		ft_strdel(&current_cmd);
 		exit(EXIT_FAILURE);
 	}

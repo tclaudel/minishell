@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 static void		free_commands(t_sh *sh)
@@ -27,7 +26,7 @@ int				is_builtin(char *cmd)
 	return (0);
 }
 
-void			get_entry(t_sh *sh, char *buf, char **env)
+void			get_entry(t_sh *sh, char *buf)
 {
 	size_t	i;
 
@@ -38,7 +37,7 @@ void			get_entry(t_sh *sh, char *buf, char **env)
 		if (sh->cmd[i] && is_builtin(sh->cmd[i][0]))
 			exec_builtin(sh, i);
 		else if (sh->cmd[i])
-			ft_fork_process(sh, sh->cmd[i], env);
+			ft_fork_process(sh, sh->cmd[i]);
 		i++;
 	}
 	free_commands(sh);
@@ -66,7 +65,7 @@ int				main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
-		get_entry(sh, buf, env);
+		get_entry(sh, buf);
 	ft_dprintf(1, "%s\n", "exit");
 	ft_free_tab(sh->path);
 	exit(EXIT_SUCCESS);
