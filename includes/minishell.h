@@ -19,8 +19,7 @@ typedef struct		s_sh
 	char		***cmd;
 	char		**path;
 	t_strhash	*env;
-	ssize_t		oldchilds;
-	ssize_t		childrens;
+	char		signal_applied;
 }					t_sh;
 
 void				parsing(t_sh *sh, char *str);

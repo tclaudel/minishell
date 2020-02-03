@@ -34,8 +34,6 @@ int			ft_fork_process(t_sh *sh, char **cmd, char **env)
 	pid = 0;
 	if ((pid = fork()) == -1)
 		ft_dprintf(2, "%s\n", strerror(errno));
-	sh->childrens++;
-	get_sh_info()->oldchilds = get_sh_info()->childrens;
 	if (pid > 0)
 	{
 		handle_sigint(pid);
