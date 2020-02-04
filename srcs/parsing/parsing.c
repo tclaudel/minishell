@@ -18,7 +18,7 @@ static char		***alloc_commands(char *str, char c)
 	return (cmd);
 }
 
-char		*is_a_symbol(char c)
+char			*is_a_symbol(char c)
 {
 	return (ft_strchr(" \t\n\'\"", c));
 }
@@ -58,17 +58,13 @@ static size_t	bloc_counter(char *s, size_t i, size_t block)
 	return (block);
 }
 
-
 void			parse(char *s)
 {
-	// char			**cmd;
 	size_t			nb;
 
 	dprintf(1, "entries\t: %s\n", s);
 	nb = bloc_counter(s, 0, 0);
 	printf("nb\t: %zu\n", nb);
-	//cmd = (char **)malloc(sizeof(char *) * (nb + 1);
-	// return (cmd);
 }
 
 void			parsing(t_sh *sh, char *str)
