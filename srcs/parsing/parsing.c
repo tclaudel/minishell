@@ -5,21 +5,16 @@ char			**fill_cmd(char *s, char **cmd, size_t i, size_t j)
 {
 	size_t	k;
 
+
 	k = 0;
 	while (s[i])
 	{
 		i += ft_count_whitespaces(s + i);
 		j = i;
-		if (s[i] == '\"' || s[i] == '\'')
-		{
-			j += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
-			cmd[k] = ft_strndup(s + i + 1, j - i - 2);
-		}
+		if (s[i] == '\"')
+			cmd[k] = double_quote_allocator(s + i, &j);
 		else if (s[i] == '\'')
-		{
-			j += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
-			cmd[k] = ft_strndup(s + i + 1, j - i - 2);
-		}
+			cmd[k] = simple_quote_allocator(s + i, &j);
 		else if (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
 		{
 			while (s[j] && !ft_strchr(" \t\n\'\"", s[j]))

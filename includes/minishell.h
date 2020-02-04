@@ -43,5 +43,8 @@ char				***alloc_commands(char *str, char c);
 size_t				bloc_counter(char *s, size_t i, size_t block);
 char				**parse(char *s);
 char				**fill_cmd(char *s, char **cmd, size_t i, size_t j);
+char				*double_quote_allocator(char *s, size_t *j);
+char				*simple_quote_allocator(char *s, size_t *j);
+char				*non_special_allocator(char *s, size_t *j);
 
 #endif
