@@ -56,7 +56,7 @@ char			**parse(char *s)
 	nb = bloc_counter(s, 0, 0);
 	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
 	cmd[nb] = NULL;
-	cmd = fill_cmd(s, nb, cmd, 0);
+	cmd = fill_cmd(s, cmd, 0, 0);
 	for (size_t i = 0 ; i < nb; i++)
 		dprintf(1, "cmd[%zu]\t: %s\n", i, cmd[i]);
 	return (cmd);

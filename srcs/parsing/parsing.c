@@ -1,31 +1,24 @@
 #include "minishell.h"
 
 
-char			**fill_cmd(char *s, size_t nb, char **cmd, size_t i)
+char			**fill_cmd(char *s, char **cmd, size_t i, size_t j)
 {
-	size_t	j;
 	size_t	k;
 
-	j = 0;
 	k = 0;
-	while (s[i] && k < nb)
+	while (s[i])
 	{
-		if (s[i] == ' ')
-		{
-			while (s[i] && s[i] == ' ')
-				i++;
-		}
-		dprintf(1, "ret\t: %zu\n", ft_count_whitespaces(s + i));
+		i += ft_count_whitespaces(s + i);
 		j = i;
 		if (s[i] == '\"' || s[i] == '\'')
 		{
 			j += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
-			cmd[k] = ft_strndup(s + i, j - i);
+			cmd[k] = ft_strndup(s + i + 1, j - i - 2);
 		}
 		else if (s[i] == '\'')
 		{
 			j += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
-			cmd[k] = ft_strndup(s + i, j - i);
+			cmd[k] = ft_strndup(s + i + 1, j - i - 2);
 		}
 		else if (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
 		{
