@@ -1,14 +1,19 @@
 #include "minishell.h"
-char		*complete_cmd(char *s, char c, size_t i)
+char		*complete_cmd(char *s, char c)
 {
 	char	*complement;
+	char 	*buff;
 
-	while(!ft_strchr(s + i + 1, c))
+	complement = ft_strdup("");
+	while (1)
 	{
 		ft_printf(""YELLOW_BOLD"> "RESET"");
-		get_next_line(0, &complement);
-		s = ft_strfjoin(s, complement, 3);
+		get_next_line(0, &buff);
+		complement = ft_strfjoin(complement, buff, 3);
+		if (ft_strchr(complement, c))
+			break;
 	}
+	s = ft_strfjoin(s, complement, 2);
 	return (s);
 }
 char		***alloc_commands(char *str, char c)
@@ -41,15 +46,11 @@ size_t	bloc_counter(char *s, size_t i, size_t block)
 		else if (s[i] == '\"')
 		{
 			block++;
-			if (!ft_strchr(s + i + 1, '\"'))
-				s = complete_cmd(s , '\"', i);
 			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
 		}
 		else if (s[i] == '\'')
 		{
 			block++;
-			// if (!ft_strchr(s + i + 1, '\''))
-			// 	s = complete_cmd(s, '\'');
 			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
 		}
 		else if (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
@@ -62,12 +63,39 @@ size_t	bloc_counter(char *s, size_t i, size_t block)
 	return (block);
 }
 
+char			*quote_checker(char *s)
+{
+	size_t	i;
+	size_t	quote;
+	size_t	dquote;
+	char	*dest;
+
+	i = 0;
+	quote = 0;
+	dquote = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+			quote++;
+		if (s[i] == '\"')
+			dquote++;
+		i++;
+	}
+	if (dquote % 2)
+		dest = complete_cmd(s, '\"');
+	else if (quote % 2)
+		dest = complete_cmd(s, '\'');
+	else
+		dest = s;
+	return (dest);
+}
+
 char			**parse(char *s)
 {
 	size_t			nb;
 	char			**cmd;
 
-
+	s = quote_checker(s);
 	nb = bloc_counter(s, 0, 0);
 	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
 	cmd[nb] = NULL;
