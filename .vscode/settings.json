@@ -7,3 +7,7 @@
         "cdefs.h": "c"
     }
 }
+
+"editor.rulers": [
+    80
+    ],

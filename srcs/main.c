@@ -7,7 +7,7 @@ static void		free_commands(t_sh *sh)
 	i = 0;
 	while (sh->cmd[i])
 	{
-		//ft_free_tab(sh->cmd[i]);
+		ft_free_tab(sh->cmd[i]);
 		i++;
 	}
 	free(sh->cmd);

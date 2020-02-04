@@ -23,32 +23,37 @@ char		*is_a_symbol(char c)
 	return (ft_strchr(" \t\n\'\"", c));
 }
 
-static size_t	bloc_counter(char *s, size_t i)
+static size_t	bloc_counter(char *s, size_t i, size_t block)
 {
-	size_t	block;
-
-	block = 1;
 	while (s[i])
 	{
 		if (s[i] == ' ')
 		{
-			block++;
-			while (s[i] && s[i] != ' ')
+			while (s[i] && s[i] == ' ')
 				i++;
 		}
 		else if (s[i] == '\"')
 		{
+			i++;
 			block++;
 			while (s[i] && s[i] != '\"')
 				i++;
+			i++;
 		}
 		else if (s[i] == '\'')
 		{
+			i++;
 			block++;
 			while (s[i] && s[i] != '\'')
 				i++;
+			i++;
 		}
-		i++;
+		else if (s[i] && !is_a_symbol(s[i]))
+		{
+			block++;
+			while (s[i] && !is_a_symbol(s[i]))
+				i++;
+		}
 	}
 	return (block);
 }
@@ -60,7 +65,7 @@ void			parse(char *s)
 	size_t			nb;
 
 	dprintf(1, "entries\t: %s\n", s);
-	nb = bloc_counter(s, 0);
+	nb = bloc_counter(s, 0, 0);
 	printf("nb\t: %zu\n", nb);
 	//cmd = (char **)malloc(sizeof(char *) * (nb + 1);
 	// return (cmd);
