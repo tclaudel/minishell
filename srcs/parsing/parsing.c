@@ -34,24 +34,18 @@ static size_t	bloc_counter(char *s, size_t i, size_t block)
 		}
 		else if (s[i] == '\"')
 		{
-			i++;
 			block++;
-			while (s[i] && s[i] != '\"')
-				i++;
-			i++;
+			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
 		}
 		else if (s[i] == '\'')
 		{
-			i++;
 			block++;
-			while (s[i] && s[i] != '\'')
-				i++;
-			i++;
+			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
 		}
-		else if (s[i] && !is_a_symbol(s[i]))
+		else if (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
 		{
 			block++;
-			while (s[i] && !is_a_symbol(s[i]))
+			while (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
 				i++;
 		}
 	}
