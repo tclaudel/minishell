@@ -39,5 +39,9 @@ t_strhash			*realloc_hash(t_strhash *hash, size_t size);
 t_sh				*get_sh_info(void);
 void				printf_welcome(void);
 void				print_prompt(t_strhash *hash);
+char				***alloc_commands(char *str, char c);
+size_t				bloc_counter(char *s, size_t i, size_t block);
+char				**parse(char *s);
+char				**fill_cmd(char *s, size_t nb, char **cmd, size_t i);
 
 #endif

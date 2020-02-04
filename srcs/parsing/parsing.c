@@ -1,64 +1,42 @@
 #include "minishell.h"
 
-static char		***alloc_commands(char *str, char c)
-{
-	char		***cmd;
-	size_t		i;
-	size_t		nb;
 
-	i = 0;
-	nb = 1;
-	while (str[i])
-	{
-		if (str[i] == c)
-			nb++;
-		i++;
-	}
-	cmd = (char ***)ft_calloc(sizeof(char **), (nb + 1));
-	return (cmd);
-}
-
-char			*is_a_symbol(char c)
+char			**fill_cmd(char *s, size_t nb, char **cmd, size_t i)
 {
-	return (ft_strchr(" \t\n\'\"", c));
-}
+	size_t	j;
+	size_t	k;
 
-static size_t	bloc_counter(char *s, size_t i, size_t block)
-{
-	while (s[i])
+	j = 0;
+	k = 0;
+	while (s[i] && k < nb)
 	{
 		if (s[i] == ' ')
 		{
 			while (s[i] && s[i] == ' ')
 				i++;
 		}
-		else if (s[i] == '\"')
+		dprintf(1, "ret\t: %zu\n", ft_count_whitespaces(s + i));
+		j = i;
+		if (s[i] == '\"' || s[i] == '\'')
 		{
-			block++;
-			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
+			j += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
+			cmd[k] = ft_strndup(s + i, j - i);
 		}
 		else if (s[i] == '\'')
 		{
-			block++;
-			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
+			j += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
+			cmd[k] = ft_strndup(s + i, j - i);
 		}
 		else if (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
 		{
-			block++;
-			while (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
-				i++;
+			while (s[j] && !ft_strchr(" \t\n\'\"", s[j]))
+				j++;
+			cmd[k] = ft_strndup(s + i, j - i);
 		}
+		k++;
+		i += j - i;
 	}
-	return (block);
-}
-
-void			parse(char *s)
-{
-	size_t			nb;
-
-	dprintf(1, "entries\t: %s\n", s);
-	nb = bloc_counter(s, 0, 0);
-	printf("nb\t: %zu\n", nb);
+	return (cmd);
 }
 
 void			parsing(t_sh *sh, char *str)
@@ -73,8 +51,7 @@ void			parsing(t_sh *sh, char *str)
 	entries = ft_split(str, ';');
 	while (entries[j])
 	{
-		sh->cmd[j] = ft_split(entries[j], ' ');
-		parse(entries[j]);
+		sh->cmd[j] = parse(entries[j]);
 		j++;
 	}
 	ft_free_tab(entries);

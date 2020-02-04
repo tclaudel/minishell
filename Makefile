@@ -11,7 +11,7 @@ GREY = \033[3;90m
 ORANGE = \033[3;91m
 YELLOW = \033[0;33m
 
-SRCS_PARSING	=	$(addprefix parsing/, parsing.c)
+SRCS_PARSING	=	$(addprefix parsing/, parsing.c parsing_allocator.c)
 
 SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c)
 
