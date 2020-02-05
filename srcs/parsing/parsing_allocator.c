@@ -8,36 +8,18 @@ char		*complete_cmd(char *s, char c)
 
 	str = ft_strdup("");
 	ft_printf(""YELLOW_BOLD"> "RESET"");
-	while ((ret = read(0, buff, 1023)))
+	while (1)
 	{
-		if (ret < 0)
-			return (NULL);
+		ret = read(0, buff, 1023);
 		buff[ret] = 0;
 		str = ft_strfjoin(str, buff, 1);
 		if (ft_strchr(str, c))
 			break ;
-		ft_printf(""YELLOW_BOLD"> "RESET"");
+		if (buff[0] != 0)
+			ft_printf(""YELLOW_BOLD"> "RESET"");
 	}
 	s = ft_strfjoin(s, str, 2);
 	return (s);
-}
-
-char		***alloc_commands(char *str, char c)
-{
-	char		***cmd;
-	size_t		i;
-	size_t		nb;
-
-	i = 0;
-	nb = 1;
-	while (str[i])
-	{
-		if (str[i] == c)
-			nb++;
-		i++;
-	}
-	cmd = (char ***)ft_calloc(sizeof(char **), (nb + 1));
-	return (cmd);
 }
 
 size_t		bloc_counter(char *s, size_t i, size_t block)
