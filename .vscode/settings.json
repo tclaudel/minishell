@@ -1,9 +1,6 @@
 {
     "files.associations": {
         "minishell.h": "c",
-        "signal.h": "c",
-        "unistd.h": "c",
-        "string.h": "c",
-        "cdefs.h": "c"
+        "ft_printf.h": "c"
     }
 }
