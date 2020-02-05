@@ -33,6 +33,7 @@ void			parsing(t_sh *sh, char *str)
 
 	i = 0;
 	j = 0;
+	str = quote_checker(str);
 	sh->cmd = alloc_commands(str, ';');
 	entries = ft_split(str, ';');
 	while (entries[j])
