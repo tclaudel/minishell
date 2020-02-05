@@ -1,8 +1,9 @@
 #include "minishell.h"
+
 char		*complete_cmd(char *s, char c)
 {
 	char	*str;
-	char 	buff[1024];
+	char	buff[1024];
 	int		ret;
 
 	str = ft_strdup("");
@@ -14,12 +15,13 @@ char		*complete_cmd(char *s, char c)
 		buff[ret] = 0;
 		str = ft_strfjoin(str, buff, 1);
 		if (ft_strchr(str, c))
-			break;
+			break ;
 		ft_printf(""YELLOW_BOLD"> "RESET"");
 	}
 	s = ft_strfjoin(s, str, 2);
 	return (s);
 }
+
 char		***alloc_commands(char *str, char c)
 {
 	char		***cmd;
@@ -38,7 +40,7 @@ char		***alloc_commands(char *str, char c)
 	return (cmd);
 }
 
-size_t	bloc_counter(char *s, size_t i, size_t block)
+size_t		bloc_counter(char *s, size_t i, size_t block)
 {
 	while (s[i] && s[i] != '\n')
 	{
@@ -67,7 +69,7 @@ size_t	bloc_counter(char *s, size_t i, size_t block)
 	return (block);
 }
 
-char			*quote_checker(char *s)
+char		*quote_checker(char *s)
 {
 	size_t	i;
 	size_t	quote;
@@ -94,7 +96,7 @@ char			*quote_checker(char *s)
 	return (dest);
 }
 
-char			**parse(char *s)
+char		**parse(char *s)
 {
 	size_t			nb;
 	char			**cmd;
@@ -104,7 +106,6 @@ char			**parse(char *s)
 	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
 	cmd[nb] = NULL;
 	cmd = fill_cmd(s, cmd, 0, 0);
-	for (size_t i = 0 ; i < nb; i++)
-		dprintf(1, "cmd[%zu]\t: %s\n", i, cmd[i]);
+	ft_display_tab(cmd, "cmd");
 	return (cmd);
-} 
+}

@@ -1,10 +1,8 @@
 #include "minishell.h"
 
-
 char			**fill_cmd(char *s, char **cmd, size_t i, size_t j)
 {
 	size_t	k;
-
 
 	k = 0;
 	while (s[i])
