@@ -46,5 +46,6 @@ char				**fill_cmd(char *s, char **cmd, size_t i, size_t j);
 char				*double_quote_allocator(char *s, size_t *j);
 char				*simple_quote_allocator(char *s, size_t *j);
 char				*non_special_allocator(char *s, size_t *j);
+char				*quote_checker(char *s);
 
 #endif

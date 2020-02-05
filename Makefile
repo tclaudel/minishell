@@ -93,6 +93,9 @@ re:
 norme:
 	@norminette $(SRC_PATH) $(HEADER) | grep -v "101 header"
 
+full_norme: norme
+	@make -C libft/ norme
+
 normed:
 
 	@norminette $(SRC_PATH) $(HEADER)
@@ -177,7 +180,7 @@ ew:
 	@say -v Fiona ew
 
 full_check: all
-	@$(MAKE) norme
+	@$(MAKE) full_norme
 	@$(MAKE) continue
 	@echo ""
 	@$(MAKE) call
