@@ -1,19 +1,23 @@
 #include "minishell.h"
 char		*complete_cmd(char *s, char c)
 {
-	char	*complement;
-	char 	*buff;
+	char	*str;
+	char 	buff[1024];
+	int		ret;
 
-	complement = ft_strdup("");
-	while (1)
+	str = ft_strdup("");
+	ft_printf(""YELLOW_BOLD"> "RESET"");
+	while ((ret = read(0, buff, 1023)))
 	{
-		ft_printf(""YELLOW_BOLD"> "RESET"");
-		get_next_line(0, &buff);
-		complement = ft_strfjoin(complement, buff, 3);
-		if (ft_strchr(complement, c))
+		if (ret < 0)
+			return (NULL);
+		buff[ret] = 0;
+		str = ft_strfjoin(str, buff, 1);
+		if (ft_strchr(str, c))
 			break;
+		ft_printf(""YELLOW_BOLD"> "RESET"");
 	}
-	s = ft_strfjoin(s, complement, 2);
+	s = ft_strfjoin(s, str, 2);
 	return (s);
 }
 char		***alloc_commands(char *str, char c)
@@ -36,7 +40,7 @@ char		***alloc_commands(char *str, char c)
 
 size_t	bloc_counter(char *s, size_t i, size_t block)
 {
-	while (s[i])
+	while (s[i] && s[i] != '\n')
 	{
 		if (s[i] == ' ')
 		{
@@ -53,10 +57,10 @@ size_t	bloc_counter(char *s, size_t i, size_t block)
 			block++;
 			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
 		}
-		else if (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
+		else if (s[i] && !ft_strchr(" \t\'\"", s[i]))
 		{
 			block++;
-			while (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
+			while (s[i] && !ft_strchr(" \t\'\"", s[i]))
 				i++;
 		}
 	}

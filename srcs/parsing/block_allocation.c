@@ -28,7 +28,7 @@ char	*non_special_allocator(char *s, size_t *j)
 	size_t	i;
 
 	i = 0;
-	while (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
+	while (s[i] && !ft_strchr(" \t\'\"", s[i]))
 		i++;
 	cmd = ft_strndup(s + i, i);
 	*j += i + 2;
