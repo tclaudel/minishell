@@ -37,6 +37,7 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 	{
 		handle_sigint(pid);
 		waitpid(pid, &status, 0);
+		printf("status:%d\n", status / 256);
 		handle_sigint(0);
 	}
 	else
