@@ -15,9 +15,9 @@ void		handle_sigint(int sig)
 		{
 			kill(pid, sig);
 			if (sig == SIGQUIT)
-				ft_printf("\n[1]\t%d quit\n", pid);
+				ft_printf("Quit: 3\n", pid);
 		}
-		else
+		else if (sig == SIGINT)
 		{
 			ft_printf("\n");
 			print_prompt(get_sh_info()->env);
