@@ -14,6 +14,48 @@ void		builtin_env(t_sh *sh)
 	}
 }
 
+void		builtin_export_empty(t_sh *sh)
+{
+	t_strhash tmp;
+	t_strhash *cpy;
+	size_t i;
+
+	i = 0;
+	while (sh->env[i].key)
+		i++;
+	cpy = malloc(sizeof(t_strhash) * (i + 1));
+	i = 0;
+	while (sh->env[i].key)
+	{
+		cpy[i] = sh->env[i];
+		i++;
+	}
+	cpy[i].key = NULL;
+	cpy[i].value = NULL;
+	i = 0;
+	while (cpy[i + 1].key)
+	{
+		if (ft_strcmp(cpy[i].key, cpy[i + 1].key) > 0)
+		{
+			tmp = cpy[i];
+			cpy[i] = cpy[i + 1];
+			cpy[i + 1] = tmp;
+			i = 0;
+		}
+		else
+			i++;
+	}
+	i = 0;
+	while (cpy[i].key)
+	{
+		ft_dprintf(1, "declare -x ");
+		ft_dprintf(1, "%s", cpy[i].key);
+		ft_dprintf(1, "%s", "=");
+		ft_dprintf(1, "%s\n", cpy[i].value);
+		i++;
+	}
+}
+
 void		builtin_export(t_sh *sh, char **key)
 {
 	size_t j;
@@ -22,6 +64,8 @@ void		builtin_export(t_sh *sh, char **key)
 
 	j = 1;
 	i = 0;
+	if (!key[1])
+		builtin_export_empty(sh);
 	while (sh->env[i].key)
 		i++;
 	while (key[j])
