@@ -22,6 +22,7 @@ typedef struct		s_sh
 	char		signal_applied;
 	char		*question_mark;
 	int			error_exec;
+	char		*pipes;
 }					t_sh;
 
 /*
