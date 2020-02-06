@@ -14,7 +14,10 @@ char		*complete_cmd(char *s, char c)
 		buff[ret] = 0;
 		str = ft_strfjoin(str, buff, 1);
 		if (ft_strchr(str, c))
+		{
+			dprintf(1, "str\t|%s|\n", ft_strchr(str, c));
 			break ;
+		}
 		if (buff[0] != 0)
 			ft_printf(""YELLOW_BOLD"> "RESET"");
 	}
@@ -51,16 +54,13 @@ size_t		bloc_counter(char *s, size_t i, size_t block)
 	return (block);
 }
 
-char		*quote_checker(char *s)
+char		*quote_checker(char *s, size_t quote, size_t dquote)
 {
 	size_t	i;
-	size_t	quote;
-	size_t	dquote;
 	char	*dest;
+	char	c;
 
 	i = 0;
-	quote = 0;
-	dquote = 0;
 	while (s[i])
 	{
 		if (s[i] == '\'')
@@ -69,10 +69,15 @@ char		*quote_checker(char *s)
 			dquote++;
 		i++;
 	}
-	if (dquote % 2)
+	if (dquote % 2 && !(quote % 2))
 		dest = complete_cmd(s, '\"');
-	else if (quote % 2)
+	else if (quote % 2 && !(dquote % 2))
 		dest = complete_cmd(s, '\'');
+	else if (quote % 2 && dquote % 2)
+	{
+		c = ft_strrchr(s, '\'') < ft_strrchr(s, '\"') ? '\'' : '\"';
+		dest = complete_cmd(s, c);
+	}
 	else
 		dest = s;
 	return (dest);
@@ -83,7 +88,6 @@ char		**parse(char *s)
 	size_t			nb;
 	char			**cmd;
 
-	s = quote_checker(s);
 	nb = bloc_counter(s, 0, 0);
 	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
 	cmd[nb] = NULL;

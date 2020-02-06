@@ -39,14 +39,14 @@ t_strhash			*realloc_hash(t_strhash *hash, size_t size);
 t_sh				*get_sh_info(void);
 void				printf_welcome(void);
 void				print_prompt(t_strhash *hash);
-char		***alloc_commands(char *str, size_t *nb);
+char				***alloc_commands(char *str, size_t *nb);
 size_t				bloc_counter(char *s, size_t i, size_t block);
 char				**parse(char *s);
 char				**fill_cmd(char *s, char **cmd, size_t i, size_t j);
 char				*double_quote_allocator(char *s, size_t *j);
 char				*simple_quote_allocator(char *s, size_t *j);
 char				*non_special_allocator(char *s, size_t *j);
-char				*quote_checker(char *s);
+char				*quote_checker(char *s, size_t quote, size_t dquote);
 size_t				separator_counter(char *s, size_t i, size_t block);
 
 #endif
