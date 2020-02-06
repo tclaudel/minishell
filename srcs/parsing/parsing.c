@@ -97,7 +97,7 @@ void		parsing(t_sh *sh, char *str)
 
 	i = 0;
 	j = 0;
-	str = quote_checker(str);
+	str = quote_checker(str, 0, 0);
 	sh->cmd = alloc_commands(str, &nb);
 	entries = ft_split_cmd(str, nb, 0, 0);
 	while (entries[j])

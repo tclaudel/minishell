@@ -78,7 +78,10 @@ void		builtin_export(t_sh *sh, char **key)
 		while (key[j][k] && key[j][k] != '=')
 			k++;
 		if (key[j][k] != '=')
-			return ;
+		{
+			j++;
+			continue ;
+		}
 		sh->env[i].key = ft_strndup(key[j], k);
 		sh->env[i].value = ft_strdup(key[j] + k + 1);
 		i++;

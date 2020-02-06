@@ -37,7 +37,10 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 	{
 		handle_sigint(pid);
 		waitpid(pid, &status, 0);
-		sh->question_mark = ft_itoa(status / 256);
+		if (WIFSIGNALED(status))
+			sh->question_mark = ft_itoa(WTERMSIG(status) + 128);
+		else
+			sh->question_mark = ft_itoa(WEXITSTATUS(status));
 		handle_sigint(0);
 	}
 	else
@@ -81,8 +84,7 @@ void		exec_cmd(t_sh *sh, char **cmd)
 		while (sh->path[i])
 		{
 			cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
-			if (execve(cmd[0], cmd, env_cpy) != -1)
-				exit(EXIT_SUCCESS);
+			execve(cmd[0], cmd, env_cpy);
 			i++;
 			ft_strdel(&cmd[0]);
 		}
@@ -92,6 +94,6 @@ void		exec_cmd(t_sh *sh, char **cmd)
 			ft_dprintf(2, "%s\n", strerror(errno));
 		ft_free_tab(env_cpy);
 		ft_strdel(&current_cmd);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 }
