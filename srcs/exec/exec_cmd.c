@@ -7,7 +7,10 @@ void		exec_builtin(t_sh *sh, size_t j)
 	if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
 		builtin_cd(sh, sh->cmd[j][1]);
 	else if (!ft_strncmp(sh->cmd[j][0], "pwd", 4))
+	{
 		ft_dprintf(1, "%s\n", getcwd(str, 1024));
+		sh->question_mark = 0;
+	}
 	else if (!ft_strncmp(sh->cmd[j][0], "env", 4))
 		builtin_env(sh);
 	else if (!ft_strncmp(sh->cmd[j][0], "echo", 5))
@@ -38,9 +41,9 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 		handle_sigint(pid);
 		waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status))
-			sh->question_mark = ft_itoa(WTERMSIG(status) + 128);
+			sh->question_mark = WTERMSIG(status) + 128;
 		else
-			sh->question_mark = ft_itoa(WEXITSTATUS(status));
+			sh->question_mark = WEXITSTATUS(status);
 		handle_sigint(0);
 	}
 	else
