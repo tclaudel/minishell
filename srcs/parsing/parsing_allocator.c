@@ -6,7 +6,7 @@ char		*complete_cmd(char *s, char c)
 	char	buff[1024];
 	int		ret;
 
-	str = ft_strdup("");
+	str = ft_strdup("\n");
 	ft_printf(""YELLOW_BOLD"> "RESET"");
 	while (1)
 	{
@@ -14,10 +14,7 @@ char		*complete_cmd(char *s, char c)
 		buff[ret] = 0;
 		str = ft_strfjoin(str, buff, 1);
 		if (ft_strchr(str, c))
-		{
-			dprintf(1, "str\t|%s|\n", ft_strchr(str, c));
 			break ;
-		}
 		if (buff[0] != 0)
 			ft_printf(""YELLOW_BOLD"> "RESET"");
 	}
@@ -63,15 +60,15 @@ char		*quote_checker(char *s, size_t quote, size_t dquote)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == '\'' && !(quote % 2))
+		if (s[i] == '\'' && !(dquote % 2))
 			quote++;
 		if (s[i] == '\"' && !(quote % 2))
 			dquote++;
 		i++;
 	}
-	if (dquote % 2 && !(quote % 2))
+	if (dquote % 2)
 		dest = complete_cmd(s, '\"');
-	else if (quote % 2 && !(dquote % 2))
+	else if (quote % 2)
 		dest = complete_cmd(s, '\'');
 	else if (quote % 2 && dquote % 2)
 	{
