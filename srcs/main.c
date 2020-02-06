@@ -35,7 +35,6 @@ void			main_loop(t_sh *sh, char *buf)
 
 	i = 0;
 	parsing(sh, buf);
-	sh->signal_applied = 0;
 	while (sh->cmd[i])
 	{
 		if (sh->cmd[i][0])
@@ -54,7 +53,7 @@ void			main_loop(t_sh *sh, char *buf)
 
 t_sh			*get_sh_info(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, NULL};
 
 	return (&sh);
 }

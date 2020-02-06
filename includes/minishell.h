@@ -19,9 +19,7 @@ typedef struct		s_sh
 	char		***cmd;
 	char		**path;
 	t_strhash	*env;
-	char		signal_applied;
-	char		*question_mark;
-	int			error_exec;
+	short		question_mark;
 	char		*pipes;
 }					t_sh;
 
