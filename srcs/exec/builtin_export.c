@@ -58,7 +58,8 @@ static void		add_key(t_sh *sh, char **key, size_t i, size_t j)
 	while (key[++j])
 	{
 		splited = ft_split(key[j], '=');
-		if (ft_get_hash_value(sh->env, splited[0]))
+		ft_display_tab(splited, "split");
+		if (splited[0] && ft_get_hash_value(sh->env, splited[0]))
 		{
 			change_value(sh->env, splited[0], splited[1]);
 			ft_free_tab(splited);
