@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   display.c                                        .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: tclaudel <tclaudel@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2020/02/04 09:22:05 by tclaudel     #+#   ##    ##    #+#       */
-/*   Updated: 2020/02/05 14:47:14 by tclaudel    ###    #+. /#+    ###.fr     */
+/*   Updated: 2020/02/06 13:20:50 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -29,7 +29,7 @@ void		printf_welcome(void)
 	ft_printf(""YELLOW"\n\n\n########################################");
 	ft_printf("###############");
 	ft_printf("#########################\n\n"RESET"");
-	ft_printfducul("\tCreated by\t: coscialp & tclaudel\n");
+	ft_printf("\tCreated by\t: coscialp & tclaudel\n");
 	ft_printf("\tGithub\t\t: https://github.com/tclaudel/minishell\n\n\n");
 }
 

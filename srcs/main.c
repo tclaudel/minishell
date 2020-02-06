@@ -13,19 +13,6 @@ static void		free_commands(t_sh *sh)
 	free(sh->cmd);
 }
 
-int				is_builtin(char *cmd)
-{
-		if (!ft_strcmp(cmd, "cd") ||
-		!ft_strcmp(cmd, "env") ||
-		!ft_strcmp(cmd, "pwd") ||
-		!ft_strcmp(cmd, "exit") ||
-		!ft_strcmp(cmd, "echo") ||
-		!ft_strcmp(cmd, "unset") ||
-		!ft_strcmp(cmd, "export"))
-			return (1);
-	return (0);
-}
-
 void			replace_question_mark(char **cmd)
 {
 	size_t		i;
@@ -36,7 +23,7 @@ void			replace_question_mark(char **cmd)
 		if (!ft_strcmp(cmd[i], "$?"))
 		{
 			ft_strdel(&cmd[i]);
-			cmd[i] = get_sh_info()->question_mark;
+			cmd[i] = ft_itoa(get_sh_info()->question_mark);
 		}
 		i++;
 	}
@@ -49,8 +36,6 @@ void			main_loop(t_sh *sh, char *buf)
 	i = 0;
 	parsing(sh, buf);
 	sh->signal_applied = 0;
-	if (!sh->question_mark)
-		sh->question_mark = ft_strdup("0");
 	while (sh->cmd[i])
 	{
 		if (sh->cmd[i][0])
@@ -69,7 +54,7 @@ void			main_loop(t_sh *sh, char *buf)
 
 t_sh			*get_sh_info(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, NULL, 0};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, 0};
 
 	return (&sh);
 }
