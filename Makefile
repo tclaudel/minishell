@@ -13,7 +13,7 @@ YELLOW = \033[0;33m
 
 SRCS_PARSING	=	$(addprefix parsing/, parsing.c parsing_allocator.c block_allocation.c)
 
-SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c)
+SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c) 
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
