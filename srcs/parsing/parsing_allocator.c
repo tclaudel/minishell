@@ -63,9 +63,9 @@ char		*quote_checker(char *s, size_t quote, size_t dquote)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == '\'')
+		if (s[i] == '\'' && !(quote % 2))
 			quote++;
-		if (s[i] == '\"')
+		if (s[i] == '\"' && !(quote % 2))
 			dquote++;
 		i++;
 	}
