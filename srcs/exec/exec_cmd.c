@@ -37,11 +37,13 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 	{
 		handle_sigint(pid);
 		waitpid(pid, &status, 0);
-		printf("status:%d\n", status / 256);
+		sh->question_mark = ft_itoa(status / 256);
 		handle_sigint(0);
 	}
 	else
+	{
 		exec_cmd(sh, cmd);
+	}
 	return (1);
 }
 

@@ -15,15 +15,28 @@ static void		free_commands(t_sh *sh)
 
 int				is_builtin(char *cmd)
 {
-	if (!ft_strcmp(cmd, "cd") ||
-	!ft_strcmp(cmd, "env") ||
-	!ft_strcmp(cmd, "pwd") ||
-	!ft_strcmp(cmd, "exit") ||
-	!ft_strcmp(cmd, "echo") ||
-	!ft_strcmp(cmd, "unset") ||
-	!ft_strcmp(cmd, "export"))
-		return (1);
+		if (!ft_strcmp(cmd, "cd") ||
+		!ft_strcmp(cmd, "env") ||
+		!ft_strcmp(cmd, "pwd") ||
+		!ft_strcmp(cmd, "exit") ||
+		!ft_strcmp(cmd, "echo") ||
+		!ft_strcmp(cmd, "unset") ||
+		!ft_strcmp(cmd, "export"))
+			return (1);
 	return (0);
+}
+
+void			replace_question_mark(char **cmd)
+{
+	size_t		i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (!ft_strcmp(cmd[i], "$?"))
+			cmd[i] = get_sh_info()->question_mark;
+		i++;
+	}
 }
 
 void			main_loop(t_sh *sh, char *buf)
@@ -35,10 +48,14 @@ void			main_loop(t_sh *sh, char *buf)
 	sh->signal_applied = 0;
 	while (sh->cmd[i])
 	{
-		if (sh->cmd[i] && is_builtin(sh->cmd[i][0]))
-			exec_builtin(sh, i);
-		else if (sh->cmd[i])
-			ft_fork_process(sh, sh->cmd[i]);
+		if (sh->cmd[i][0])
+		{
+			replace_question_mark(sh->cmd[i]);
+			if (sh->cmd[i] && is_builtin(sh->cmd[i][0]))
+				exec_builtin(sh, i);
+			else if (sh->cmd[i])
+				ft_fork_process(sh, sh->cmd[i]);
+		}
 		i++;
 	}
 	free_commands(sh);
@@ -47,7 +64,7 @@ void			main_loop(t_sh *sh, char *buf)
 
 t_sh			*get_sh_info(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, "0", 0};
 
 	return (&sh);
 }
