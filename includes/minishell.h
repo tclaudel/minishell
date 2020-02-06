@@ -20,6 +20,8 @@ typedef struct		s_sh
 	char		**path;
 	t_strhash	*env;
 	char		signal_applied;
+	char		*question_mark;
+	int			error_exec;
 }					t_sh;
 
 /*
