@@ -37,7 +37,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address #-Werror
+FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address #-Werror
 
 LIBFT			=	libft/libft.a
 

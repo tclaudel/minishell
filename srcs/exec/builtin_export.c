@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+
 static void		sort_cpy(t_strhash *cpy)
 {
 	t_strhash	tmp;
