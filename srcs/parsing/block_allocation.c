@@ -34,3 +34,14 @@ char	*non_special_allocator(char *s, size_t *j)
 	*j += i + 2;
 	return (cmd);
 }
+
+char	***alloc_commands(char *str, size_t *nb)
+{
+	char		***cmd;
+	size_t		i;
+
+	i = 0;
+	*nb = separator_counter(str, 0, 0) + 1;
+	cmd = (char ***)ft_calloc(sizeof(char **), (*nb + 1));
+	return (cmd);
+}

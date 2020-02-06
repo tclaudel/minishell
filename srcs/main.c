@@ -54,7 +54,7 @@ void			main_loop(t_sh *sh, char *buf)
 
 t_sh			*get_sh_info(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, 0};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL};
 
 	return (&sh);
 }

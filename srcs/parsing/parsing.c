@@ -4,35 +4,26 @@ size_t		separator_counter(char *s, size_t i, size_t block)
 {
 	while (s[i] && s[i] != '\n')
 	{
-		if (s[i] == ' ')
-		{
-			while (s[i] && s[i] == ' ')
-				i++;
-		}
-		else if (s[i] == '\"')
+		i += ft_count_whitespaces(s + i);
+		if (s[i] == '\"')
 			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
 		else if (s[i] == '\'')
 			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
-		else if (s[i] && !ft_strchr(" \t\'\"", s[i]))
-		{
-			while (s[i] && !ft_strchr(" \t\'\"", s[i]))
+		else if (s[i] && !ft_strchr(" \t\'\"", s[i])
+			&& !ft_strchr(";|<>", s[i]))
+			while (s[i] && !ft_strchr(" \t\'\"", s[i])
+				&& !ft_strchr(";|<>", s[i]))
 				i++;
-		}
-		if (s[i] == ';')
+		else if (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i))
+		{
 			block++;
+			if (ft_strchr(";|<>", s[i]))
+				i++;
+			else if (ft_strcmp(">>", s + i))
+				i += 2;
+		}
 	}
 	return (block);
-}
-
-char		***alloc_commands(char *str, size_t *nb)
-{
-	char		***cmd;
-	size_t		i;
-
-	i = 0;
-	*nb = separator_counter(str, 0, 0) + 1;
-	cmd = (char ***)ft_calloc(sizeof(char **), (*nb + 1));
-	return (cmd);
 }
 
 char		**fill_cmd(char *s, char **cmd, size_t i, size_t j)
@@ -60,6 +51,19 @@ char		**fill_cmd(char *s, char **cmd, size_t i, size_t j)
 	return (cmd);
 }
 
+char		*found_pipes(char *s, size_t *j, size_t *i, size_t nb)
+{
+	char	*str;
+
+	(void)nb;
+	str = ft_substr(s, *j, *i);
+	(*i)++;
+	if (ft_strcmp(">>", s + *i))
+		(*i)++;
+	*j = *i;
+	return (str);
+}
+
 char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 {
 	size_t	j;
@@ -67,6 +71,7 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 	j = 0;
 	entry = (char **)malloc(sizeof(&entry) * (nb + 1));
+	get_sh_info()->pipes = (char *)malloc(sizeof(char) * (nb));
 	while (s[i] && s[i] != '\n')
 	{
 		i += ft_count_whitespaces(s + i);
@@ -74,14 +79,13 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
 		else if (s[i] == '\'')
 			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
-		else if (s[i] && !ft_strchr(" \t\'\"", s[i]) && s[i] != ';')
-			while (s[i] && !ft_strchr(" \t\'\"", s[i]))
+		else if (s[i] && !ft_strchr(" \t\'\"", s[i])
+			&& !ft_strchr(";|<>", s[i]))
+			while (s[i] && !ft_strchr(" \t\'\"", s[i]) &&
+				!ft_strchr(";|<>", s[i]))
 				i++;
-		else if (s[i] == ';')
-		{
-			entry[k++] = ft_substr(s, j, i++);
-			j = i;
-		}
+		else if (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i))
+			entry[k++] = found_pipes(s, &j, &i, nb);
 	}
 	entry[k] = ft_substr(s, j, i);
 	entry[k + 1] = NULL;
