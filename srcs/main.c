@@ -35,6 +35,13 @@ void			main_loop(t_sh *sh, char *buf)
 
 	i = 0;
 	parsing(sh, buf);
+	if (ft_get_hash_value(sh->env, "PATH"))
+	{
+		ft_free_tab(sh->path);
+		sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
+	}
+	else
+		sh->path = NULL;
 	while (sh->cmd[i])
 	{
 		if (sh->cmd[i][0])

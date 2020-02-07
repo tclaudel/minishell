@@ -28,7 +28,7 @@ size_t		bloc_counter(char *s, size_t i, size_t block)
 	{
 		if (s[i] == ' ')
 		{
-			while (s[i] && s[i] == ' ')
+			while (s[i] && ft_strchr(WHITESPACES, s[i]))
 				i++;
 		}
 		else if (s[i] == '\"')
