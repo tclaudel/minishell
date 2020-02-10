@@ -37,7 +37,7 @@ int					ft_fork_process(t_sh *sh, char **cmd);
 void				builtin_export(t_sh *sh, char **key);
 void				exec_builtin(t_sh *sh, size_t j);
 void				builtin_env(t_sh *sh);
-void				builtin_cd(t_sh *sh, char *path);
+void				builtin_cd(t_sh *sh, char **cmd);
 int					get_env_var(t_sh *sh, char **env);
 void				builtin_echo(char **cmd);
 void				builtin_unset(t_sh *sh, char **key, size_t i, size_t j);
