@@ -22,8 +22,6 @@ char		*complete_cmd(char *s, char c)
 	return (s);
 }
 
-
-
 size_t		bloc_counter(char *s, size_t i, size_t block)
 {
 	while (s[i] && s[i] != '\n')
@@ -91,7 +89,6 @@ char		**parse(char *s)
 	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
 	cmd[nb] = NULL;
 	cmd = fill_cmd(s, cmd, 0, 0);
-	for (size_t i = 0; cmd[i]; i++)
-		dprintf(1, "%s[%zu]\t: |%s|\n", "cmd", i, cmd[i]);
+	ft_display_tab(cmd, "cmd");
 	return (cmd);
 }
