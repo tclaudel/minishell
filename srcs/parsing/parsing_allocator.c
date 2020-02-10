@@ -22,6 +22,8 @@ char		*complete_cmd(char *s, char c)
 	return (s);
 }
 
+
+
 size_t		bloc_counter(char *s, size_t i, size_t block)
 {
 	while (s[i] && s[i] != '\n')
@@ -34,12 +36,12 @@ size_t		bloc_counter(char *s, size_t i, size_t block)
 		else if (s[i] == '\"')
 		{
 			block++;
-			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
+			quotes_splitter(s, &i, '\"');
 		}
 		else if (s[i] == '\'')
 		{
 			block++;
-			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
+			quotes_splitter(s, &i, '\'');
 		}
 		else if (s[i] && !ft_strchr(" \t\'\"", s[i]))
 		{
@@ -89,6 +91,7 @@ char		**parse(char *s)
 	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
 	cmd[nb] = NULL;
 	cmd = fill_cmd(s, cmd, 0, 0);
-	ft_display_tab(cmd, "cmd");
+	for (size_t i = 0; cmd[i]; i++)
+		dprintf(1, "%s[%zu]\t: |%s|\n", "cmd", i, cmd[i]);
 	return (cmd);
 }

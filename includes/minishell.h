@@ -63,6 +63,7 @@ char				*simple_quote_allocator(char *s, size_t *j);
 char				*non_special_allocator(char *s, size_t *j);
 char				*quote_checker(char *s, size_t quote, size_t dquote);
 size_t				separator_counter(char *s, size_t i, size_t block);
+void				quotes_splitter(char *s, size_t *i, char c);
 
 /*
 ** DISPLAY

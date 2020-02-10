@@ -45,3 +45,8 @@ char	***alloc_commands(char *str, size_t *nb)
 	cmd = (char ***)ft_calloc(sizeof(char **), (*nb + 1));
 	return (cmd);
 }
+
+void	quotes_splitter(char *s, size_t *i, char c)
+{
+	(*i) += (size_t)(ft_strchr(s + *i + 1, c) - (s + *i + 1) + 2);
+}

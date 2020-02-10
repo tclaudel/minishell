@@ -6,9 +6,9 @@ size_t		separator_counter(char *s, size_t i, size_t block)
 	{
 		i += ft_count_whitespaces(s + i);
 		if (s[i] == '\"')
-			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
+			quotes_splitter(s, &i, '\"');
 		else if (s[i] == '\'')
-			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
+			quotes_splitter(s, &i, '\'');
 		else if (s[i] && !ft_strchr(" \t\'\"", s[i])
 			&& !ft_strchr(";|<>", s[i]))
 			while (s[i] && !ft_strchr(" \t\'\"", s[i])
@@ -76,9 +76,9 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 	{
 		i += ft_count_whitespaces(s + i);
 		if (s[i] == '\"')
-			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
+			quotes_splitter(s, &i, '\"');
 		else if (s[i] == '\'')
-			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
+			quotes_splitter(s, &i, '\'');
 		else if (s[i] && !ft_strchr(" \t\'\"", s[i])
 			&& !ft_strchr(";|<>", s[i]))
 			while (s[i] && !ft_strchr(" \t\'\"", s[i]) &&
