@@ -5,7 +5,7 @@ void		exec_builtin(t_sh *sh, size_t j)
 	char str[1024];
 
 	if (!ft_strncmp(sh->cmd[j][0], "cd", 3))
-		builtin_cd(sh, sh->cmd[j][1]);
+		builtin_cd(sh, sh->cmd[j]);
 	else if (!ft_strncmp(sh->cmd[j][0], "pwd", 4))
 	{
 		ft_dprintf(1, "%s\n", getcwd(str, 1024));
@@ -22,7 +22,8 @@ void		exec_builtin(t_sh *sh, size_t j)
 	else if (!ft_strncmp(sh->cmd[j][0], "exit", 5))
 	{
 		ft_dprintf(1, "%s\n", "exit");
-		ft_free_tab(sh->path);
+		if (sh->path)
+			ft_free_tab(sh->path);
 		exit(EXIT_SUCCESS);
 	}
 }
@@ -84,7 +85,7 @@ void		exec_cmd(t_sh *sh, char **cmd)
 	if (execve(cmd[0], cmd, env_cpy) == -1)
 	{
 		current_cmd = ft_strfjoin("/", cmd[0], 2);
-		while (sh->path[i])
+		while (sh->path && sh->path[i])
 		{
 			cmd[0] = ft_strfjoin(sh->path[i], current_cmd, 0);
 			execve(cmd[0], cmd, env_cpy);

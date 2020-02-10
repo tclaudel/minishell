@@ -35,7 +35,13 @@ void			main_loop(t_sh *sh, char *buf)
 
 	i = 0;
 	parsing(sh, buf);
-	sh->signal_applied = 0;
+	if (ft_get_hash_value(sh->env, "PATH"))
+	{
+		ft_free_tab(sh->path);
+		sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
+	}
+	else
+		sh->path = NULL;
 	while (sh->cmd[i])
 	{
 		if (sh->cmd[i][0])
@@ -54,7 +60,7 @@ void			main_loop(t_sh *sh, char *buf)
 
 t_sh			*get_sh_info(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, NULL};
 
 	return (&sh);
 }

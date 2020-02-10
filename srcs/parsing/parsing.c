@@ -71,7 +71,7 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 	j = 0;
 	entry = (char **)malloc(sizeof(&entry) * (nb + 1));
-	get_sh_info()->pipes = (char *)malloc(sizeof(char) * (nb));
+	// get_sh_info()->pipes = (char *)malloc(sizeof(char) * (nb));
 	while (s[i] && s[i] != '\n')
 	{
 		i += ft_count_whitespaces(s + i);
