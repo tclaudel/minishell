@@ -48,5 +48,16 @@ char	***alloc_commands(char *str, size_t *nb)
 
 void	quotes_splitter(char *s, size_t *i, char c)
 {
-	(*i) += (size_t)(ft_strchr(s + *i + 1, c) - (s + *i + 1) + 2);
+	size_t	j;
+	size_t	k;
+	static	int a = 0;
+
+	a++;
+	j = (size_t)(ft_strchr(s + *i + 1, c) - (s + *i + 1) + 2);
+	k = (size_t)(ft_strchr(s + *i + 1, ' ') - (s + *i + 1) + 2);
+	if (a == 1)
+		ft_printf("j\t: %u\nk\t: %u\n", i, j);
+	(*i) += j;
+	if (a > 2)
+		a = 0;
 }
