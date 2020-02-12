@@ -13,36 +13,6 @@ static void		free_commands(t_sh *sh)
 	free(sh->cmd);
 }
 
-void			replace_env_var(t_sh *sh, char **cmd)
-{
-	size_t	i;
-	size_t	j;
-	char	*buf;
-	char	*tmp;
-
-	i = 0;
-	while (cmd[i])
-	{
-		if (cmd[i][0] == '$')
-		{
-			buf = ft_strdup(cmd[i]);
-			j = ft_tablen(cmd) - 1;
-			ft_strdel(&cmd[i]);
-			if (ft_get_hash_value(sh->env, buf + 1))
-				cmd[i] = ft_strdup(ft_get_hash_value(sh->env, buf + 1));
-			else
-			{
-				cmd[i] = NULL;
-				tmp = cmd[j];
-				cmd[j] = cmd[i];
-				cmd[i] = tmp;
-			}
-			ft_strdel(&buf);
-		}
-		i++;
-	}
-}
-
 void			replace_question_mark(char **cmd)
 {
 	size_t		i;
@@ -59,11 +29,8 @@ void			replace_question_mark(char **cmd)
 	}
 }
 
-void			main_loop(t_sh *sh, char *buf)
+void			main_loop(t_sh *sh, char *buf, size_t i)
 {
-	size_t	i;
-
-	i = 0;
 	parsing(sh, buf);
 	if (ft_get_hash_value(sh->env, "PATH"))
 	{
@@ -77,7 +44,7 @@ void			main_loop(t_sh *sh, char *buf)
 		if (sh->cmd[i][0])
 		{
 			replace_question_mark(sh->cmd[i]);
-			replace_env_var(sh, sh->cmd[i]);
+			replace_env_var(sh, sh->cmd[i], 0);
 			if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
 				exec_builtin(sh, i);
 			else if (sh->cmd[i] && sh->cmd[i][0])
@@ -109,7 +76,7 @@ int				main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
-		main_loop(sh, buf);
+		main_loop(sh, buf, 0);
 	ft_dprintf(1, "%s\n", "exit");
 	ft_free_tab(sh->path);
 	exit(EXIT_SUCCESS);

@@ -26,7 +26,7 @@ size_t		bloc_counter(char *s, size_t i, size_t block)
 {
 	while (s[i] && s[i] != '\n')
 	{
-		if (s[i] == ' ')
+		if (ft_strchr(WHITESPACES, s[i]))
 		{
 			while (s[i] && ft_strchr(WHITESPACES, s[i]))
 				i++;
