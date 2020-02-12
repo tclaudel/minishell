@@ -15,9 +15,9 @@ YELLOW="\033[0;33m"
 RESET="\033[0m"
 
 make
-printf "$BLUE TEST ECHO\n\n $GREY"
+printf "$BLUE TEST ECHO\n\n$GREY"
 sleep 1
 sh ./tester/echo.sh | ./minishell
-printf "$BLUE TEST BUILTINS\n\n $GREY"
+printf "$BLUE TEST BUILTINS\n\n$GREY"
 sleep 1
 sh ./tester/builtin.sh | ./minishell

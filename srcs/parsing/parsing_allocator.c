@@ -22,19 +22,6 @@ char		*complete_cmd(char *s, char c)
 	return (s);
 }
 
-char		*found_pipes(char *s, size_t *j, size_t *i, size_t nb)
-{
-	char	*str;
-
-	(void)nb;
-	str = ft_substr(s, *j, *i);
-	(*i)++;
-	if (ft_strcmp(">>", s + *i))
-		(*i)++;
-	*j = *i;
-	return (str);
-}
-
 size_t		bloc_counter(char *s, size_t i, size_t block)
 {
 	while (s[i] && s[i] != '\n')
@@ -69,7 +56,6 @@ char		**parse(char *s)
 	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
 	cmd[nb] = NULL;
 	cmd = fill_cmd(s, cmd, 0);
-	ft_printf("\n");
 	ft_display_tab(cmd, "cmd");
 	return (cmd);
 }

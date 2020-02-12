@@ -17,10 +17,9 @@ size_t		separator_counter(char *s, size_t i, size_t block)
 		else if (s[i] && (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i)))
 		{
 			block++;
-			if (ft_strchr(";|<>", s[i]))
+			if (!ft_strncmp(">>", s + i, 2))
 				i++;
-			else if (ft_strcmp(">>", s + i))
-				i += 2;
+			i++;
 		}
 	}
 	return (block);
@@ -60,7 +59,7 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 	j = 0;
 	entry = (char **)malloc(sizeof(&entry) * (nb + 1));
-	// get_sh_info()->pipes = (char *)malloc(sizeof(char) * (nb));
+	get_sh_info()->pipes = (char *)ft_calloc(sizeof(char), (nb));
 	while (s[i] && s[i] != '\n')
 	{
 		i += ft_count_whitespaces(s + i);
@@ -119,6 +118,7 @@ void		parsing(t_sh *sh, char *str)
 
 	i = 0;
 	j = 0;
+	ft_printf("\n");
 	str = quote_checker(str, 0, 0);
 	sh->cmd = alloc_commands(str, &nb);
 	entries = ft_split_cmd(str, nb, 0, 0);
@@ -127,6 +127,7 @@ void		parsing(t_sh *sh, char *str)
 		sh->cmd[j] = parse(entries[j]);
 		j++;
 	}
+	dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
 	ft_free_tab(entries);
 	ft_strdel(&str);
 }
