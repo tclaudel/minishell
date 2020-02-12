@@ -29,11 +29,8 @@ void			replace_question_mark(char **cmd)
 	}
 }
 
-void			main_loop(t_sh *sh, char *buf)
+void			main_loop(t_sh *sh, char *buf, size_t i)
 {
-	size_t	i;
-
-	i = 0;
 	parsing(sh, buf);
 	if (ft_get_hash_value(sh->env, "PATH"))
 	{
@@ -47,9 +44,10 @@ void			main_loop(t_sh *sh, char *buf)
 		if (sh->cmd[i][0])
 		{
 			replace_question_mark(sh->cmd[i]);
-			if (sh->cmd[i] && is_builtin(sh->cmd[i][0]))
+			replace_env_var(sh, sh->cmd[i], 0);
+			if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
 				exec_builtin(sh, i);
-			else if (sh->cmd[i])
+			else if (sh->cmd[i] && sh->cmd[i][0])
 				ft_fork_process(sh, sh->cmd[i]);
 		}
 		i++;
@@ -78,7 +76,7 @@ int				main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
-		main_loop(sh, buf);
+		main_loop(sh, buf, 0);
 	ft_dprintf(1, "%s\n", "exit");
 	ft_free_tab(sh->path);
 	exit(EXIT_SUCCESS);
