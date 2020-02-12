@@ -26,8 +26,17 @@ size_t		bloc_counter(char *s, size_t i, size_t block)
 {
 	while (s[i] && s[i] != '\n')
 	{
+<<<<<<< HEAD
 		i += ft_count_whitespaces(s + i);
 		if (s[i] == '\"')
+=======
+		if (ft_strchr(WHITESPACES, s[i]))
+		{
+			while (s[i] && ft_strchr(WHITESPACES, s[i]))
+				i++;
+		}
+		else if (s[i] == '\"')
+>>>>>>> 23728911afb004056f93ac764154c1c6e104cbde
 		{
 			block++;
 			quotes_splitter(s, &i, '\"');
