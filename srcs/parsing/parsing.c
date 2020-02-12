@@ -6,62 +6,50 @@ size_t		separator_counter(char *s, size_t i, size_t block)
 	{
 		i += ft_count_whitespaces(s + i);
 		if (s[i] && s[i] == '\"')
-			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
+			quotes_splitter(s, &i, '\"');
 		else if (s[i] && s[i] == '\'')
-			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
+			quotes_splitter(s, &i, '\'');
 		else if (s[i] && !ft_strchr(" \t\'\"", s[i])
 			&& !ft_strchr(";|<>", s[i]))
-		{
-			i++;
-		}
+			while (s[i] && !ft_strchr(" \t\'\"", s[i])
+				&& !ft_strchr(";|<>", s[i]))
+				i++;
 		else if (s[i] && (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i)))
 		{
 			block++;
-			if (ft_strchr(";|<>", s[i]))
+			if (!ft_strncmp(">>", s + i, 2))
 				i++;
-			else if (ft_strcmp(">>", s + i))
-				i += 2;
+			i++;
 		}
 	}
 	return (block);
 }
 
-char		**fill_cmd(char *s, char **cmd, size_t i, size_t j)
+char		**fill_cmd(char *s, char **cmd, size_t j)
 {
 	size_t	k;
+	size_t	i;
 
 	k = 0;
-	while (s[i])
+	while (s[j])
 	{
-		i += ft_count_whitespaces(s + i);
-		j = i;
-		if (s[i] == '\"')
-			cmd[k] = double_quote_allocator(s + i, &j);
-		else if (s[i] == '\'')
-			cmd[k] = simple_quote_allocator(s + i, &j);
-		else if (s[i] && !ft_strchr(" \t\n\'\"", s[i]))
+		j += ft_count_whitespaces(s + j);
+		if (s[j] == '\"')
+			cmd[k] = double_quote_allocator(s, &j);
+		else if (s[j] == '\'')
+			cmd[k] = simple_quote_allocator(s, &j);
+		else if (s[j] && !ft_strchr(" \t\n\'\"", s[j]))
 		{
+			i = j;
 			while (s[j] && !ft_strchr(" \t\n\'\"", s[j]))
 				j++;
 			cmd[k] = ft_strndup(s + i, j - i);
 		}
 		k++;
-		i += j - i;
 	}
+	if (k > 1 && cmd[k - 1])
+		cmd[k] = NULL;
 	return (cmd);
-}
-
-char		*found_pipes(char *s, size_t *j, size_t *i, size_t nb)
-{
-	char	*str;
-
-	(void)nb;
-	str = ft_substr(s, *j, *i);
-	(*i)++;
-	if (ft_strcmp(">>", s + *i))
-		(*i)++;
-	*j = *i;
-	return (str);
 }
 
 char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
@@ -71,25 +59,54 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 	j = 0;
 	entry = (char **)malloc(sizeof(&entry) * (nb + 1));
-	// get_sh_info()->pipes = (char *)malloc(sizeof(char) * (nb));
+	get_sh_info()->pipes = (char *)ft_calloc(sizeof(char), (nb));
 	while (s[i] && s[i] != '\n')
 	{
 		i += ft_count_whitespaces(s + i);
-		if (s[i] == '\"')
-			i += (size_t)(ft_strchr(s + i + 1, '\"') - (s + i + 1) + 2);
-		else if (s[i] == '\'')
-			i += (size_t)(ft_strchr(s + i + 1, '\'') - (s + i + 1) + 2);
-		else if (s[i] && !ft_strchr(" \t\'\"", s[i])
+		if (s[i] && s[i] == '\"')
+			quotes_splitter(s, &i, '\"');
+		else if (s[i] && s[i] == '\'')
+			quotes_splitter(s, &i, '\'');
+		else if (s[i] && s[i] && !ft_strchr(" \t\'\"", s[i])
 			&& !ft_strchr(";|<>", s[i]))
 			while (s[i] && !ft_strchr(" \t\'\"", s[i]) &&
 				!ft_strchr(";|<>", s[i]))
 				i++;
-		else if (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i))
+		else if (s[i] && (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i)))
 			entry[k++] = found_pipes(s, &j, &i, nb);
 	}
 	entry[k] = ft_substr(s, j, i);
 	entry[k + 1] = NULL;
 	return (entry);
+}
+
+char		*quote_checker(char *s, size_t quote, size_t dquote)
+{
+	size_t	i;
+	char	*dest;
+	char	c;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'' && !(dquote % 2))
+			quote++;
+		if (s[i] == '\"' && !(quote % 2))
+			dquote++;
+		i++;
+	}
+	if (dquote % 2)
+		dest = complete_cmd(s, '\"');
+	else if (quote % 2)
+		dest = complete_cmd(s, '\'');
+	else if (quote % 2 && dquote % 2)
+	{
+		c = ft_strrchr(s, '\'') < ft_strrchr(s, '\"') ? '\'' : '\"';
+		dest = complete_cmd(s, c);
+	}
+	else
+		dest = s;
+	return (dest);
 }
 
 void		parsing(t_sh *sh, char *str)
@@ -101,6 +118,7 @@ void		parsing(t_sh *sh, char *str)
 
 	i = 0;
 	j = 0;
+	ft_printf("\n");
 	str = quote_checker(str, 0, 0);
 	sh->cmd = alloc_commands(str, &nb);
 	entries = ft_split_cmd(str, nb, 0, 0);
@@ -109,6 +127,7 @@ void		parsing(t_sh *sh, char *str)
 		sh->cmd[j] = parse(entries[j]);
 		j++;
 	}
+	dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
 	ft_free_tab(entries);
 	ft_strdel(&str);
 }
