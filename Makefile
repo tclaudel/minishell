@@ -127,7 +127,7 @@ push:
 	@sleep 0.1
 	@printf "\33[2K\r$(LIGHT_RED)Pushing ...	\033[37m"
 	@sleep 0.1
-	git push origin $(git symbolic-ref --short HEAD) 2>/dev/null
+	git push origin $(BRANCH) 2>/dev/null
 	@printf "\33[2K\r$(FLASH_GREEN)Pushed successfully on vogsphere !\n\033[0m"
 
 lib:
