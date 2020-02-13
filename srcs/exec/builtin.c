@@ -28,6 +28,19 @@ void		builtin_env(t_sh *sh)
 	sh->question_mark = 0;
 }
 
+static void	change_sh_path(void)
+{
+	if (get_sh_info()->path)
+	{
+		ft_free_tab(get_sh_info()->path);
+		if (ft_get_hash_value(get_sh_info()->env, "PATH"))
+			get_sh_info()->path = ft_split(ft_get_hash_value(get_sh_info()->env, "PATH"), ':');
+		else
+			get_sh_info()->path = ft_calloc(sizeof(char *), 1);
+	}
+	get_sh_info()->question_mark = 0;
+}
+
 void		builtin_unset(t_sh *sh, char **key, size_t i, size_t j)
 {
 	int			tmp;
@@ -54,7 +67,7 @@ void		builtin_unset(t_sh *sh, char **key, size_t i, size_t j)
 			sh->env[i - 1] = buf;
 		}
 	}
-	sh->question_mark = 0;
+	change_sh_path();
 }
 
 void		builtin_echo(char **cmd)
