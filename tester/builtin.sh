@@ -7,7 +7,7 @@ sleep 2
 echo 'unset PWD'
 sleep 2
 
-echo 'echo env'
+echo 'env'
 sleep 2
 
 echo 'cd PWD'

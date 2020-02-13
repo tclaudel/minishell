@@ -54,6 +54,14 @@ void		builtin_unset(t_sh *sh, char **key, size_t i, size_t j)
 			sh->env[i - 1] = buf;
 		}
 	}
+	if (sh->path)
+	{
+		ft_free_tab(sh->path);
+		if (ft_get_hash_value(sh->env, "PATH"))
+			sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
+		else
+			sh->path = ft_calloc(sizeof(char *), 1);
+	}
 	sh->question_mark = 0;
 }
 

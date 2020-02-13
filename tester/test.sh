@@ -18,6 +18,9 @@ make
 printf "$BLUE TEST ECHO\n\n$GREY"
 sleep 1
 sh ./tester/echo.sh | ./minishell
+printf "$BLUE TEST ENV\n\n$GREY"
+sleep 1
+sh ./tester/env.sh | ./minishell
 printf "$BLUE TEST BUILTINS\n\n$GREY"
 sleep 1
 sh ./tester/builtin.sh | ./minishell
