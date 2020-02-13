@@ -1,14 +1,21 @@
+#!/bin/bash
+
 echo 'cd libft'
-sleep 2
+sleep 1.2
 
 echo 'ls'
-sleep 2
+sleep 1.2
 
 echo 'unset PWD'
-sleep 2
+sleep 1.2
 
+<<<<<<< HEAD
 echo 'env'
 sleep 2
+=======
+echo 'echo env'
+sleep 1.2
+>>>>>>> master
 
 echo 'cd PWD'
-sleep 2
+sleep 1.2
