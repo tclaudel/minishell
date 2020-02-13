@@ -17,13 +17,15 @@ RESET="\033[0m"
 function ft_echo {
 	printf "$BLUETEST\nECHO\n\n$GREY";
 	sleep "$1";
-	sh ./tester/echo.sh "$1" | ./minishell;
+	sh ./tester/echo.sh "$1" | "$2";
+	sh ./tester/echo.sh "$1" | "$3";
 }
 
 function ft_builtin {
 	printf "$BLUETEST\nBUILTINS\n\n$GREY";
 	sleep "$1";
-	sh ./tester/builtin.sh "$1" | ./minishell;
+	sh ./tester/builtin.sh "$1" | "$2";
+	sh ./tester/builtin.sh "$1" | "$3";
 }
 
 if [ -z $1 ]; then
@@ -39,8 +41,9 @@ else
 	var_sleep="1";
 fi
 if [ "$1" == "echo" ] || [ "$default" == "1" ]; then
-	ft_echo "$var_sleep";
+	ft_echo "$var_sleep" "./minishell" "bash";
+
 fi
 if [ "$1" == "builtin" ] || [ "$default" == "1" ]; then
-	ft_builtin "$var_sleep";
+	ft_builtin "$var_sleep" "./minishell" "bash";
 fi
