@@ -109,7 +109,7 @@ normed:
 	@$(MAKE) push
 
 push:
-	branch=$(git symbolic-ref --short HEAD)
+	branch = $(git symbolic-ref --short HEAD)
 	@printf "\33[2K\r$(LIGHT_RED)Pushing 	\033[37m"
 	@sleep 0.1
 	@printf "\33[2K\r$(LIGHT_RED)Pushing .	\033[37m"
