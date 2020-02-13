@@ -130,6 +130,9 @@ push:
 	@git push origin `git symbolic-ref --short HEAD`
 	@printf "\33[2K\r$(FLASH_GREEN)Pushed successfully on vogsphere !\n\033[0m"
 
+update:
+	@git request-pull HEAD https://github.com/tclaudel/minishell.git master
+
 lib:
 	@make -C libft/
 
