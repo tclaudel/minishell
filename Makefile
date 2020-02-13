@@ -41,7 +41,7 @@ FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
-BRANCH			=	git symbolic-ref --short HEAD
+current_branch	=	$(git symbolic-ref HEAD 2>/dev/null)
 
 all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
@@ -93,7 +93,7 @@ re:
 	@$(MAKE) all
 
 norme:
-	@norminette $(SRC_PATH) $(HEADER) | grep -v "101 header"
+	@timeout 5 norminette $(SRC_PATH) $(HEADER) | grep -v "101 header"
 
 full_norme: norme
 	@make -C libft/ norme
@@ -127,7 +127,7 @@ push:
 	@sleep 0.1
 	@printf "\33[2K\r$(LIGHT_RED)Pushing ...	\033[37m"
 	@sleep 0.1
-	git push origin $(BRANCH) 2>/dev/null
+	git push origin `git symbolic-ref --short HEAD`
 	@printf "\33[2K\r$(FLASH_GREEN)Pushed successfully on vogsphere !\n\033[0m"
 
 lib:
@@ -154,8 +154,8 @@ continue:
 	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..."; $(MAKE) ew ; exit 1 2> /dev/null)
 
 git-%:
-	#@$(MAKE) norme
-	#@$(MAKE) continue
+	@$(MAKE) norme
+	@$(MAKE) continue
 	@echo ""
 	@git add .
 	@git status
@@ -196,4 +196,4 @@ full_check: all
 	@echo ""
 	@$(MAKE) push
 
-.PHONY: all clean fclean re bonus norme push cleanlib fcleanlib relib continue git-%
+.PHONY: all clean fclean re bonus norme push cleanlib fcleanlib relib continue git-% call ew full_check
