@@ -126,8 +126,6 @@ push:
 	@sleep 0.1
 	@printf "\33[2K\r$(LIGHT_RED)Pushing ...	\033[37m"
 	@sleep 0.1
-	#@git push github master 2>/dev/null
-	#@printf "\33[2K\r$(FLASH_GREEN)Pushed successfully on github !\n\033[0m"
 	@git push origin "$branch" 2>/dev/null
 	@printf "\33[2K\r$(FLASH_GREEN)Pushed successfully on vogsphere !\n\033[0m"
 
