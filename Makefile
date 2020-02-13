@@ -41,7 +41,7 @@ FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
-BRANCH			=	$git symbolic-ref --short HEAD
+BRANCH			=	"$(git symbolic-ref --short HEAD)"
 
 all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
