@@ -98,7 +98,7 @@ full_norme: norme
 
 normed:
 
-	@norminette $(SRC_PATH) $(HEADER)
+	@$(MAKE) norme
 	@$(MAKE) continue
 	@echo ""
 	@git add .
@@ -109,7 +109,7 @@ normed:
 	@$(MAKE) push
 
 push:
-
+	branch=$(git symbolic-ref --short HEAD)
 	@printf "\33[2K\r$(LIGHT_RED)Pushing 	\033[37m"
 	@sleep 0.1
 	@printf "\33[2K\r$(LIGHT_RED)Pushing .	\033[37m"
@@ -126,9 +126,9 @@ push:
 	@sleep 0.1
 	@printf "\33[2K\r$(LIGHT_RED)Pushing ...	\033[37m"
 	@sleep 0.1
-	@git push github master 2>/dev/null
-	@printf "\33[2K\r$(FLASH_GREEN)Pushed successfully on github !\n\033[0m"
-	@git push origin master 2>/dev/null
+	#@git push github master 2>/dev/null
+	#@printf "\33[2K\r$(FLASH_GREEN)Pushed successfully on github !\n\033[0m"
+	@git push origin "$branch" 2>/dev/null
 	@printf "\33[2K\r$(FLASH_GREEN)Pushed successfully on vogsphere !\n\033[0m"
 
 lib:
@@ -155,8 +155,8 @@ continue:
 	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..."; $(MAKE) ew ; exit 1 2> /dev/null)
 
 git-%:
-	@$(MAKE) norme
-	@$(MAKE) continue
+	#@$(MAKE) norme
+	#@$(MAKE) continue
 	@echo ""
 	@git add .
 	@git status
