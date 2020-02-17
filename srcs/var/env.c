@@ -59,31 +59,3 @@ t_strhash			*realloc_hash(t_strhash *hash, size_t size)
 	free(hash);
 	return (new);
 }
-
-void				replace_env_var(t_sh *sh, char **cmd, size_t i)
-{
-	size_t	j;
-	char	*buf;
-	char	*tmp;
-
-	while (cmd[i])
-	{
-		if (cmd[i][0] == '$')
-		{
-			buf = ft_strdup(cmd[i]);
-			j = ft_tablen(cmd) - 1;
-			ft_strdel(&cmd[i]);
-			if (ft_get_hash_value(sh->env, buf + 1))
-				cmd[i] = ft_strdup(ft_get_hash_value(sh->env, buf + 1));
-			else
-			{
-				cmd[i] = NULL;
-				tmp = cmd[j];
-				cmd[j] = cmd[i];
-				cmd[i] = tmp;
-			}
-			ft_strdel(&buf);
-		}
-		i++;
-	}
-}
