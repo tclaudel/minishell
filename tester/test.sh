@@ -28,22 +28,32 @@ function ft_builtin {
 	sh ./tester/builtin.sh "$1" | "$3";
 }
 
-if [ -z $1 ]; then
-	cat "./coucou"
-	default=1;
-	var_sleep=1.2;
-else
-	default=0;
-fi
-if ! [ -z $2 ] ; then
-	var_sleep="$2";
+function ft_env {
+	printf "$BLUETEST\nBUILTINS\n\n$GREY";
+	sleep "$1";
+	sh ./tester/env.sh "$1" | "$2";
+	sh ./tester/env.sh "$1" | "$3";
+}
+
+if ! [ -z $1 ] ; then
+	var_sleep="$1";
 else
 	var_sleep="1";
 fi
-if [ "$1" == "echo" ] || [ "$default" == "1" ]; then
+echo "var_sleep = $var_sleep";
+if [ -z $2 ]; then
+	cat "./coucou"
+	default=1;
+else
+	default=0;
+fi
+if [ "$2" == "echo" ] || [ "$default" == "1" ]; then
 	ft_echo "$var_sleep" "./minishell" "bash";
 
 fi
-if [ "$1" == "builtin" ] || [ "$default" == "1" ]; then
+if [ "$2" == "builtin" ] || [ "$default" == "1" ]; then
 	ft_builtin "$var_sleep" "./minishell" "bash";
+fi
+if [ "$" == "env" ] || [ "$default" == "1" ]; then
+	ft_env "$var_sleep" "./minishell" "bash";
 fi

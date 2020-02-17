@@ -32,13 +32,6 @@ void			replace_question_mark(char **cmd)
 void			main_loop(t_sh *sh, char *buf, size_t i)
 {
 	parsing(sh, buf);
-	if (ft_get_hash_value(sh->env, "PATH"))
-	{
-		ft_free_tab(sh->path);
-		sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
-	}
-	else
-		sh->path = NULL;
 	while (sh->cmd[i])
 	{
 		if (sh->cmd[i][0])
@@ -76,7 +69,10 @@ int				main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
+	{
 		main_loop(sh, buf, 0);
+		ft_strdel(&sh->pipes);
+	}
 	ft_dprintf(1, "%s\n", "exit");
 	ft_free_tab(sh->path);
 	exit(EXIT_SUCCESS);

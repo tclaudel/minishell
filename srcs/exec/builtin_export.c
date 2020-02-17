@@ -91,4 +91,12 @@ void			builtin_export(t_sh *sh, char **key)
 	sh->env = realloc_hash(sh->env, sizeof(t_strhash) * (i + j));
 	add_key(sh, key, i, 0);
 	sh->question_mark = 0;
+	if (sh->path)
+	{
+		ft_free_tab(sh->path);
+		if (ft_get_hash_value(sh->env, "PATH"))
+			sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
+		else
+			sh->path = ft_calloc(sizeof(char *), 1);
+	}
 }

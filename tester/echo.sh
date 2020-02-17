@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'echo pouet'
-sleep ""$1""
+sleep "$1"
 
 echo 'echo "pouet'
 sleep 0.1

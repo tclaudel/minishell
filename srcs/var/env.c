@@ -1,12 +1,25 @@
 #include "minishell.h"
 
-int				get_env_var(t_sh *sh, char **env)
+static void			search_pwd(void)
 {
-	static size_t	i = 0;
-	size_t			j;
+	char			str[1024];
+	char			**splited;
 
-	while (env[i])
-		i++;
+	if (!change_value(get_sh_info()->env, "PWD", getcwd(str, 1024)))
+	{
+		splited = ft_split(ft_strfjoin("export ",
+		ft_strfjoin(ft_strjoin("PWD", "="), getcwd(str, 1024), 1), 2), ' ');
+		builtin_export(get_sh_info(), splited);
+		ft_free_tab(splited);
+	}
+}
+
+int					get_env_var(t_sh *sh, char **env)
+{
+	size_t	i;
+	size_t	j;
+
+	i = ft_tablen(env);
 	if ((sh->key = (char **)malloc(sizeof(char *) * (i + 1))) &&
 	(sh->value = (char **)malloc(sizeof(char *) * (i + 1))))
 	{
@@ -24,12 +37,13 @@ int				get_env_var(t_sh *sh, char **env)
 		sh->value[i] = NULL;
 		sh->env = ft_strhash(sh->key, sh->value);
 		sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
+		search_pwd();
 		return (0);
 	}
 	exit(EXIT_FAILURE);
 }
 
-t_strhash		*realloc_hash(t_strhash *hash, size_t size)
+t_strhash			*realloc_hash(t_strhash *hash, size_t size)
 {
 	size_t		i;
 	t_strhash	*new;
@@ -46,7 +60,7 @@ t_strhash		*realloc_hash(t_strhash *hash, size_t size)
 	return (new);
 }
 
-void			replace_env_var(t_sh *sh, char **cmd, size_t i)
+void				replace_env_var(t_sh *sh, char **cmd, size_t i)
 {
 	size_t	j;
 	char	*buf;

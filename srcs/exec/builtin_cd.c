@@ -26,14 +26,17 @@ static void		change_folders(t_sh *sh, char *path)
 
 void			builtin_cd(t_sh *sh, char **cmd)
 {
-	short		i;
-	char		*path;
+	short			i;
+	static char		*path = NULL;
 
 	i = 1;
 	if (cmd[i] && (!ft_strcmp(cmd[i], "-L") || !ft_strcmp(cmd[i], "-P")))
 		i = 2;
 	if (cmd[i] == NULL)
-		path = ft_strdup(ft_get_hash_value(sh->env, "HOME"));
+	{
+		if (ft_get_hash_value(sh->env, "HOME"))
+			path = ft_strdup(ft_get_hash_value(sh->env, "HOME"));
+	}
 	else
 		path = ft_strdup(cmd[i]);
 	change_folders(sh, path);
