@@ -19,3 +19,15 @@ sleep "$1"
 
 echo 'echo "pouet" "str"'
 sleep "$1"
+
+echo 'echo $PWD'
+sleep "$1"
+
+echo 'echo "$PWD"'
+sleep "$1"
+
+echo 'echo '$PWD''
+sleep "$1"
+
+echo 'echo E$PWD'
+sleep "$1"

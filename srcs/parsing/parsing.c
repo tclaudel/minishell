@@ -118,7 +118,6 @@ void		parsing(t_sh *sh, char *str)
 
 	i = 0;
 	j = 0;
-	ft_printf("\n");
 	str = quote_checker(str, 0, 0);
 	sh->cmd = alloc_commands(str, &nb);
 	entries = ft_split_cmd(str, nb, 0, 0);
@@ -127,7 +126,7 @@ void		parsing(t_sh *sh, char *str)
 		sh->cmd[j] = parse(entries[j]);
 		j++;
 	}
-	dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
+	//dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
 	ft_free_tab(entries);
 	ft_strdel(&str);
 }
