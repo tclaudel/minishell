@@ -107,6 +107,5 @@ void		parsing(t_sh *sh, char *str)
 		j++;
 	}
 	//dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
-	ft_free_tab(entries);
 	ft_strdel(&str);
 }
