@@ -19,3 +19,6 @@ sleep "$1"
 
 echo 'echo "pouet" "str"'
 sleep "$1"
+
+echo 'echo "$PATH"'
+sleep "$1"

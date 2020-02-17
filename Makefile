@@ -37,7 +37,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address
+FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
@@ -91,13 +91,12 @@ re:
 	@$(MAKE) all
 
 norme:
-	@norminette $(SRC_PATH) $(HEADER) | grep -v "101 header"
+	@timeout 5 norminette $(SRC_PATH) $(HEADER) | grep -v "42 header"
 
 full_norme: norme
 	@make -C libft/ norme
 
 normed:
-
 	@norminette $(SRC_PATH) $(HEADER)
 	@$(MAKE) continue
 	@echo ""
@@ -109,7 +108,6 @@ normed:
 	@$(MAKE) push
 
 push:
-
 	@printf "\33[2K\r$(LIGHT_RED)Pushing 	\033[37m"
 	@sleep 0.1
 	@printf "\33[2K\r$(LIGHT_RED)Pushing .	\033[37m"

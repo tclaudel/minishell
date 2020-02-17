@@ -1,50 +1,19 @@
 #include "minishell.h"
 
-size_t		separator_counter(char *s, size_t i, size_t block)
-{
-	while (s[i] && s[i] != '\n')
-	{
-		i += ft_count_whitespaces(s + i);
-		if (s[i] && s[i] == '\"')
-			quotes_splitter(s, &i, '\"');
-		else if (s[i] && s[i] == '\'')
-			quotes_splitter(s, &i, '\'');
-		else if (s[i] && !ft_strchr(" \t\'\"", s[i])
-			&& !ft_strchr(";|<>", s[i]))
-			while (s[i] && !ft_strchr(" \t\'\"", s[i])
-				&& !ft_strchr(";|<>", s[i]))
-				i++;
-		else if (s[i] && (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i)))
-		{
-			block++;
-			if (!ft_strncmp(">>", s + i, 2))
-				i++;
-			i++;
-		}
-	}
-	return (block);
-}
-
 char		**fill_cmd(char *s, char **cmd, size_t j)
 {
 	size_t	k;
-	size_t	i;
 
 	k = 0;
 	while (s[j])
 	{
 		j += ft_count_whitespaces(s + j);
 		if (s[j] == '\"')
-			cmd[k] = double_quote_allocator(s, &j);
+			cmd[k] = double_quote_allocator(&s, &j);
 		else if (s[j] == '\'')
 			cmd[k] = simple_quote_allocator(s, &j);
 		else if (s[j] && !ft_strchr(" \t\n\'\"", s[j]))
-		{
-			i = j;
-			while (s[j] && !ft_strchr(" \t\n\'\"", s[j]))
-				j++;
-			cmd[k] = ft_strndup(s + i, j - i);
-		}
+			cmd[k] = non_special_allocator(&s, &j);
 		k++;
 	}
 	if (k > 1 && cmd[k - 1])
@@ -107,6 +76,17 @@ char		*quote_checker(char *s, size_t quote, size_t dquote)
 	else
 		dest = s;
 	return (dest);
+}
+
+char		***alloc_commands(char *str, size_t *nb)
+{
+	char		***cmd;
+	size_t		i;
+
+	i = 0;
+	*nb = separator_counter(str, 0, 0) + 1;
+	cmd = (char ***)ft_calloc(sizeof(char **), (*nb + 1));
+	return (cmd);
 }
 
 void		parsing(t_sh *sh, char *str)
