@@ -106,6 +106,7 @@ void		parsing(t_sh *sh, char *str)
 		sh->cmd[j] = parse(entries[j]);
 		j++;
 	}
-	//dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
+	// dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
+	ft_display_tab(sh->cmd[0], "cmd");
 	ft_strdel(&str);
 }

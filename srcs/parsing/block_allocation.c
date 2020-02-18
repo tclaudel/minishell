@@ -12,6 +12,7 @@ char	*fill_str_with_var(char *s, size_t i)
 		j++;
 	var = ft_substr(s, i, j - i);
 	value = ft_get_hash_value(get_sh_info()->env, var);
+	//dprintf(1, "val\t: %s\n", value);
 	if (value)
 		s = ft_insert(s, value, i - 1, ft_strlen(var) + 1);
 	else if (var)
