@@ -12,11 +12,11 @@ void		exec_builtin(t_sh *sh, size_t j)
 		sh->question_mark = 0;
 	}
 	else if (!ft_strncmp(sh->cmd[j][0], "env", 4))
-		builtin_env(sh);
+		builtin_env(sh, sh->env);
 	else if (!ft_strncmp(sh->cmd[j][0], "echo", 5))
 		builtin_echo(sh->cmd[j]);
 	else if (!ft_strncmp(sh->cmd[j][0], "unset", 5))
-		builtin_unset(sh, sh->cmd[j], 0, 0);
+		builtin_unset(sh, sh->cmd[j], 0);
 	else if (!ft_strncmp(sh->cmd[j][0], "export", 7))
 		builtin_export(sh, sh->cmd[j]);
 	else if (!ft_strncmp(sh->cmd[j][0], "exit", 5))
@@ -54,20 +54,18 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 	return (1);
 }
 
-static char	**cpy_environ(t_sh *sh)
+static char	**cpy_environ(t_hash *env)
 {
 	size_t	i;
 	char	**env_cpy;
 
+	env_cpy = malloc(sizeof(char *) * (env->len(env) + 1));
 	i = 0;
-	while (sh->env[i].key)
-		i++;
-	env_cpy = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (sh->env[i].key)
+	while (env)
 	{
-		env_cpy[i] = ft_strjoin(sh->env[i].key, "=");
-		env_cpy[i] = ft_strfjoin(env_cpy[i], sh->env[i].value, 1);
+		env_cpy[i] = ft_strjoin(env->key, "=");
+		env_cpy[i] = ft_strfjoin(env_cpy[i], env->value, 1);
+		env = env->next;
 		i++;
 	}
 	env_cpy[i] = NULL;
@@ -81,7 +79,7 @@ void		exec_cmd(t_sh *sh, char **cmd)
 	char	**env_cpy;
 
 	i = 0;
-	env_cpy = cpy_environ(sh);
+	env_cpy = cpy_environ(sh->env);
 	if (execve(cmd[0], cmd, env_cpy) == -1)
 	{
 		current_cmd = ft_strfjoin("/", cmd[0], 2);
