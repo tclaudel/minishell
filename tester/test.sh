@@ -29,7 +29,7 @@ function ft_builtin {
 }
 
 function ft_env {
-	printf "$BLUETEST\nBUILTINS\n\n$GREY";
+	printf "$BLUETEST\nENV\n\n$GREY";
 	sleep "$1";
 	sh ./tester/env.sh "$1" | "$2";
 	sh ./tester/env.sh "$1" | "$3";
@@ -54,6 +54,6 @@ fi
 if [ "$2" == "builtin" ] || [ "$default" == "1" ]; then
 	ft_builtin "$var_sleep" "./minishell" "bash";
 fi
-if [ "$" == "env" ] || [ "$default" == "1" ]; then
+if [ "$2" == "env" ] || [ "$default" == "1" ]; then
 	ft_env "$var_sleep" "./minishell" "bash";
 fi

@@ -1,17 +1,22 @@
 #include "minishell.h"
 
-char	*double_quote_allocator(char *s, size_t *j)
+char	*fill_str_with_var(char *s, size_t i)
 {
-	char	*cmd;
-	char	*tmp;
-	size_t	i;
+	char	*var;
+	char	*value;
+	size_t	j;
 
-	i = *j;
-	i = ft_charrpos(s + *j + 1, '\"');
-	tmp = ft_strndup(s + *j + 1, i);
-	cmd = ft_clearcharset(s + *j + 1, "\"");
-	*j += i + 2;
-	return (cmd);
+	i++;
+	j = i;
+	while (s[j] && s[j] != '\"' && s[j] != ' ')
+		j++;
+	var = ft_substr(s, i, j - i);
+	value = ft_get_hash_value(get_sh_info()->env, var);
+	if (value)
+		s = ft_insert(s, value, i - 1, ft_strlen(var) + 1);
+	else if (var)
+		s = ft_insert(s, "$", i - 1, ft_strlen(var) + 1);
+	return (s);
 }
 
 char	*simple_quote_allocator(char *s, size_t *j)
@@ -26,27 +31,44 @@ char	*simple_quote_allocator(char *s, size_t *j)
 	return (cmd);
 }
 
-char	*non_special_allocator(char *s, size_t *j)
+char	*double_quote_allocator(char **s, size_t *j)
 {
 	char	*cmd;
+	char	*tmp;
 	size_t	i;
 
-	i = 0;
-	while (s[i] && !ft_strchr(" \t\'\"", s[i]))
+	i = *j;
+	while ((*s)[i])
+	{
+		if ((*s)[i] == '$')
+			*s = fill_str_with_var(*s, i);
 		i++;
-	cmd = ft_strndup(s + i, i);
+	}
+	i = *j;
+	i = ft_charrpos(*s + *j + 1, '\"');
+	tmp = ft_strndup(*s + *j + 1, i);
+	cmd = ft_clearcharset(tmp, "\"");
+	free(tmp);
 	*j += i + 2;
 	return (cmd);
 }
 
-char	***alloc_commands(char *str, size_t *nb)
+char	*non_special_allocator(char **s, size_t *j)
 {
-	char		***cmd;
-	size_t		i;
+	char	*cmd;
+	size_t	i;
 
-	i = 0;
-	*nb = separator_counter(str, 0, 0) + 1;
-	cmd = (char ***)ft_calloc(sizeof(char **), (*nb + 1));
+	i = (*j);
+	while ((*s)[i])
+	{
+		if ((*s)[i] == '$')
+			*s = fill_str_with_var(*s, i);
+		i++;
+	}
+	i = (*j);
+	while ((*s)[(*j)] && !ft_strchr(" \t\n\'\"", (*s)[(*j)]))
+		(*j)++;
+	cmd = ft_strndup((*s) + i, (*j) - i);
 	return (cmd);
 }
 
