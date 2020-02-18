@@ -25,6 +25,7 @@ void			get_env_var(t_sh *sh, char **env)
 	sh->path = ft_split(sh->env->search(sh->env, "PATH"), ':');
 	search_pwd(sh);
 }
+<<<<<<< HEAD
 
 void				replace_env_var(t_sh *sh, char **cmd, size_t i)
 {
@@ -53,3 +54,5 @@ void				replace_env_var(t_sh *sh, char **cmd, size_t i)
 		i++;
 	}
 }
+=======
+>>>>>>> master

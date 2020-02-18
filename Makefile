@@ -93,14 +93,13 @@ re:
 	@$(MAKE) all
 
 norme:
-	@norminette $(SRC_PATH) $(HEADER) | grep -v "101 header"
+	@timeout 5 norminette $(SRC_PATH) $(HEADER) | grep -v "42 header"
 
 full_norme: norme
 	@make -C libft/ norme
 
 normed:
-
-	@$(MAKE) norme
+	@norminette $(SRC_PATH) $(HEADER)
 	@$(MAKE) continue
 	@echo ""
 	@git add .

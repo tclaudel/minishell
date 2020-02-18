@@ -61,14 +61,15 @@ char				***alloc_commands(char *str, size_t *nb);
 size_t				bloc_counter(char *s, size_t i, size_t block);
 char				**parse(char *s);
 char				**fill_cmd(char *s, char **cmd, size_t j);
-char				*double_quote_allocator(char *s, size_t *j);
+char				*double_quote_allocator(char **s, size_t *j);
 char				*simple_quote_allocator(char *s, size_t *j);
-char				*non_special_allocator(char *s, size_t *j);
+char				*non_special_allocator(char **s, size_t *j);
 char				*quote_checker(char *s, size_t quote, size_t dquote);
 size_t				separator_counter(char *s, size_t i, size_t block);
 void				quotes_splitter(char *s, size_t *i, char c);
 char				*complete_cmd(char *s, char c);
 char				*found_pipes(char *s, size_t *j, size_t *i, size_t nb);
+size_t				separator_counter(char *s, size_t i, size_t block);
 
 /*
 ** DISPLAY
