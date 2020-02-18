@@ -13,61 +13,48 @@ int			is_builtin(char *cmd)
 	return (0);
 }
 
-void		builtin_env(t_sh *sh)
+void		builtin_env(t_sh *sh, t_hash *env)
 {
-	size_t	i;
-
-	i = 0;
-	while (sh->env[i].key)
+	while (env)
 	{
-		ft_dprintf(1, "%s", sh->env[i].key);
+		ft_dprintf(1, "%s", env->key);
 		ft_dprintf(1, "%s", "=");
-		ft_dprintf(1, "%s\n", sh->env[i].value);
-		i++;
+		ft_dprintf(1, "%s\n", env->value);
+		env = env->next;
 	}
 	sh->question_mark = 0;
 }
 
-static void	change_sh_path(void)
+void		change_sh_path(t_hash *env)
 {
 	if (get_sh_info()->path)
 	{
 		ft_free_tab(get_sh_info()->path);
-		if (ft_get_hash_value(get_sh_info()->env, "PATH"))
-			get_sh_info()->path = ft_split(ft_get_hash_value(get_sh_info()->env, "PATH"), ':');
+		if (env->search(env, "PATH"))
+			get_sh_info()->path = ft_split(env->search(env, "PATH"), ':');
 		else
 			get_sh_info()->path = ft_calloc(sizeof(char *), 1);
 	}
 	get_sh_info()->question_mark = 0;
 }
 
-void		builtin_unset(t_sh *sh, char **key, size_t i, size_t j)
+void		builtin_unset(t_sh *sh, char **key, size_t j)
 {
-	int			tmp;
-	t_strhash	buf;
+	t_hash	*top;
+	t_hash	*next;
 
+	top = sh->env;
+	printf("%p\n", top);
 	while (key[++j])
 	{
-		tmp = -1;
-		i = 0;
-		while (sh->env[i].key)
+		if (sh->env->search(sh->env, key[j]))
 		{
-			if (!ft_strcmp(sh->env[i].key, key[j]))
-			{
-				ft_strdel(&sh->env[i].key);
-				ft_strdel(&sh->env[i].value);
-				tmp = i;
-			}
-			i++;
-		}
-		if (tmp != -1 && tmp != (int)i - 1)
-		{
-			buf = sh->env[tmp];
-			sh->env[tmp] = sh->env[i - 1];
-			sh->env[i - 1] = buf;
+			sh->env = sh->env->find(sh->env, key[j]);
+			next = sh->env->next;
+			sh->env->del(&sh->env, sh->env->before, sh->env->next);
 		}
 	}
-	change_sh_path();
+	change_sh_path(sh->env);
 }
 
 void		builtin_echo(char **cmd)

@@ -1,63 +1,29 @@
 #include "minishell.h"
 
-static void			search_pwd(void)
+static void			search_pwd(t_sh *sh)
 {
 	char			str[1024];
-	char			**splited;
 
-	if (!change_value(get_sh_info()->env, "PWD", getcwd(str, 1024)))
-	{
-		splited = ft_split(ft_strfjoin("export ",
-		ft_strfjoin(ft_strjoin("PWD", "="), getcwd(str, 1024), 1), 2), ' ');
-		builtin_export(get_sh_info(), splited);
-		ft_free_tab(splited);
-	}
+	sh->env->change(sh->env, "PWD", getcwd(str, 1024), "string");
 }
 
-int					get_env_var(t_sh *sh, char **env)
+void			get_env_var(t_sh *sh, char **env)
 {
 	size_t	i;
-	size_t	j;
 
-	i = ft_tablen(env);
-	if ((sh->key = (char **)malloc(sizeof(char *) * (i + 1))) &&
-	(sh->value = (char **)malloc(sizeof(char *) * (i + 1))))
+	i = 1;
+	sh->hash = ft_hash_init();
+	sh->env = sh->hash->new(ft_strtok(env[0], "="),
+	ft_strtok(NULL, "="), "string");
+	while (env[i])
 	{
-		i = 0;
-		while (env[i])
-		{
-			j = 0;
-			while (env[i][j] && env[i][j] != '=')
-				j++;
-			sh->key[i] = ft_strndup(env[i], j);
-			sh->value[i] = ft_strdup(env[i] + j + 1);
-			i++;
-		}
-		sh->key[i] = NULL;
-		sh->value[i] = NULL;
-		sh->env = ft_strhash(sh->key, sh->value);
-		sh->path = ft_split(ft_get_hash_value(sh->env, "PATH"), ':');
-		search_pwd();
-		return (0);
-	}
-	exit(EXIT_FAILURE);
-}
-
-t_strhash			*realloc_hash(t_strhash *hash, size_t size)
-{
-	size_t		i;
-	t_strhash	*new;
-
-	i = 0;
-	if (!(new = (t_strhash *)ft_calloc(size, 1)))
-		return (NULL);
-	while (hash[i].key)
-	{
-		new[i] = hash[i];
+		sh->add = sh->hash->new(ft_strtok(env[i], "="),
+		ft_strtok(NULL, "="), "string");
+		sh->env->add_back(&sh->env, sh->add);
 		i++;
 	}
-	free(hash);
-	return (new);
+	sh->path = ft_split(sh->env->search(sh->env, "PATH"), ':');
+	search_pwd(sh);
 }
 
 void				replace_env_var(t_sh *sh, char **cmd, size_t i)
@@ -73,8 +39,8 @@ void				replace_env_var(t_sh *sh, char **cmd, size_t i)
 			buf = ft_strdup(cmd[i]);
 			j = ft_tablen(cmd) - 1;
 			ft_strdel(&cmd[i]);
-			if (ft_get_hash_value(sh->env, buf + 1))
-				cmd[i] = ft_strdup(ft_get_hash_value(sh->env, buf + 1));
+			if (sh->env->search(sh->env, buf + 1))
+				cmd[i] = ft_strdup(sh->env->search(sh->env, buf + 1));
 			else
 			{
 				cmd[i] = NULL;
