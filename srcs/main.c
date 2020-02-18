@@ -37,7 +37,6 @@ void			main_loop(t_sh *sh, char *buf, size_t i)
 		if (sh->cmd[i][0])
 		{
 			replace_question_mark(sh->cmd[i]);
-			replace_env_var(sh, sh->cmd[i], 0);
 			if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
 				exec_builtin(sh, i);
 			else if (sh->cmd[i] && sh->cmd[i][0])
