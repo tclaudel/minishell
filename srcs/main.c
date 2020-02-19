@@ -23,7 +23,7 @@ void			replace_question_mark(char **cmd)
 		if (!ft_strcmp(cmd[i], "$?"))
 		{
 			ft_strdel(&cmd[i]);
-			cmd[i] = ft_itoa(get_sh_info()->question_mark);
+			cmd[i] = ft_itoa(sh()->question_mark);
 		}
 		i++;
 	}
@@ -48,32 +48,48 @@ void			main_loop(t_sh *sh, char *buf, size_t i)
 	print_prompt(sh->env);
 }
 
-t_sh			*get_sh_info(void)
+t_sh			*sh(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, 0, NULL};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL};
 
 	return (&sh);
 }
 
 int				main(int ac, char **av, char **env)
 {
-	t_sh	*sh;
 	char	*buf;
 
 	(void)av[ac];
 	printf_welcome();
-	sh = get_sh_info();
-	get_env_var(sh, env);
-	print_prompt(sh->env);
+	get_env_var(sh(), env);
+	print_prompt(sh()->env);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
 	{
-		main_loop(sh, buf, 0);
-		ft_strdel(&sh->pipes);
+		main_loop(sh(), buf, 0);
+		ft_strdel(&sh()->pipes);
 	}
 	ft_dprintf(1, "%s\n", "exit");
-	ft_free_tab(sh->path);
+	ft_free_tab(sh()->path);
 	exit(EXIT_SUCCESS);
 	return (1);
 }
+
+// void	ft_pipe(t_file *file, char **args2)
+// {
+// 	pid_t	pid;
+// 	F->stop2 = 0;
+// 	pipe(F->pfd);
+// 	if ((pid = fork()) == 0)
+// 	{
+// 		dup2(F->pfd[1], 1);
+// 		ft_manager(args2, file);
+// 		exit(0);
+// 	}
+// 	dup2(F->pfd[0], 0);
+// 	close(F->pfd[0]);
+// 	close(F->pfd[1]);
+// 	while (wait(&F->status) > 0)
+// 		;
+// }

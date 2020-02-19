@@ -18,7 +18,9 @@ typedef struct		s_sh
 	char		**value;
 	char		***cmd;
 	char		**path;
-	t_strhash	*env;
+	t_hash		*hash;
+	t_hash		*env;
+	t_hash		*add;
 	short		question_mark;
 	char		*pipes;
 }					t_sh;
@@ -36,12 +38,12 @@ int					ft_fork_process(t_sh *sh, char **cmd);
 
 void				builtin_export(t_sh *sh, char **key);
 void				exec_builtin(t_sh *sh, size_t j);
-void				builtin_env(t_sh *sh);
+void				builtin_env(t_sh *sh, t_hash *env);
 void				builtin_cd(t_sh *sh, char **cmd);
-int					get_env_var(t_sh *sh, char **env);
+void				get_env_var(t_sh *sh, char **env);
 void				replace_env_var(t_sh *sh, char **cmd, size_t i);
 void				builtin_echo(char **cmd);
-void				builtin_unset(t_sh *sh, char **key, size_t i, size_t j);
+void				builtin_unset(t_sh *sh, char **key, size_t j);
 int					is_builtin(char *cmd);
 
 /*
@@ -73,14 +75,13 @@ size_t				separator_counter(char *s, size_t i, size_t block);
 ** DISPLAY
 */
 
-void				print_prompt(t_strhash *hash);
+void				print_prompt(t_hash *hash);
 void				printf_welcome(void);
 
 /*
 ** UTILS
 */
 
-t_strhash			*realloc_hash(t_strhash *hash, size_t size);
-t_sh				*get_sh_info(void);
-
+void				change_sh_path(t_hash *env);
+t_sh			*sh(void);
 #endif

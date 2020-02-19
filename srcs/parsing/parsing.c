@@ -28,7 +28,7 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 	j = 0;
 	entry = (char **)malloc(sizeof(&entry) * (nb + 1));
-	get_sh_info()->pipes = (char *)ft_calloc(sizeof(char), (nb));
+	sh()->pipes = (char *)ft_calloc(sizeof(char), (nb));
 	while (s[i] && s[i] != '\n')
 	{
 		i += ft_count_whitespaces(s + i);
@@ -104,9 +104,8 @@ void		parsing(t_sh *sh, char *str)
 	while (entries[j])
 	{
 		sh->cmd[j] = parse(entries[j]);
+		ft_display_tab(sh->cmd[j], "cmd");
 		j++;
 	}
-	// dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
-	ft_display_tab(sh->cmd[0], "cmd");
 	ft_strdel(&str);
 }

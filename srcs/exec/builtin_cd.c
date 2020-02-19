@@ -5,20 +5,21 @@ static void		change_folders(t_sh *sh, char *path)
 	char		str[1024];
 	static char	*old_pwd = NULL;
 
-	if (ft_get_hash_value(sh->env, "OLDPWD"))
+	if (sh->env->search(sh->env, "OLDPWD"))
 	{
-		old_pwd = ft_strdup(ft_get_hash_value(sh->env, "OLDPWD"));
-		change_value(sh->env, "OLDPWD", getcwd(str, 1024));
+		old_pwd = ft_strdup(sh->env->search(sh->env, "OLDPWD"));
+		sh->env->change(sh->env, "OLDPWD", getcwd(str, 1024), "string");
 	}
 	if (chdir(path) == -1)
 	{
 		ft_dprintf(2, "%s\n", strerror(errno));
-		change_value(sh->env, "OLDPWD", old_pwd);
+		sh->env->change(sh->env, "OLDPWD", old_pwd, "string");
 		sh->question_mark = 1;
 	}
 	else
 	{
-		change_value(sh->env, "PWD", getcwd(str, 1024));
+		if (sh->env->find(sh->env, "PWD"))
+			sh->env->change(sh->env, "PWD", getcwd(str, 1024), "string");
 		sh->question_mark = 0;
 	}
 	ft_strdel(&old_pwd);
@@ -34,8 +35,8 @@ void			builtin_cd(t_sh *sh, char **cmd)
 		i = 2;
 	if (cmd[i] == NULL)
 	{
-		if (ft_get_hash_value(sh->env, "HOME"))
-			path = ft_strdup(ft_get_hash_value(sh->env, "HOME"));
+		if (sh->env->search(sh->env, "HOME"))
+			path = ft_strdup(sh->env->search(sh->env, "HOME"));
 	}
 	else
 		path = ft_strdup(cmd[i]);
