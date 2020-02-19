@@ -38,17 +38,17 @@ void		change_sh_path(t_hash *env)
 
 void		builtin_unset(t_sh *sh, char **key, size_t j)
 {
-	t_hash	*top;
-	t_hash	*next;
+	// t_hash	*top;
+	// t_hash	*next;
 
-	top = sh->env;
-	printf("%p\n", top);
+	// top = sh->env;
+	// printf("%p\n", top);
 	while (key[++j])
 	{
 		if (sh->env->search(sh->env, key[j]))
 		{
 			sh->env = sh->env->find(sh->env, key[j]);
-			next = sh->env->next;
+			// next = sh->env->next;
 			sh->env->del(&sh->env, sh->env->before, sh->env->next);
 		}
 	}
