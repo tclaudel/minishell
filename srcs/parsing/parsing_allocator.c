@@ -56,6 +56,6 @@ char		**parse(char *s)
 	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
 	cmd[nb] = NULL;
 	cmd = fill_cmd(s, cmd, 0);
-	//ft_display_tab(cmd, "cmd");
+	ft_display_tab(cmd, "cmd");
 	return (cmd);
 }

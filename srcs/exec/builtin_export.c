@@ -20,7 +20,7 @@ static void		builtin_export_empty(t_sh *sh, t_hash **env)
 	top_cpy = cpy;
 	while (cpy)
 	{
-		ft_dprintf(1, "declare -x %s=%s\n", cpy->key, cpy->value);
+		ft_dprintf(1, "declare -x %s=\"%s\"\n", cpy->key, cpy->value);
 		cpy = cpy->next;
 	}
 	cpy = top_cpy;
@@ -36,6 +36,8 @@ static void		add_key(t_sh *sh, char **key, size_t j)
 	{
 		token[0] = ft_strtok(key[j], "=");
 		token[1] = ft_strtok(NULL, "=");
+		if (!token[1])
+			token[1] = "";
 		if (token[0][0] && sh->env->search(sh->env, token[0]))
 		{
 			sh->env->change(sh->env, token[0], token[1], "string");
