@@ -18,6 +18,7 @@ char		**fill_cmd(char *s, char **cmd, size_t j)
 	}
 	if (k > 1 && cmd[k - 1])
 		cmd[k] = NULL;
+	ft_strdel(&s);
 	return (cmd);
 }
 
@@ -28,7 +29,7 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 	j = 0;
 	entry = (char **)malloc(sizeof(&entry) * (nb + 1));
-	get_sh_info()->pipes = (char *)ft_calloc(sizeof(char), (nb));
+	sh()->pipes = (char *)ft_calloc(sizeof(char), (nb));
 	while (s[i] && s[i] != '\n')
 	{
 		i += ft_count_whitespaces(s + i);
@@ -108,4 +109,6 @@ void		parsing(t_sh *sh, char *str)
 	}
 	//dprintf(1, "pipes\t: %s\n", get_sh_info()->pipes);
 	ft_strdel(&str);
+	free(entries);
+	// ft_free_tab(entries);
 }

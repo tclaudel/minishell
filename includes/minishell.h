@@ -83,6 +83,6 @@ void				printf_welcome(void);
 */
 
 void				change_sh_path(t_hash *env);
-t_sh				*get_sh_info(void);
+t_sh				*sh(void);
 
 #endif

@@ -20,7 +20,7 @@ void		handle_sigint(int sig)
 		else if (sig == SIGINT)
 		{
 			ft_printf("\n");
-			print_prompt(get_sh_info()->env);
+			print_prompt(sh()->env);
 		}
 	}
 }
