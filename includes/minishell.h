@@ -11,6 +11,13 @@
 # include <dirent.h>
 # include <string.h>
 # include <errno.h>
+# include <fcntl.h>
+
+# define PIPE 		"|"
+# define SEMICOLON 	";"
+# define R_CHEVRON	"<"
+# define L_CHEVRON	">"
+# define LD_CHEVRON	">>"
 
 typedef struct		s_sh
 {
@@ -23,6 +30,7 @@ typedef struct		s_sh
 	t_hash		*add;
 	short		question_mark;
 	char		*pipes;
+	int			fd[2];
 }					t_sh;
 
 /*

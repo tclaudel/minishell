@@ -29,51 +29,36 @@ void			replace_question_mark(char **cmd)
 	}
 }
 
-void			main_loop(t_sh *sh, char *buf, size_t i)
+void	ft_exec(size_t i)
 {
-	parsing(sh, buf);
-	while (sh->cmd[i])
-	{
-		if (sh->cmd[i][0])
-		{
-			replace_question_mark(sh->cmd[i]);
-			if (sh->cmd[i][0] && is_builtin(sh->cmd[i][0]))
-				exec_builtin(sh, i);
-			else if (sh->cmd[i] && sh->cmd[i][0])
-				ft_fork_process(sh, sh->cmd[i]);
-		}
-		i++;
-	}
-	free_commands(sh);
-	print_prompt(sh->env);
+	replace_question_mark(sh()->cmd[i]);
+	if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
+		exec_builtin(sh(), i);
+	else if (sh()->cmd[i] && sh()->cmd[i][0])
+		ft_fork_process(sh(), sh()->cmd[i]);
 }
 
-t_sh			*sh(void)
+void	ft_pipe(size_t i)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL};
+	pid_t	pid;
+	int		status;
 
-	return (&sh);
-}
-
-int				main(int ac, char **av, char **env)
-{
-	char	*buf;
-
-	(void)av[ac];
-	printf_welcome();
-	get_env_var(sh(), env);
-	print_prompt(sh()->env);
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, handle_sigint);
-	while (get_next_line(0, &buf) > 0)
+	status = 0;
+	if (pipe(sh()->fd))
+		exit(EXIT_FAILURE);
+	pid = fork();
+	if (pid == -1)
+		ft_dprintf(2, "%s\n", strerror(errno));
+	if (pid == 0)
 	{
-		main_loop(sh(), buf, 0);
-		ft_strdel(&sh()->pipes);
+		dup2(sh()->fd[1], 1);
+		ft_exec(i);
+		exit(0);
 	}
-	ft_dprintf(1, "%s\n", "exit");
-	ft_free_tab(sh()->path);
-	exit(EXIT_SUCCESS);
-	return (1);
+	dup2(sh()->fd[0], 0);
+	close(sh()->fd[1]);
+	close(sh()->fd[0]);
+	waitpid(-1, &status, 0);
 }
 
 // void	ft_pipe(t_file *file, char **args2)
@@ -93,3 +78,54 @@ int				main(int ac, char **av, char **env)
 // 	while (wait(&F->status) > 0)
 // 		;
 // }
+
+void		main_loop(char *buf, size_t i)
+{
+	parsing(sh(), buf);
+	while (sh()->cmd[i])
+	{
+		if (ft_strchr(sh()->pipes, '|') &&
+			sh()->cmd[i][0] && sh()->cmd[i + 1])
+			ft_pipe(i);
+		else
+		{
+			replace_question_mark(sh()->cmd[i]);
+			if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
+				exec_builtin(sh(), i);
+			else if (sh()->cmd[i] && sh()->cmd[i][0])
+				ft_fork_process(sh(), sh()->cmd[i]);
+		}
+		i++;
+	}
+	free_commands(sh());
+	print_prompt(sh()->env);
+}
+
+t_sh			*sh(void)
+{
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, {0}};
+
+	return (&sh);
+}
+
+int				main(int ac, char **av, char **env)
+{
+	char	*buf;
+
+	(void)av[ac];
+	printf_welcome();
+	get_env_var(sh(), env);
+	print_prompt(sh()->env);
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigint);
+	while (get_next_line(0, &buf) > 0)
+	{
+		main_loop(buf, 0);
+		ft_strdel(&sh()->pipes);
+	}
+	ft_dprintf(1, "%s\n", "exit");
+	ft_free_tab(sh()->path);
+	exit(EXIT_SUCCESS);
+	return (1);
+}
+
