@@ -128,7 +128,7 @@ int				main(int ac, char **av, char **env)
 			sh()->env = sh()->env->next;
 		}
 		sh()->env = top;
-		main_loop(sh(), buf, 0);
+		main_loop(buf, 0);
 		ft_strdel(&sh()->pipes);
 	}
 	ft_dprintf(1, "%s\n", "exit");
