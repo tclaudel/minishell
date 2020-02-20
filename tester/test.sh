@@ -35,6 +35,8 @@ function ft_env {
 	sh ./tester/env.sh "$1" | "$3";
 }
 
+make
+
 if ! [ -z $1 ] ; then
 	var_sleep="$1";
 else

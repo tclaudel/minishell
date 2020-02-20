@@ -18,6 +18,7 @@ char		**fill_cmd(char *s, char **cmd, size_t j)
 	}
 	if (k > 1 && cmd[k - 1])
 		cmd[k] = NULL;
+	ft_strdel(&s);
 	return (cmd);
 }
 
@@ -108,4 +109,6 @@ void		parsing(t_sh *sh, char *str)
 		j++;
 	}
 	ft_strdel(&str);
+	free(entries);
+	// ft_free_tab(entries);
 }

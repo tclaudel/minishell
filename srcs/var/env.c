@@ -7,22 +7,30 @@ static void			search_pwd(t_sh *sh)
 	sh->env->change(sh->env, "PWD", getcwd(str, 1024), "string");
 }
 
-void			get_env_var(t_sh *sh, char **env)
+void				get_env_var(t_sh *sh, char **env)
 {
-	size_t	i;
+	size_t		i;
+	static char	*token[2] = {0};
 
 	i = 1;
 	sh->hash = ft_hash_init();
-	sh->env = sh->hash->new(ft_strtok(env[0], "="),
-	ft_strtok(NULL, "="), "string");
+	token[0] = ft_strtok(env[i], "=");
+	token[1] = ft_strtok(NULL, "=");
+	if (!token[1])
+		token[1] = "";
+	sh->env = sh->hash->new(token[0], token[1], "string");
 	while (env[i])
 	{
-		sh->add = sh->hash->new(ft_strtok(env[i], "="),
-		ft_strtok(NULL, "="), "string");
+		token[0] = ft_strtok(env[i], "=");
+		token[1] = ft_strtok(NULL, "=");
+		if (!token[1])
+			token[1] = "";
+		sh->add = sh->hash->new(token[0], token[1], "string");
 		sh->env->add_back(&sh->env, sh->add);
 		i++;
 	}
-	sh->path = ft_split(sh->env->search(sh->env, "PATH"), ':');
+	// sh->env->change(sh->env, "OLDPWD", "", "string");
+	change_sh_path(sh->env);
 	search_pwd(sh);
 }
 

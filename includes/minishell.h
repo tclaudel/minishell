@@ -91,5 +91,6 @@ void				printf_welcome(void);
 */
 
 void				change_sh_path(t_hash *env);
-t_sh			*sh(void);
+t_sh				*sh(void);
+
 #endif

@@ -111,6 +111,7 @@ t_sh			*sh(void)
 int				main(int ac, char **av, char **env)
 {
 	char	*buf;
+	t_hash	*top;
 
 	(void)av[ac];
 	printf_welcome();
@@ -120,11 +121,19 @@ int				main(int ac, char **av, char **env)
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
 	{
-		main_loop(buf, 0);
+		top = sh()->env->top;
+		while (sh()->env)
+		{ 
+			//ft_dprintf(1, "%-40s=%-60sadress:%p\ttop:%p\tbefore:%p\tnext:%p\n\n", sh()->env->key, sh()->env->value, sh()->env, sh()->env->top, sh()->env->before, sh()->env->next);
+			sh()->env = sh()->env->next;
+		}
+		sh()->env = top;
+		main_loop(sh(), buf, 0);
 		ft_strdel(&sh()->pipes);
 	}
 	ft_dprintf(1, "%s\n", "exit");
-	ft_free_tab(sh()->path);
+	if (sh()->path)
+		ft_free_tab(sh()->path);
 	exit(EXIT_SUCCESS);
 	return (1);
 }

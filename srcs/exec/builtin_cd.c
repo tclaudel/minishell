@@ -10,6 +10,8 @@ static void		change_folders(t_sh *sh, char *path)
 		old_pwd = ft_strdup(sh->env->search(sh->env, "OLDPWD"));
 		sh->env->change(sh->env, "OLDPWD", getcwd(str, 1024), "string");
 	}
+	else
+		old_pwd = ft_strdup("");
 	if (chdir(path) == -1)
 	{
 		ft_dprintf(2, "%s\n", strerror(errno));
