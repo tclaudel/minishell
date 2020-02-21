@@ -14,7 +14,7 @@ sleep "$1"
 echo 'echo "po  uet"str""'
 sleep "$1"
 
-echo 'echo euh NTM scialpi'
+echo 'echo euh NTM'
 sleep "$1"
 
 echo 'echo "pouet" "str"'
