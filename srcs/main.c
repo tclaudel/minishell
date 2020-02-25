@@ -35,15 +35,24 @@ void	ft_exec(size_t i)
 	if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
 		exec_builtin(sh(), i);
 	else if (sh()->cmd[i] && sh()->cmd[i][0])
+	{
 		ft_fork_process(sh(), sh()->cmd[i]);
+	}
 }
 
-void	ft_pipe(size_t i)
+// void	ft_right_redirection(size_t i)
+// {
+
+// }
+
+void	ft_pipe(size_t *i)
 {
 	pid_t	pid;
 	int		status;
+	int		stdin_bkp;
 
 	status = 0;
+	stdin_bkp = dup(STDIN_FILENO);
 	if (pipe(sh()->fd))
 		exit(EXIT_FAILURE);
 	pid = fork();
@@ -51,33 +60,24 @@ void	ft_pipe(size_t i)
 		ft_dprintf(2, "%s\n", strerror(errno));
 	if (pid == 0)
 	{
-		dup2(sh()->fd[1], 1);
-		ft_exec(i);
-		exit(0);
+		dup2(sh()->fd[1], STDOUT_FILENO);
+		close(sh()->fd[1]);
+		ft_exec((*i));
+		(*i)++;
+		exit(1);
 	}
-	dup2(sh()->fd[0], 0);
-	close(sh()->fd[1]);
-	close(sh()->fd[0]);
-	waitpid(-1, &status, 0);
-}
+	else
+	{
+		(*i)++;
+		dup2(sh()->fd[0], STDIN_FILENO);
+		close(sh()->fd[0]);
+		ft_exec((*i));
+		dup2(stdin_bkp, STDIN_FILENO);
+		close(sh()->fd[1]);
+	}
+	
 
-// void	ft_pipe(t_file *file, char **args2)
-// {
-// 	pid_t	pid;
-// 	F->stop2 = 0;
-// 	pipe(F->pfd);
-// 	if ((pid = fork()) == 0)
-// 	{
-// 		dup2(F->pfd[1], 1);
-// 		ft_manager(args2, file);
-// 		exit(0);
-// 	}
-// 	dup2(F->pfd[0], 0);
-// 	close(F->pfd[0]);
-// 	close(F->pfd[1]);
-// 	while (wait(&F->status) > 0)
-// 		;
-// }
+}
 
 void		main_loop(char *buf, size_t i)
 {
@@ -86,15 +86,9 @@ void		main_loop(char *buf, size_t i)
 	{
 		if (ft_strchr(sh()->pipes, '|') &&
 			sh()->cmd[i][0] && sh()->cmd[i + 1])
-			ft_pipe(i);
+			ft_pipe(&i);
 		else
-		{
-			replace_question_mark(sh()->cmd[i]);
-			if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
-				exec_builtin(sh(), i);
-			else if (sh()->cmd[i] && sh()->cmd[i][0])
-				ft_fork_process(sh(), sh()->cmd[i]);
-		}
+			ft_exec(i);
 		i++;
 	}
 	free_commands(sh());
@@ -134,7 +128,6 @@ int				main(int ac, char **av, char **env)
 	ft_dprintf(1, "%s\n", "exit");
 	if (sh()->path)
 		ft_free_tab(sh()->path);
-	exit(EXIT_SUCCESS);
 	return (1);
 }
 

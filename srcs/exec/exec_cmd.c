@@ -37,19 +37,18 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 	pid = 0;
 	if ((pid = fork()) == -1)
 		ft_dprintf(2, "%s\n", strerror(errno));
-	if (pid > 0)
+	if ( pid == 0)
 	{
-		handle_sigint(pid);
-		waitpid(pid, &status, 0);
+		exec_cmd(sh, cmd);
+	}
+	else
+	{
+		wait(&status);
 		if (WIFSIGNALED(status))
 			sh->question_mark = WTERMSIG(status) + 128;
 		else
 			sh->question_mark = WEXITSTATUS(status);
 		handle_sigint(0);
-	}
-	else
-	{
-		exec_cmd(sh, cmd);
 	}
 	return (1);
 }

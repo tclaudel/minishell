@@ -105,7 +105,7 @@ void		parsing(t_sh *sh, char *str)
 	while (entries[j])
 	{
 		sh->cmd[j] = parse(entries[j]);
-		ft_display_tab(sh->cmd[j], "cmd");
+		//ft_display_tab(sh->cmd[j], "cmd");
 		j++;
 	}
 	ft_strdel(&str);
