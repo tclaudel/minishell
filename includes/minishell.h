@@ -31,7 +31,7 @@ typedef struct		s_sh
 	short		question_mark;
 	char		*pipes;
 	int			fd[2];
-	char		is_father;
+	size_t		pipes_nb;
 }					t_sh;
 
 /*
@@ -94,6 +94,8 @@ void				printf_welcome(void);
 */
 
 void				ft_pipe(size_t *i);
+void				redirections(void);
+void				pipes_counter(void);
 
 /*
 ** UTILS

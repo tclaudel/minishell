@@ -17,7 +17,7 @@ SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c b
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
-SRCS_REDIR		=	$(addprefix redirections/, redirections.c)
+SRCS_REDIR		=	$(addprefix redirections/, pipe.c redirections.c)
 
 SRCS_DISPLAY	=	$(addprefix display/, display.c)
 
@@ -39,7 +39,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address
+FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
@@ -96,7 +96,7 @@ re:
 	@$(MAKE) all
 
 norme:
-	@timeout 5 norminette $(SRC_PATH) $(HEADER) | grep -v "42 header"
+	@norminette $(SRC_PATH) $(HEADER) | grep -v "42 header"
 
 full_norme: norme
 	@make -C libft/ norme
@@ -159,8 +159,8 @@ continue:
 	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..."; $(MAKE) ew ; exit 1 2> /dev/null)
 
 git-%:
-	@timeout 5 $(MAKE) norme
-	@$(MAKE) continue
+	#@$(MAKE) norme
+	#@$(MAKE) continue
 	@echo ""
 	@git add .
 	@git status

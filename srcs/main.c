@@ -1,16 +1,16 @@
 #include "minishell.h"
 
-static void		free_commands(t_sh *sh)
+static void		free_commands(void)
 {
 	size_t i;
 
 	i = 0;
-	while (sh->cmd[i])
+	while (sh()->cmd[i])
 	{
-		ft_free_tab(sh->cmd[i]);
+		ft_free_tab(sh()->cmd[i]);
 		i++;
 	}
-	free(sh->cmd);
+	free(sh()->cmd);
 }
 
 void			replace_question_mark(char **cmd)
@@ -29,19 +29,14 @@ void			replace_question_mark(char **cmd)
 	}
 }
 
-void			main_loop(char *buf, size_t i)
+void			main_loop(char *buf)
 {
 	parsing(sh(), buf);
-	while (sh()->cmd[i])
-	{
-		if (ft_strchr(sh()->pipes, '|') &&
-			sh()->cmd[i][0] && sh()->cmd[i + 1])
-			ft_pipe(&i);
-		else
-			ft_exec(i);
-		i++;
-	}
-	free_commands(sh());
+	if (sh()->pipes[0] != 0)
+		redirections();
+	else
+		ft_exec(0);
+	free_commands();
 	print_prompt(sh()->env);
 }
 
@@ -72,7 +67,7 @@ int				main(int ac, char **av, char **env)
 			sh()->env = sh()->env->next;
 		}
 		sh()->env = top;
-		main_loop(buf, 0);
+		main_loop(buf);
 		ft_strdel(&sh()->pipes);
 	}
 	ft_dprintf(1, "%s\n", "exit");
