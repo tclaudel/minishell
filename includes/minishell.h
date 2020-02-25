@@ -40,6 +40,7 @@ typedef struct		s_sh
 void				exec_cmd(t_sh *sh, char **cmd);
 int					ft_fork_process(t_sh *sh, char **cmd);
 void				ft_exec(size_t i);
+void				replace_question_mark(char **cmd);
 
 /*
 ** BUILTIN
