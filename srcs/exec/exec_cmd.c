@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+void		ft_exec(size_t i)
+{
+	replace_question_mark(sh()->cmd[i]);
+	if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
+		exec_builtin(sh(), i);
+	else if (sh()->cmd[i] && sh()->cmd[i][0])
+	{
+		ft_fork_process(sh(), sh()->cmd[i]);
+	}
+}
+
 void		exec_builtin(t_sh *sh, size_t j)
 {
 	char str[1024];
@@ -37,10 +48,8 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 	pid = 0;
 	if ((pid = fork()) == -1)
 		ft_dprintf(2, "%s\n", strerror(errno));
-	if ( pid == 0)
-	{
+	if (pid == 0)
 		exec_cmd(sh, cmd);
-	}
 	else
 	{
 		wait(&status);

@@ -29,57 +29,7 @@ void			replace_question_mark(char **cmd)
 	}
 }
 
-void	ft_exec(size_t i)
-{
-	replace_question_mark(sh()->cmd[i]);
-	if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
-		exec_builtin(sh(), i);
-	else if (sh()->cmd[i] && sh()->cmd[i][0])
-	{
-		ft_fork_process(sh(), sh()->cmd[i]);
-	}
-}
-
-// void	ft_right_redirection(size_t i)
-// {
-
-// }
-
-void	ft_pipe(size_t *i)
-{
-	pid_t	pid;
-	int		status;
-	int		stdin_bkp;
-
-	status = 0;
-	stdin_bkp = dup(STDIN_FILENO);
-	if (pipe(sh()->fd))
-		exit(EXIT_FAILURE);
-	pid = fork();
-	if (pid == -1)
-		ft_dprintf(2, "%s\n", strerror(errno));
-	if (pid == 0)
-	{
-		dup2(sh()->fd[1], STDOUT_FILENO);
-		close(sh()->fd[1]);
-		ft_exec((*i));
-		(*i)++;
-		exit(1);
-	}
-	else
-	{
-		(*i)++;
-		dup2(sh()->fd[0], STDIN_FILENO);
-		close(sh()->fd[0]);
-		ft_exec((*i));
-		dup2(stdin_bkp, STDIN_FILENO);
-		close(sh()->fd[1]);
-	}
-	
-
-}
-
-void		main_loop(char *buf, size_t i)
+void			main_loop(char *buf, size_t i)
 {
 	parsing(sh(), buf);
 	while (sh()->cmd[i])
@@ -117,7 +67,7 @@ int				main(int ac, char **av, char **env)
 	{
 		top = sh()->env->top;
 		while (sh()->env)
-		{ 
+		{
 			//ft_dprintf(1, "%-40s=%-60sadress:%p\ttop:%p\tbefore:%p\tnext:%p\n\n", sh()->env->key, sh()->env->value, sh()->env, sh()->env->top, sh()->env->before, sh()->env->next);
 			sh()->env = sh()->env->next;
 		}
@@ -130,4 +80,3 @@ int				main(int ac, char **av, char **env)
 		ft_free_tab(sh()->path);
 	return (1);
 }
-
