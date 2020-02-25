@@ -47,7 +47,7 @@ void			main_loop(char *buf, size_t i)
 
 t_sh			*sh(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, {0}};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, {0}, 0};
 
 	return (&sh);
 }

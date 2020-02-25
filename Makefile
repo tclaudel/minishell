@@ -13,13 +13,15 @@ YELLOW = \033[0;33m
 
 SRCS_PARSING	=	$(addprefix parsing/, parsing.c parsing_allocator.c block_allocation.c set_redirections.c)
 
-SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c builtin_cd.c redirections.c) 
+SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c builtin_cd.c) 
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
+SRCS_REDIR		=	$(addprefix redirections/, redirections.c)
+
 SRCS_DISPLAY	=	$(addprefix display/, display.c)
 
-SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC) $(SRCS_VAR) $(SRCS_DISPLAY)
+SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC) $(SRCS_VAR) $(SRCS_DISPLAY) $(SRCS_REDIR)
 
 SRC_PATH		=	srcs/
 
@@ -59,6 +61,7 @@ $(OBJ_PATH):
 	@mkdir -p obj/exec 2> /dev/null
 	@mkdir -p obj/var 2> /dev/null
 	@mkdir -p obj/display 2> /dev/null
+	@mkdir -p obj/redirections 2> /dev/null
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADER)/minishell.h Makefile
 	@printf "\033[2K\r$(LIGHT_RED)Compiling...	\033[37m$<\033[36m \033[0m"
@@ -178,7 +181,7 @@ call: all
 	@nm -g $(addprefix ${OBJ_PATH}, ${OBJ_NAME})
 
 ew:
-	@say -v Fiona ew
+	@say -v Thomas "Comme une balle"
 
 full_check: all
 	@$(MAKE) full_norme
