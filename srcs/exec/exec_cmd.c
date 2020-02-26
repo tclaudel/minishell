@@ -2,7 +2,6 @@
 
 void		ft_exec(size_t i)
 {
-	replace_question_mark(sh()->cmd[i]);
 	if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
 		exec_builtin(sh(), i);
 	else if (sh()->cmd[i] && sh()->cmd[i][0])

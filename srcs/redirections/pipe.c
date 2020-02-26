@@ -46,13 +46,7 @@ void	ft_pipe(int i, int in_fd)
 	pid_t	pid;
 
 	if (!sh()->cmd[i + 1])
-	{
-		if (i > 0)
-			is_pipe(i, in_fd);
-		else
-			ft_exec((size_t)i);
-		wait(NULL);
-	}
+		i > 0 ? is_pipe(i, in_fd) : ft_exec((size_t)i);
 	else
 	{
 		sh()->stdin_bkp = dup(STDIN_FILENO);
@@ -69,6 +63,7 @@ void	ft_pipe(int i, int in_fd)
 			exec_father(i, in_fd);
 		}
 	}
+	wait(NULL);
 	dup2(sh()->stdin_bkp, STDIN_FILENO);
 	close(sh()->fd[0]);
 }
