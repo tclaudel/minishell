@@ -39,7 +39,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address
+FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
@@ -159,8 +159,11 @@ continue:
 	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..."; $(MAKE) ew ; exit 1 2> /dev/null)
 
 git-%:
-	#@$(MAKE) norme
-	#@$(MAKE) continue
+	@$(MAKE) norme
+	@$(MAKE) continue
+	@echo ""
+	@$(MAKE) test
+	@$(MAKE) continue
 	@echo ""
 	@git add .
 	@git status
@@ -181,7 +184,11 @@ call: all
 	@nm -g $(addprefix ${OBJ_PATH}, ${OBJ_NAME})
 
 ew:
-	@say -v Thomas "Comme une balle"
+	@say -v Thomas "Pipe et pipe ! Pipe et jambe de bois!"
+
+test: all
+	@sh tester/test.sh 0.01
+	@printf "\33[2K\r$(GREEN)Test done\n\n\033[0m"
 
 full_check: all
 	@$(MAKE) full_norme
