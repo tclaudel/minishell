@@ -44,7 +44,7 @@ void	pipes_counter(void)
 
 	i =
 	sh()->pipes_nb = 0;
-	while(sh()->pipes[i])
+	while (sh()->pipes[i])
 	{
 		if (sh()->pipes[i] == '|')
 			sh()->pipes_nb++;
