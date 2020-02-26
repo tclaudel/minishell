@@ -17,9 +17,11 @@ SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c b
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
+SRCS_REDIR		=	$(addprefix redirections/, pipe.c redirections.c)
+
 SRCS_DISPLAY	=	$(addprefix display/, display.c)
 
-SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC) $(SRCS_VAR) $(SRCS_DISPLAY)
+SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC) $(SRCS_VAR) $(SRCS_DISPLAY) $(SRCS_REDIR)
 
 SRC_PATH		=	srcs/
 
@@ -37,7 +39,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
+FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address
 
 LIBFT			=	libft/libft.a
 
@@ -59,6 +61,7 @@ $(OBJ_PATH):
 	@mkdir -p obj/exec 2> /dev/null
 	@mkdir -p obj/var 2> /dev/null
 	@mkdir -p obj/display 2> /dev/null
+	@mkdir -p obj/redirections 2> /dev/null
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADER)/minishell.h Makefile
 	@printf "\033[2K\r$(LIGHT_RED)Compiling...	\033[37m$<\033[36m \033[0m"
@@ -93,7 +96,7 @@ re:
 	@$(MAKE) all
 
 norme:
-	@timeout 5 norminette $(SRC_PATH) $(HEADER) | grep -v "42 header"
+	@norminette $(SRC_PATH) $(HEADER) | grep -v "42 header"
 
 full_norme: norme
 	@make -C libft/ norme
@@ -156,8 +159,8 @@ continue:
 	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..."; $(MAKE) ew ; exit 1 2> /dev/null)
 
 git-%:
-	@timeout 5 $(MAKE) norme
-	@$(MAKE) continue
+	#@$(MAKE) norme
+	#@$(MAKE) continue
 	@echo ""
 	@git add .
 	@git status
@@ -178,7 +181,7 @@ call: all
 	@nm -g $(addprefix ${OBJ_PATH}, ${OBJ_NAME})
 
 ew:
-	@say -v Fiona ew
+	@say -v Thomas "Comme une balle"
 
 full_check: all
 	@$(MAKE) full_norme
