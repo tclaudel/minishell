@@ -38,3 +38,9 @@ sleep "$1"
 
 echo './minishell ; unset PATH ; ls -la ; export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/munki: ; ls'
 sleep "$1"
+
+echo 'unset PWD'
+sleep "$1"
+
+echo 'unset SHLVL'
+sleep "$1"
