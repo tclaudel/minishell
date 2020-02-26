@@ -181,7 +181,7 @@ call: all
 	@nm -g $(addprefix ${OBJ_PATH}, ${OBJ_NAME})
 
 ew:
-	@say -v Thomas "Comme une balle"
+	@say -v Thomas "Pipe et pipe ! Pipe et jambe de bois!"
 
 full_check: all
 	@$(MAKE) full_norme

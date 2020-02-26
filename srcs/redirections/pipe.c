@@ -20,10 +20,9 @@ void	ft_pipe(size_t *i)
 {
 	pid_t	pid;
 	int		status;
-	int		stdin_bkp;
 
 	status = 0;
-	stdin_bkp = dup(STDIN_FILENO);
+	sh()->stdin_bkp = dup(STDIN_FILENO);
 	if (pipe(sh()->fd))
 		exit(EXIT_FAILURE);
 	pid = fork();
@@ -34,8 +33,6 @@ void	ft_pipe(size_t *i)
 	wait(NULL);
 	second_part_of_pipe(i);
 	wait(NULL);
-	dup2(stdin_bkp, STDIN_FILENO);
-	close(sh()->fd[0]);
 }
 
 void	pipes_counter(void)

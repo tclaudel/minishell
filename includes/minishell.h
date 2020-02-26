@@ -32,6 +32,7 @@ typedef struct		s_sh
 	char		*pipes;
 	int			fd[2];
 	size_t		pipes_nb;
+	int			stdin_bkp;
 }					t_sh;
 
 /*
