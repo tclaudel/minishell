@@ -62,10 +62,7 @@ int				main(int ac, char **av, char **env)
 	{
 		top = sh()->env->top;
 		while (sh()->env)
-		{
-			//ft_dprintf(1, "%-40s=%-60sadress:%p\ttop:%p\tbefore:%p\tnext:%p\n\n", sh()->env->key, sh()->env->value, sh()->env, sh()->env->top, sh()->env->before, sh()->env->next);
 			sh()->env = sh()->env->next;
-		}
 		sh()->env = top;
 		main_loop(buf);
 		ft_strdel(&sh()->pipes);
