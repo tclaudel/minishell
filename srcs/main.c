@@ -1,16 +1,16 @@
 #include "minishell.h"
 
-static void		free_commands(t_sh *sh)
+static void		free_commands(void)
 {
 	size_t i;
 
 	i = 0;
-	while (sh->cmd[i])
+	while (sh()->cmd[i])
 	{
-		ft_free_tab(sh->cmd[i]);
+		ft_free_tab(sh()->cmd[i]);
 		i++;
 	}
-	free(sh->cmd);
+	free(sh()->cmd);
 }
 
 void			replace_question_mark(char **cmd)
@@ -29,81 +29,20 @@ void			replace_question_mark(char **cmd)
 	}
 }
 
-void	ft_exec(size_t i)
-{
-	replace_question_mark(sh()->cmd[i]);
-	if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
-		exec_builtin(sh(), i);
-	else if (sh()->cmd[i] && sh()->cmd[i][0])
-		ft_fork_process(sh(), sh()->cmd[i]);
-}
-
-void	ft_pipe(size_t i)
-{
-	pid_t	pid;
-	int		status;
-
-	status = 0;
-	if (pipe(sh()->fd))
-		exit(EXIT_FAILURE);
-	pid = fork();
-	if (pid == -1)
-		ft_dprintf(2, "%s\n", strerror(errno));
-	if (pid == 0)
-	{
-		dup2(sh()->fd[1], 1);
-		ft_exec(i);
-		exit(0);
-	}
-	dup2(sh()->fd[0], 0);
-	close(sh()->fd[1]);
-	close(sh()->fd[0]);
-	waitpid(-1, &status, 0);
-}
-
-// void	ft_pipe(t_file *file, char **args2)
-// {
-// 	pid_t	pid;
-// 	F->stop2 = 0;
-// 	pipe(F->pfd);
-// 	if ((pid = fork()) == 0)
-// 	{
-// 		dup2(F->pfd[1], 1);
-// 		ft_manager(args2, file);
-// 		exit(0);
-// 	}
-// 	dup2(F->pfd[0], 0);
-// 	close(F->pfd[0]);
-// 	close(F->pfd[1]);
-// 	while (wait(&F->status) > 0)
-// 		;
-// }
-
-void		main_loop(char *buf, size_t i)
+void			main_loop(char *buf)
 {
 	parsing(sh(), buf);
-	while (sh()->cmd[i])
-	{
-		if (ft_strchr(sh()->pipes, '|') &&
-			sh()->cmd[i][0] && sh()->cmd[i + 1])
-			ft_pipe(i);
-		else
-		{
-			replace_question_mark(sh()->cmd[i]);
-			if (sh()->cmd[i][0] && is_builtin(sh()->cmd[i][0]))
-				exec_builtin(sh(), i);
-			else if (sh()->cmd[i] && sh()->cmd[i][0])
-				ft_fork_process(sh(), sh()->cmd[i]);
-		}
-		i++;
-	}
-	free_commands(sh());
+	if (sh()->pipes[0] != 0)
+		redirections();
+	else
+		ft_exec(0);
+	free_commands();
 	print_prompt(sh()->env);
 }
 
 t_sh			*sh(void)
 {
-	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, {0}};
+	static t_sh	sh = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, {0}, 0};
 
 	return (&sh);
 }
@@ -123,18 +62,16 @@ int				main(int ac, char **av, char **env)
 	{
 		top = sh()->env->top;
 		while (sh()->env)
-		{ 
+		{
 			//ft_dprintf(1, "%-40s=%-60sadress:%p\ttop:%p\tbefore:%p\tnext:%p\n\n", sh()->env->key, sh()->env->value, sh()->env, sh()->env->top, sh()->env->before, sh()->env->next);
 			sh()->env = sh()->env->next;
 		}
 		sh()->env = top;
-		main_loop(buf, 0);
+		main_loop(buf);
 		ft_strdel(&sh()->pipes);
 	}
 	ft_dprintf(1, "%s\n", "exit");
 	if (sh()->path)
 		ft_free_tab(sh()->path);
-	exit(EXIT_SUCCESS);
 	return (1);
 }
-

@@ -31,6 +31,7 @@ typedef struct		s_sh
 	short		question_mark;
 	char		*pipes;
 	int			fd[2];
+	size_t		pipes_nb;
 }					t_sh;
 
 /*
@@ -39,6 +40,8 @@ typedef struct		s_sh
 
 void				exec_cmd(t_sh *sh, char **cmd);
 int					ft_fork_process(t_sh *sh, char **cmd);
+void				ft_exec(size_t i);
+void				replace_question_mark(char **cmd);
 
 /*
 ** BUILTIN
@@ -85,6 +88,14 @@ size_t				separator_counter(char *s, size_t i, size_t block);
 
 void				print_prompt(t_hash *hash);
 void				printf_welcome(void);
+
+/*
+** REDIRECTIONS
+*/
+
+void				ft_pipe(size_t *i);
+void				redirections(void);
+void				pipes_counter(void);
 
 /*
 ** UTILS
