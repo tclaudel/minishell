@@ -14,7 +14,7 @@ void				get_env_var(t_sh *sh, char **env)
 
 	i = 1;
 	sh->hash = ft_hash_init();
-	token[0] = ft_strtok(env[i], "=");
+	token[0] = ft_strtok(env[0], "=");
 	token[1] = ft_strtok(NULL, "=");
 	if (!token[1])
 		token[1] = "";
@@ -29,7 +29,6 @@ void				get_env_var(t_sh *sh, char **env)
 		sh->env->add_back(&sh->env, sh->add);
 		i++;
 	}
-	// sh->env->change(sh->env, "OLDPWD", "", "string");
 	change_sh_path(sh->env);
 	search_pwd(sh);
 }
