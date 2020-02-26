@@ -1,38 +1,76 @@
 #include "minishell.h"
 
-void	first_part_of_pipe(size_t *i)
+void redirect(int oldfd, int newfd)
 {
-	dup2(sh()->fd[1], STDOUT_FILENO);
+	if (oldfd != newfd)
+	{
+		if (dup2(oldfd, newfd) == -1)
+			close(oldfd);
+	}
+}
+
+void is_pipe(int i, int in_fd)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		redirect(in_fd, STDIN_FILENO);
+		close(sh()->fd[1]);
+		ft_exec(i);
+		exit(EXIT_SUCCESS);
+	}
+	close(in_fd);
+}
+
+void exec_child(int i, int in_fd)
+{
 	close(sh()->fd[0]);
-	close(sh()->fd[1]);
-	ft_exec((*i));
-	exit(1);
+	redirect(in_fd, STDIN_FILENO);
+	redirect(sh()->fd[1], 1);
+	ft_exec(i);
+	exit(EXIT_FAILURE);
 }
 
-void	second_part_of_pipe(size_t *i)
+void exec_father(int i, int in_fd)
 {
+	if (i > 0)
+		close(in_fd);
 	close(sh()->fd[1]);
-	dup2(sh()->fd[0], STDIN_FILENO);
-	ft_exec((*i) + 1);
+	ft_pipe(i + 1, sh()->fd[0]);
 }
 
-void	ft_pipe(size_t *i)
+void	ft_pipe(int i, int in_fd)
 {
 	pid_t	pid;
-	int		status;
 
-	status = 0;
-	sh()->stdin_bkp = dup(STDIN_FILENO);
-	if (pipe(sh()->fd))
-		exit(EXIT_FAILURE);
-	pid = fork();
-	if (pid == -1)
-		ft_dprintf(2, "%s\n", strerror(errno));
-	if (pid == 0)
-		first_part_of_pipe(i);
-	wait(NULL);
-	second_part_of_pipe(i);
-	wait(NULL);
+	if (!sh()->cmd[i + 1])
+	{
+		if (i > 0)
+			is_pipe(i, in_fd);
+		else
+			ft_exec((size_t)i);
+		wait(NULL);
+	}
+	else
+	{
+		sh()->stdin_bkp = dup(STDIN_FILENO);
+		if (pipe(sh()->fd))
+			exit(EXIT_FAILURE);
+		pid = fork();
+		if (pid == -1)
+			ft_dprintf(2, "%s\n", strerror(errno));
+		if (pid == 0)
+			exec_child(i, in_fd);
+		else
+		{
+			wait(NULL);
+			exec_father(i, in_fd);
+		}
+	}
+	dup2(sh()->stdin_bkp, STDIN_FILENO);
+	close(sh()->fd[0]);
 }
 
 void	pipes_counter(void)
