@@ -31,12 +31,21 @@ void			replace_question_mark(char **cmd)
 
 void			main_loop(char *buf)
 {
-	parsing(sh(), buf);
-	if (sh()->pipes[0] != 0)
+	size_t	i;
+	char	**sep;
+
+	i = 0;
+	sep = ft_split(buf, ';');
+	while (sep[i])
+	{
+		parsing(sep[i]);
+		if (sh()->pipes[0] != 0)
 		redirections();
-	else
-		ft_exec(0);
-	free_commands();
+		else
+			ft_exec(0);
+		free_commands();
+		i++;
+	}
 	print_prompt(sh()->env);
 }
 

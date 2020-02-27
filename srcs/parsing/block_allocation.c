@@ -11,7 +11,10 @@ char	*fill_str_with_var(char *s, size_t i)
 	while (s[j] && s[j] != '\"' && s[j] != ' ')
 		j++;
 	var = ft_substr(s, i, j - i);
-	value = sh()->env->search(sh()->env, var);
+	if (var[0] == '?' && !var[1])
+		value = ft_itoa(sh()->question_mark);
+	else
+		value = sh()->env->search(sh()->env, var);
 	if (value)
 		s = ft_insert(s, value, i - 1, ft_strlen(var) + 1);
 	else if (var)

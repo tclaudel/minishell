@@ -31,7 +31,6 @@ typedef struct		s_sh
 	short		question_mark;
 	char		*pipes;
 	int			fd[2];
-	int			pipes_nb;
 	int			stdin_bkp;
 }					t_sh;
 
@@ -68,7 +67,7 @@ void				handle_sigint(int sig);
 ** PARSING
 */
 
-void				parsing(t_sh *sh, char *str);
+void				parsing(char *str);
 char				***alloc_commands(char *str, size_t *nb);
 size_t				bloc_counter(char *s, size_t i, size_t block);
 char				**parse(char *s);

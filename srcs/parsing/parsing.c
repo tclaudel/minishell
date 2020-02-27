@@ -90,7 +90,7 @@ char		***alloc_commands(char *str, size_t *nb)
 	return (cmd);
 }
 
-void		parsing(t_sh *sh, char *str)
+void		parsing(char *str)
 {
 	size_t	i;
 	size_t	j;
@@ -100,11 +100,11 @@ void		parsing(t_sh *sh, char *str)
 	i = 0;
 	j = 0;
 	str = quote_checker(str, 0, 0);
-	sh->cmd = alloc_commands(str, &nb);
+	sh()->cmd = alloc_commands(str, &nb);
 	entries = ft_split_cmd(str, nb, 0, 0);
 	while (entries[j])
 	{
-		sh->cmd[j] = parse(entries[j]);
+		sh()->cmd[j] = parse(entries[j]);
 		j++;
 	}
 	ft_strdel(&str);
