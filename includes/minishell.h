@@ -31,7 +31,6 @@ typedef struct		s_sh
 	short		question_mark;
 	char		*pipes;
 	int			fd[2];
-	int			pipes_nb;
 	int			stdin_bkp;
 }					t_sh;
 

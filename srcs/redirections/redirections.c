@@ -7,6 +7,5 @@ void	parse_redirections(void)
 
 void	redirections(void)
 {
-	pipes_counter();
 	parse_redirections();
 }

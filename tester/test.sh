@@ -36,7 +36,6 @@ function ft_env {
 }
 
 make
-
 if ! [ -z $1 ] ; then
 	var_sleep="$1";
 else
@@ -44,7 +43,7 @@ else
 fi
 echo "var_sleep = $var_sleep";
 if [ -z $2 ]; then
-	cat "./coucou"
+	cat "./tester/read_readme"
 	default=1;
 else
 	default=0;
