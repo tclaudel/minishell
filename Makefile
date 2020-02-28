@@ -17,7 +17,7 @@ SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c b
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
-SRCS_REDIR		=	$(addprefix redirections/, pipe.c redirections.c)
+SRCS_REDIR		=	$(addprefix redirections/, pipe.c redirections.c right_redirections.c lonely_command.c)
 
 SRCS_DISPLAY	=	$(addprefix display/, display.c)
 
@@ -48,7 +48,8 @@ current_branch	=	$(git symbolic-ref HEAD 2>/dev/null)
 all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
 
-exec: all
+exec:
+	@${MAKE} all
 	@./minishell
 
 $(LIBFT):

@@ -4,7 +4,6 @@ void		grep_pipes(char *s, size_t *i, size_t nb)
 {
 	static size_t	j = 0;
 
-	dprintf(1, "s\t: %s\n", s + (*i));
 	if (!ft_strncmp(">>", s + (*i), 2))
 	{
 		sh()->pipes[j] = 'd';

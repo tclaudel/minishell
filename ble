@@ -2,6 +2,7 @@ Makefile
 a.out
 ble
 bli
+blu
 cat
 check.sh
 includes

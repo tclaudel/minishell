@@ -96,6 +96,9 @@ void				printf_welcome(void);
 void				ft_pipe(int i, int in_fd);
 void				redirections(void);
 void				pipes_counter(void);
+int					right_redir(int i);
+int					lonely_command(int i, int in_fd);
+void				redirect(int oldfd, int newfd);
 
 /*
 ** UTILS
