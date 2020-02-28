@@ -48,6 +48,9 @@ current_branch	=	$(git symbolic-ref HEAD 2>/dev/null)
 all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
 
+exec: all
+	@./minishell
+
 $(LIBFT):
 	@make -C libft/
 

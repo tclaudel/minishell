@@ -13,8 +13,9 @@ int redirect_output(int i)
 {
 	int fd;
 
-	dprintf(1, "fd\t: %s\n", sh()->cmd[i + 1][0]);
-	if (!(fd = open(sh()->cmd[i + 1][0], O_RDWR | O_CREAT | O_TRUNC, 0644)))
+	dprintf(1, "pipe\t: [%c]\n", sh()->pipes[i]);
+	if (!(fd = open(sh()->cmd[i + 1][0], sh()->pipes[i] == 'd' ? 
+		O_RDWR | O_CREAT | O_APPEND : O_RDWR | O_CREAT | O_TRUNC, 0644)))
 		return (-1);
 	if (dup2(fd, STDOUT_FILENO) < 1)
 		return (-1);
@@ -39,7 +40,7 @@ void is_pipe(int i, int in_fd)
 		if (pid == 0)
 		{
 			redirect(in_fd, STDIN_FILENO);
-			if (sh()->pipes[i] == '>')
+			if (sh()->pipes[i] == '>' || sh()->pipes[i] == 'd')
 			{
 				dprintf(1, "here");
 				sh()->fd[1] = left_redir(i);
@@ -57,10 +58,9 @@ int	exec_child(int *i, int in_fd)
 	int	ret;
 
 	ret = 0;
-	dprintf(1, "pipes\t: %s\n", sh()->pipes + (*i));
 	close(sh()->fd[0]);
 	redirect(in_fd, STDIN_FILENO);
-	if (sh()->pipes[(*i)] == '>')
+	if (sh()->pipes[(*i)] == '>' || sh()->pipes[(*i)] == 'd')
 	{
 		sh()->fd[1] = left_redir((*i));
 		ret = 1;
@@ -85,13 +85,12 @@ int		lonely_command(int i, int in_fd)
 {
 	pid_t		pid;
 
-	dprintf(1, "pipes\t: %s\n", sh()->pipes + i);
 	if (!is_builtin(sh()->cmd[i][0]))
 	{
 		pid = fork();
 		if (pid == 0)
 		{
-			if (sh()->pipes[i] == '>')
+			if (sh()->pipes[(i)] == '>' || sh()->pipes[(i)] == 'd')
 			{
 				sh()->fd[1] = left_redir(i);
 			}
@@ -126,7 +125,6 @@ void	ft_pipe(int i, int in_fd)
 			i += exec_child(&i, in_fd);
 		else
 		{
-			// dprintf(1, "i\t: %d\n", i);
 			wait(NULL);
 			exec_father(i, in_fd);
 		}
