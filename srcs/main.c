@@ -40,10 +40,11 @@ void			main_loop(char *buf)
 	{
 		parsing(sep[i]);
 		if (sh()->pipes[0] != 0)
-		redirections();
+			redirections();
 		else
 			ft_exec(0);
 		free_commands();
+		ft_strdel(&sh()->pipes);
 		i++;
 	}
 	print_prompt(sh()->env);
@@ -74,8 +75,6 @@ int				main(int ac, char **av, char **env)
 			sh()->env = sh()->env->next;
 		sh()->env = top;
 		main_loop(buf);
-		ft_strdel(&sh()->pipes);
-		
 	}
 	ft_dprintf(1, "%s\n", "exit");
 	if (sh()->path)
