@@ -10,14 +10,14 @@ int		lonely_command(int i, int in_fd)
 		if (pid == 0)
 		{
 			if (sh()->pipes[(i)] == '>' || sh()->pipes[(i)] == 'd')
-			{
-				sh()->fd[1] = right_redir(i);
-			}
+				right_redir(&i);
 			else
-				redirect(in_fd, STDIN_FILENO);
+			{
+				redirect(sh()->fd[1], 1);
+				ft_exec(i);
+			}
 			if (i > 0)
 				close(in_fd);
-			ft_exec(i);
 			exit(EXIT_SUCCESS);
 		}
 	}

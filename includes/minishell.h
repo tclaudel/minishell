@@ -31,6 +31,7 @@ typedef struct		s_sh
 	short		question_mark;
 	char		*pipes;
 	int			fd[2];
+	char		*target_file;
 	int			stdin_bkp;
 }					t_sh;
 
@@ -96,7 +97,7 @@ void				printf_welcome(void);
 void				ft_pipe(int i, int in_fd);
 void				redirections(void);
 void				pipes_counter(void);
-int					right_redir(int i);
+void				right_redir(int *i);
 int					lonely_command(int i, int in_fd);
 void				redirect(int oldfd, int newfd);
 

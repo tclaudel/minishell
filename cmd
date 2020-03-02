@@ -1,13 +1,13 @@
 Makefile
 a.out
-bla
 ble
+bli
+blo
+blu
 blw
-cat
 check.sh
 cmd
 includes
-la
 li
 libft
 ls

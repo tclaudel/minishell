@@ -1,21 +1,27 @@
 #include "minishell.h"
 
-int		redirect_output(int i)
+void	right_redir(int *i)
 {
 	int fd;
+	int	saved;
 
-	if (!(fd = open(sh()->cmd[i + 1][0], sh()->pipes[i] == 'd' ?
+	saved = *i;
+	while (sh()->pipes[(*i)] == '>' || sh()->pipes[(*i)] == 'd')
+	{
+		dprintf(1, "creating\t: %s\n", sh()->cmd[(*i)][0]);
+		if (!(fd = open(sh()->cmd[(*i)][0], sh()->pipes[(*i)] == 'd' ?
+			O_CREAT : O_CREAT | O_TRUNC, 0644)))
+			exit(EXIT_SUCCESS);
+		close(fd);
+		(*i)++;
+	}
+	dprintf(1, "opening\t: %s\n", sh()->cmd[(*i)][0]);
+	if (!(fd = open(sh()->cmd[(*i)][0], sh()->pipes[(*i)] == 'd' ?
 		O_RDWR | O_CREAT | O_APPEND : O_RDWR | O_CREAT | O_TRUNC, 0644)))
-		return (-1);
+		exit(EXIT_SUCCESS);
 	if (dup2(fd, STDOUT_FILENO) < 1)
-		return (-1);
-	return (fd);
-}
-
-int		right_redir(int i)
-{
-	int fd;
-
-	fd = redirect_output(i);
-	return (fd);
+		exit(EXIT_SUCCESS);
+	sh()->fd[1] = fd;
+	redirect(sh()->fd[1], 1);
+	ft_exec(saved);
 }

@@ -13,8 +13,6 @@ void	is_pipe(int i, int in_fd)
 {
 	pid_t pid;
 
-	dprintf(1, "is_pipe\n");
-	dprintf(1, "pipe\t: %c\n", sh()->pipes[i]);
 	if (sh()->pipes[(i - 1)] == '|')
 	{
 		pid = fork();
@@ -22,9 +20,12 @@ void	is_pipe(int i, int in_fd)
 		{
 			redirect(in_fd, STDIN_FILENO);
 			if (sh()->pipes[i] == '>' || sh()->pipes[i] == 'd')
-				sh()->fd[1] = right_redir(i);
+				right_redir(&i);
 			else
+			{
+				redirect(sh()->fd[1], 1);
 				ft_exec(i);
+			}
 			close(sh()->fd[1]);
 			exit(EXIT_SUCCESS);
 		}
@@ -32,23 +33,33 @@ void	is_pipe(int i, int in_fd)
 	close(in_fd);
 }
 
-void	exec_child(int *i, int in_fd)
+void	exec_child(int i, int in_fd)
 {
 	close(sh()->fd[0]);
 	redirect(in_fd, STDIN_FILENO);
-	if (sh()->pipes[(*i)] == '>' || sh()->pipes[(*i)] == 'd')
-		sh()->fd[1] = right_redir((*i));
-	redirect(sh()->fd[1], 1);
-	ft_exec((*i));
+	if (sh()->pipes[(i)] == '>' || sh()->pipes[i] == 'd')
+		right_redir(&i);
+	else
+	{
+		redirect(sh()->fd[1], 1);
+		ft_exec(i);
+	}
 	exit(EXIT_FAILURE);
 }
 
 void	exec_father(int i, int in_fd)
 {
+	size_t	j;
+
+	j = 0;
+	while (sh()->pipes[(j)] == '>' || sh()->pipes[j] == 'd')
+		j++;
+	dprintf(1, "j\t: %zu\n", j);
 	if (i > 0)
 		close(in_fd);
 	close(sh()->fd[1]);
-	ft_pipe(i + 1, sh()->fd[0]);
+	dprintf(1, "i\t: %d\n", i);
+	ft_pipe(i + 1 + (j == 0 ? 0 : j - 1), sh()->fd[0]);
 }
 
 void	ft_pipe(int i, int in_fd)
@@ -66,12 +77,9 @@ void	ft_pipe(int i, int in_fd)
 		if (pid == -1)
 			ft_dprintf(2, "%s\n", strerror(errno));
 		if (pid == 0)
-			exec_child(&i, in_fd);
-		else
-		{
-			wait(NULL);
-			exec_father(i, in_fd);
-		}
+			exec_child(i, in_fd);
+		wait(NULL);
+		exec_father(i, in_fd);
 	}
 	wait(NULL);
 	dup2(sh()->stdin_bkp, STDIN_FILENO);

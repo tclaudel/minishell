@@ -39,7 +39,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address
+FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
@@ -51,6 +51,9 @@ all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 exec:
 	@${MAKE} all
 	@./minishell
+
+clfd:
+	@rm bli blo blu ble cat ls env
 
 $(LIBFT):
 	@make -C libft/
