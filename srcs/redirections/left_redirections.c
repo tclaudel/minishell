@@ -6,7 +6,10 @@ void		left_redir(int *i)
 
 	dprintf(1, "opening\t: %s\n", sh()->cmd[(*i) + 1][0]);
 	if ((fd = open(sh()->cmd[(*i) + 1][0], O_RDONLY)) == -1)
+	{
+		ft_dprintf(2, "%s\n", strerror(errno));
 		exit(EXIT_FAILURE);
+	}
 	sh()->stdin_bkp = dup(STDIN_FILENO);
 	if (dup2(fd, STDIN_FILENO) < 0)
 		exit(EXIT_FAILURE);

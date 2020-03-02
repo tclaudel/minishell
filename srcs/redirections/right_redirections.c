@@ -6,6 +6,7 @@ void	right_redir(int *i)
 	int	saved;
 
 	saved = *i;
+	(*i)++;
 	while (sh()->redir[(*i)] == '>' || sh()->redir[(*i)] == 'd')
 	{
 		dprintf(1, "creating\t: %s\n", sh()->cmd[(*i)][0]);
@@ -16,7 +17,7 @@ void	right_redir(int *i)
 		(*i)++;
 	}
 	dprintf(1, "opening\t: %s\n", sh()->cmd[(*i)][0]);
-	if (!(fd = open(sh()->cmd[(*i)][0], sh()->redir[(*i)] == 'd' ?
+	if (!(fd = open(sh()->cmd[(*i)][0], sh()->redir[(*i) - 1] == 'd' ?
 		O_RDWR | O_CREAT | O_APPEND : O_RDWR | O_CREAT | O_TRUNC, 0644)))
 		exit(EXIT_SUCCESS);
 	if (dup2(fd, STDOUT_FILENO) < 1)

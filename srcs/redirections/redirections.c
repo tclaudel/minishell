@@ -56,6 +56,8 @@ void	exec_father(int i, int in_fd)
 	j = 0;
 	while (sh()->redir[(j)] == '>' || sh()->redir[j] == 'd')
 		j++;
+	while (sh()->redir[(j)] == '<')
+		j++;
 	if (i > 0)
 		close(in_fd);
 	close(sh()->fd[1]);
