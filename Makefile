@@ -17,7 +17,7 @@ SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c b
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
-SRCS_REDIR		=	$(addprefix redirections/, pipe.c redirections.c right_redirections.c lonely_command.c)
+SRCS_REDIR		=	$(addprefix redirections/, redirections.c right_redirections.c lonely_command.c left_redirections.c)
 
 SRCS_DISPLAY	=	$(addprefix display/, display.c)
 

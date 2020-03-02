@@ -39,12 +39,12 @@ void			main_loop(char *buf)
 	while (sep[i])
 	{
 		parsing(sep[i]);
-		if (sh()->pipes[0] != 0)
-			redirections();
+		if (sh()->redir[0] != 0)
+			redirections(0, 0);
 		else
 			ft_exec(0);
 		free_commands();
-		ft_strdel(&sh()->pipes);
+		ft_strdel(&sh()->redir);
 		i++;
 	}
 	print_prompt(sh()->env);

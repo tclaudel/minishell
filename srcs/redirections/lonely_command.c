@@ -9,7 +9,7 @@ int		lonely_command(int i, int in_fd)
 		pid = fork();
 		if (pid == 0)
 		{
-			if (sh()->pipes[(i)] == '>' || sh()->pipes[(i)] == 'd')
+			if (sh()->redir[(i)] == '>' || sh()->redir[(i)] == 'd')
 				right_redir(&i);
 			else
 			{

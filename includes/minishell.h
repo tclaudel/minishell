@@ -13,12 +13,6 @@
 # include <errno.h>
 # include <fcntl.h>
 
-# define PIPE 		"|"
-# define SEMICOLON 	";"
-# define R_CHEVRON	"<"
-# define L_CHEVRON	">"
-# define LD_CHEVRON	">>"
-
 typedef struct		s_sh
 {
 	char		**key;
@@ -29,7 +23,7 @@ typedef struct		s_sh
 	t_hash		*env;
 	t_hash		*add;
 	short		question_mark;
-	char		*pipes;
+	char		*redir;
 	int			fd[2];
 	char		*target_file;
 	int			stdin_bkp;
@@ -80,7 +74,7 @@ char				*quote_checker(char *s, size_t quote, size_t dquote);
 size_t				separator_counter(char *s, size_t i, size_t block);
 void				quotes_splitter(char *s, size_t *i, char c);
 char				*complete_cmd(char *s, char c);
-char				*found_pipes(char *s, size_t *j, size_t *i, size_t nb);
+char				*found_redir(char *s, size_t *j, size_t *i, size_t nb);
 size_t				separator_counter(char *s, size_t i, size_t block);
 
 /*
@@ -95,11 +89,12 @@ void				printf_welcome(void);
 */
 
 void				ft_pipe(int i, int in_fd);
-void				redirections(void);
-void				pipes_counter(void);
+void				redirections(int i, int in_fd);
+void				redir_counter(void);
 void				right_redir(int *i);
 int					lonely_command(int i, int in_fd);
 void				redirect(int oldfd, int newfd);
+void				left_redir(int *i);
 
 /*
 ** UTILS

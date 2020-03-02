@@ -29,7 +29,7 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 	j = 0;
 	entry = (char **)malloc(sizeof(&entry) * (nb + 1));
-	sh()->pipes = (char *)ft_calloc(sizeof(char), (nb));
+	sh()->redir = (char *)ft_calloc(sizeof(char), (nb));
 	while (s[i] && s[i] != '\n')
 	{
 		i += ft_count_whitespaces(s + i);
@@ -43,7 +43,7 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 				!ft_strchr(";|<>", s[i]))
 				i++;
 		else if (s[i] && (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i)))
-			entry[k++] = found_pipes(s, &j, &i, nb);
+			entry[k++] = found_redir(s, &j, &i, nb);
 	}
 	entry[k] = ft_substr(s, j, i);
 	entry[k + 1] = NULL;
