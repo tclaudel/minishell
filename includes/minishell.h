@@ -95,6 +95,7 @@ void				right_redir(int *i);
 int					lonely_command(int i, int in_fd);
 void				redirect(int oldfd, int newfd);
 void				left_redir(int *i);
+void				final_redir(int i, int in_fd);
 
 /*
 ** UTILS

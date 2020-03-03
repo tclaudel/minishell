@@ -4,7 +4,6 @@ void		left_redir(int *i)
 {
 	int		fd;
 
-	dprintf(1, "opening\t: %s\n", sh()->cmd[(*i) + 1][0]);
 	if ((fd = open(sh()->cmd[(*i) + 1][0], O_RDONLY)) == -1)
 	{
 		ft_dprintf(2, "%s\n", strerror(errno));
@@ -16,6 +15,8 @@ void		left_redir(int *i)
 	close(fd);
 	dup2(STDIN_FILENO, sh()->stdin_bkp);
 	close(sh()->stdin_bkp);
-	ft_display_tab(sh()->cmd[*i], "executing");
+	if (sh()->redir[(*i) + 1] && (sh()->redir[(*i) + 1] == '>' ||
+		sh()->redir[(*i) + 1] == 'd'))
+		left_redir(i);
 	ft_exec(*i);
 }

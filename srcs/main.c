@@ -75,6 +75,7 @@ int				main(int ac, char **av, char **env)
 			sh()->env = sh()->env->next;
 		sh()->env = top;
 		main_loop(buf);
+		ft_strdel(&buf);
 	}
 	ft_dprintf(1, "%s\n", "exit");
 	if (sh()->path)

@@ -23,10 +23,11 @@ char		*found_redir(char *s, size_t *j, size_t *i, size_t nb)
 	(void)nb;
 	grep_redir(s, i, nb);
 	str = ft_strndup(s + (*j), (*i) - (*j));
-	if (ft_strcmp(">>", s + (*i)))
+	dprintf(1, "str\t: %s\n", s + (*i));
+	if (!ft_strncmp(">>", s + (*i), 2))
 		(*i)++;
 	(*i)++;
+	dprintf(1, "str\t: %s\n", s + (*i));
 	(*j) = (*i);
-	dprintf(1, "redir\t: %s\n", sh()->redir);
 	return (str);
 }
