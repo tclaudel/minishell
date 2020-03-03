@@ -55,8 +55,11 @@ exec:
 clfd:
 	@rm bli blo blu ble cat ls env
 
-$(LIBFT):
+$(LIBFT): libft/includes/libft.h
 	@make -C libft/
+
+libft/includes/libft.h:
+	@git submodule update --init --recursive
 
 $(NAME): $(OBJ)
 	@gcc $(FLAG) $(LIBFT) $(OBJ) -o $(NAME)
