@@ -28,6 +28,21 @@ static void		builtin_export_empty(t_sh *sh, t_hash **env)
 	*env = top;
 }
 
+static char		is_valid_key(char *key)
+{
+	size_t i;
+
+	i = 0;
+	while (key[i])
+	{
+		if (key[i] == '_' || ft_isalpha(key[i]))
+			i++;
+		else
+			break ;
+	}
+	return (key[i] == 0);
+}
+
 static void		add_key(t_sh *sh, char **key, size_t j)
 {
 	static char	*token[2] = {0};
@@ -36,6 +51,12 @@ static void		add_key(t_sh *sh, char **key, size_t j)
 	{
 		token[0] = ft_strtok(key[j], "=");
 		token[1] = ft_strtok(NULL, "=");
+		if (!is_valid_key(token[0]))
+		{
+			ft_dprintf(2, "minishell: export: `%s':\
+			not a valid identifier\n", token[0]);
+			continue ;
+		}
 		if (!token[1])
 			token[1] = "";
 		if (token[0][0] && sh->env->search(sh->env, token[0]))
