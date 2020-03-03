@@ -17,7 +17,7 @@ SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c b
 
 SRCS_VAR		=	$(addprefix var/, env.c)
 
-SRCS_REDIR		=	$(addprefix redirections/, pipe.c redirections.c right_redirections.c lonely_command.c)
+SRCS_REDIR		=	$(addprefix redirections/, redirections.c right_redirections.c lonely_command.c left_redirections.c)
 
 SRCS_DISPLAY	=	$(addprefix display/, display.c)
 
@@ -39,7 +39,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address
+FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
@@ -51,6 +51,9 @@ all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 exec:
 	@${MAKE} all
 	@./minishell
+
+clfd:
+	@rm bli blo blu ble cat ls env
 
 $(LIBFT): libft/includes/libft.h
 	@make -C libft/

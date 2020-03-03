@@ -1,0 +1,24 @@
+total 224
+drwxr-xr-x  23 tclaudel  student    782 Feb 28 15:01 .
+drwx------  23 tclaudel  student    782 Feb 24 10:15 ..
+drwxr-xr-x  16 tclaudel  student    544 Feb 28 14:56 .git
+-rw-r--r--   1 tclaudel  student     24 Feb  4 09:31 .gitignore
+-rw-r--r--   1 tclaudel  student     75 Jan 27 14:34 .gitmodules
+drwxr-xr-x   3 tclaudel  student    102 Feb 17 17:49 .vscode
+-rw-r--r--   1 tclaudel  student   5276 Feb 28 14:54 Makefile
+-rwxr-xr-x   1 tclaudel  student   4248 Feb 26 15:09 a.out
+-rw-r--r--   1 tclaudel  student      0 Feb 28 14:57 ble
+-rw-r--r--   1 tclaudel  student      0 Feb 28 14:57 bli
+-rw-r--r--   1 tclaudel  student     47 Feb 26 12:00 check.sh
+-rw-r--r--   1 tclaudel  student      0 Feb 28 14:49 echo
+-rw-r--r--   1 tclaudel  student      0 Feb 28 15:01 env
+drwxr-xr-x   3 tclaudel  student    102 Feb 26 12:00 includes
+drwxr-xr-x   9 tclaudel  student    306 Feb 28 14:31 libft
+-rw-r--r--   1 tclaudel  student      0 Feb 28 15:01 ls
+-rwxr-xr-x   1 tclaudel  student  75012 Feb 28 14:56 minishell
+drwxr-xr-x   8 tclaudel  student    272 Feb 28 14:56 obj
+drwxr-xr-x   8 tclaudel  student    272 Feb 26 12:00 srcs
+-rw-r--r--   1 tclaudel  student      0 Feb 28 15:01 test
+-rw-r--r--   1 tclaudel  student     30 Feb 26 15:09 test.c
+drwxr-xr-x   7 tclaudel  student    238 Feb 27 11:29 tester
+-rw-r--r--   1 tclaudel  student      4 Feb 28 14:30 testmabite
