@@ -46,7 +46,7 @@ void	final_redir(int i, int in_fd)
 				ft_exec(i);
 			}
 			close(sh()->fd[1]);
-			exit(EXIT_SUCCESS);
+			ft_exit(EXIT_SUCCESS);
 		}
 	}
 	close(in_fd);

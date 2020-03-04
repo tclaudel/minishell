@@ -33,7 +33,7 @@ void	exec_child(int i, int in_fd)
 		redirect(sh()->fd[1], 1);
 		ft_exec(i);
 	}
-	exit(EXIT_FAILURE);
+	ft_exit(EXIT_SUCCESS);
 }
 
 void	exec_father(int i, int in_fd)
@@ -60,7 +60,7 @@ void	redirections(int i, int in_fd)
 	{
 		sh()->stdin_bkp = dup(STDIN_FILENO);
 		if (pipe(sh()->fd))
-			exit(EXIT_FAILURE);
+			ft_exit(EXIT_FAILURE);
 		pid = fork();
 		if (pid == -1)
 			ft_dprintf(2, "%s\n", strerror(errno));
