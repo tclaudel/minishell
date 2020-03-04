@@ -43,8 +43,6 @@ FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
-current_branch	=	$(git symbolic-ref HEAD 2>/dev/null)
-
 all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
 
