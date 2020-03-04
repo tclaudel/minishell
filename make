@@ -4,6 +4,8 @@ b
 check.sh
 includes
 libft
+make
+map.cub
 minishell
 obj
 pouet
