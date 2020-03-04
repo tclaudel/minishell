@@ -53,7 +53,7 @@ exec:
 	@./minishell
 
 clfd:
-	@rm bli blo blu ble cat ls env
+	@rm -f bli blo blu ble cat ls env 2>/dev/null
 
 $(LIBFT): libft/includes/libft.h
 	@make -C libft/
@@ -170,6 +170,7 @@ continue:
 	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..."; $(MAKE) ew ; exit 1 2> /dev/null)
 
 git-%:
+	@$(MAKE) clfd
 	@$(MAKE) norme
 	@$(MAKE) continue
 	@echo ""
