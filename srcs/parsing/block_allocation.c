@@ -8,7 +8,7 @@ char	*fill_str_with_var(char *s, size_t i)
 
 	i++;
 	j = i;
-	while (s[j] && s[j] != '\"' && s[j] != ' ')
+	while (s[j] && s[j] != '\"' && s[j] != ' ' && s[j] != '$')
 		j++;
 	var = ft_substr(s, i, j - i);
 	if (var[0] == '?' && !var[1])
@@ -19,6 +19,7 @@ char	*fill_str_with_var(char *s, size_t i)
 		s = ft_insert(s, value, i - 1, ft_strlen(var) + 1);
 	else if (var)
 		s = ft_insert(s, "$", i - 1, ft_strlen(var) + 1);
+	dprintf(1, "str\t: %s\n", s);
 	ft_strdel(&var);
 	return (s);
 }

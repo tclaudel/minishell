@@ -15,7 +15,7 @@ void	right_redir(int *i)
 			exit(EXIT_SUCCESS);
 		close(fd);
 		if (sh()->cmd[*i][1])
-			sh()->cmd[saved] = ft_tabjoin(sh()->cmd[saved], sh()->cmd[*i]);
+			sh()->cmd[saved] = ft_tabjoin(sh()->cmd[saved], sh()->cmd[*i] + 1);
 		(*i)++;
 	}
 	if (sh()->cmd[*i][1])
