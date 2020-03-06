@@ -1,14 +1,12 @@
+executing[0]	: ls
+
 Makefile
-a
-b
+bb
 check.sh
 includes
 libft
-make
-map.cub
 minishell
 obj
-pouet
+pwd
 srcs
-test
 tester

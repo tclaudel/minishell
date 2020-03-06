@@ -53,7 +53,7 @@ exec:
 	@./minishell
 
 clfd:
-	@rm -f bli blo blu ble cat ls env 2>/dev/null
+	@rm -f bli blo blu ble cat ls env a b c aa bb pouet toto make 2>/dev/null
 
 $(LIBFT): libft/includes/libft.h
 	@make -C libft/
