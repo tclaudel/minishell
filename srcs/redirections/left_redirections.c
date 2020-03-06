@@ -10,14 +10,14 @@ void		left_redir(int *i)
 	while (sh()->redir[(*i)] == '<')
 	{
 		if ((fd = open(sh()->cmd[(*i)][0], O_RDONLY)) == -1)
-			ft_exit(EXIT_FAILURE);
+			ft_exit(EXIT_FAILURE, *i);
 		close(fd);
 		(*i)++;
 	}
 	if ((fd = open(sh()->cmd[(*i)][0], O_RDONLY)) == -1)
-		ft_exit(EXIT_FAILURE);
+		ft_exit(EXIT_FAILURE, *i);
 	if (dup2(fd, STDIN_FILENO) < 0)
-		ft_exit(EXIT_FAILURE);
+		ft_exit(EXIT_FAILURE, *i);
 	close(fd);
 	dup2(STDIN_FILENO, sh()->stdin_bkp);
 	close(sh()->stdin_bkp);
