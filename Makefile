@@ -21,7 +21,9 @@ SRCS_REDIR		=	$(addprefix redirections/, redirections.c right_redirections.c lon
 
 SRCS_DISPLAY	=	$(addprefix display/, display.c)
 
-SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC) $(SRCS_VAR) $(SRCS_DISPLAY) $(SRCS_REDIR)
+SRCS_UTILS		=	$(addprefix utils/, ft_exit.c)
+
+SRCS_NAME		=	main.c $(SRCS_PARSING) $(SRCS_EXEC) $(SRCS_VAR) $(SRCS_DISPLAY) $(SRCS_REDIR) $(SRCS_UTILS)
 
 SRC_PATH		=	srcs/
 
@@ -43,8 +45,6 @@ FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
-current_branch	=	$(git symbolic-ref HEAD 2>/dev/null)
-
 all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
 
@@ -53,7 +53,7 @@ exec:
 	@./minishell
 
 clfd:
-	@rm bli blo blu ble cat ls env
+	@rm -f bli blo blu ble cat ls env a b c aa bb pouet toto make 2>/dev/null
 
 $(LIBFT): libft/includes/libft.h
 	@make -C libft/
@@ -72,6 +72,7 @@ $(OBJ_PATH):
 	@mkdir -p obj/var 2> /dev/null
 	@mkdir -p obj/display 2> /dev/null
 	@mkdir -p obj/redirections 2> /dev/null
+	@mkdir -p obj/utils 2> /dev/null
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HEADER)/minishell.h Makefile
 	@printf "\033[2K\r$(LIGHT_RED)Compiling...	\033[37m$<\033[36m \033[0m"
@@ -169,6 +170,7 @@ continue:
 	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..."; $(MAKE) ew ; exit 1 2> /dev/null)
 
 git-%:
+	@$(MAKE) clfd
 	@$(MAKE) norme
 	@$(MAKE) continue
 	@echo ""
@@ -194,7 +196,7 @@ call: all
 	@nm -g $(addprefix ${OBJ_PATH}, ${OBJ_NAME})
 
 ew:
-	@say -v Thomas "Pipe et pipe ! Pipe et jambe de bois!"
+	@say -v Thomas "Nom d'une pipe !"
 
 test: all
 	@sh tester/test.sh 0.01

@@ -29,7 +29,7 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 	j = 0;
 	entry = (char **)malloc(sizeof(&entry) * (nb + 1));
-	sh()->redir = (char *)ft_calloc(sizeof(char), (nb));
+	sh()->redir = (char *)ft_calloc(sizeof(char), (nb + 1));
 	while (s[i] && s[i] != '\n')
 	{
 		i += ft_count_whitespaces(s + i);
