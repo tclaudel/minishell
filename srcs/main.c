@@ -35,17 +35,20 @@ void			main_loop(char *buf)
 	char	**sep;
 
 	i = 0;
-	sep = ft_split(buf, ';');
-	while (sep[i])
+	if (analyser(buf))
 	{
-		parsing(sep[i]);
-		if (sh()->redir[0] != 0)
-			redirections(0, 0);
-		else
-			ft_exec(0);
-		free_commands();
-		ft_strdel(&sh()->redir);
-		i++;
+		sep = ft_split(buf, ';');
+		while (sep[i])
+		{
+			parsing(sep[i]);
+			if (sh()->redir[0] != 0)
+				redirections(0, 0);
+			else
+				ft_exec(0);
+			free_commands();
+			ft_strdel(&sh()->redir);
+			i++;
+		}
 	}
 	print_prompt(sh()->env);
 }
