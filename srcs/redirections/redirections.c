@@ -51,7 +51,7 @@ void	redirections(int i, int in_fd)
 	{
 		sh()->stdin_bkp = dup(STDIN_FILENO);
 		if (pipe(sh()->fd))
-			ft_exit(EXIT_FAILURE);
+			ft_exit(EXIT_FAILURE, i);
 		pid = fork();
 		if (pid == -1)
 			ft_dprintf(2, "%s\n", strerror(errno));
