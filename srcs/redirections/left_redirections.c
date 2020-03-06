@@ -3,20 +3,25 @@
 void		left_redir(int *i)
 {
 	int		fd;
+	int		saved;
 
-	if ((fd = open(sh()->cmd[(*i) + 1][0], O_RDONLY)) == -1)
-	{
-		ft_dprintf(2, "%s\n", strerror(errno));
-		exit(EXIT_FAILURE);
-	}
+	saved = (*i)++;
 	sh()->stdin_bkp = dup(STDIN_FILENO);
+	while (sh()->redir[(*i)] == '<')
+	{
+		if ((fd = open(sh()->cmd[(*i)][0], O_RDONLY)) == -1)
+			ft_exit(EXIT_FAILURE);
+		close(fd);
+		(*i)++;
+	}
+	if ((fd = open(sh()->cmd[(*i)][0], O_RDONLY)) == -1)
+		ft_exit(EXIT_FAILURE);
 	if (dup2(fd, STDIN_FILENO) < 0)
-		exit(EXIT_FAILURE);
+		ft_exit(EXIT_FAILURE);
 	close(fd);
 	dup2(STDIN_FILENO, sh()->stdin_bkp);
 	close(sh()->stdin_bkp);
-	if (sh()->redir[(*i) + 1] && (sh()->redir[(*i) + 1] == '>' ||
-		sh()->redir[(*i) + 1] == 'd'))
-		left_redir(i);
-	ft_exec(*i);
+	if (!(sh()->redir[(*i) - 2] && sh()->redir[(*i) - 2] == '|' &&
+		((*i) - saved) == 1))
+		ft_exec(saved);
 }

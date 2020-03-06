@@ -9,17 +9,6 @@ void	redirect(int oldfd, int newfd)
 	}
 }
 
-int		no_left_redir(int i)
-{
-	while (sh()->redir[i] || sh()->redir[i] == '|')
-	{
-		if (sh()->redir[i] == '<')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 void	exec_child(int i, int in_fd)
 {
 	close(sh()->fd[0]);
@@ -31,23 +20,25 @@ void	exec_child(int i, int in_fd)
 	else
 	{
 		redirect(sh()->fd[1], 1);
+		ft_display_tab(sh()->cmd[i], "child");
 		ft_exec(i);
 	}
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
 
 void	exec_father(int i, int in_fd)
 {
-	size_t	j;
+	int		saved;
 
-	j = 0;
-	while (sh()->redir[(j)] == '>' || sh()->redir[j] == 'd' ||
-		sh()->redir[(j)] == '<')
-		j++;
+	saved = i;
 	if (i > 0)
 		close(in_fd);
+	while (sh()->redir[i] && sh()->redir[i] != '|')
+		i++;
+	if (ft_strchr(sh()->redir + saved, '|'))
+		i++;
 	close(sh()->fd[1]);
-	redirections(i + 1 + (j == 0 ? 0 : j - 1), sh()->fd[0]);
+	redirections(i, sh()->fd[0]);
 }
 
 void	redirections(int i, int in_fd)
@@ -60,7 +51,7 @@ void	redirections(int i, int in_fd)
 	{
 		sh()->stdin_bkp = dup(STDIN_FILENO);
 		if (pipe(sh()->fd))
-			exit(EXIT_FAILURE);
+			ft_exit(EXIT_FAILURE);
 		pid = fork();
 		if (pid == -1)
 			ft_dprintf(2, "%s\n", strerror(errno));
