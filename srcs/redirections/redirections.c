@@ -20,7 +20,6 @@ void	exec_child(int i, int in_fd)
 	else
 	{
 		redirect(sh()->fd[1], 1);
-		ft_display_tab(sh()->cmd[i], "child");
 		ft_exec(i);
 	}
 	exit(EXIT_SUCCESS);

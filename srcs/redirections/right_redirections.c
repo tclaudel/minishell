@@ -12,11 +12,11 @@ void	right_redir(int *i)
 			O_CREAT : O_CREAT | O_TRUNC, 0644)))
 			ft_exit(EXIT_FAILURE, *i);
 		close(fd);
-		if (sh()->cmd[*i][1] && sh()->redir[(*i)] == '>')
+		if (sh()->cmd[*i][1])
 			sh()->cmd[saved] = ft_tabjoin(sh()->cmd[saved], sh()->cmd[*i] + 1);
 		(*i)++;
 	}
-	if (sh()->cmd[*i][1] && sh()->redir[(*i)] == '>')
+	if (sh()->cmd[*i][1])
 		sh()->cmd[saved] = ft_tabjoin(sh()->cmd[saved], sh()->cmd[*i] + 1);
 	if (!(fd = open(sh()->cmd[(*i)][0], sh()->redir[(*i) - 1] == 'd' ?
 		O_RDWR | O_CREAT | O_APPEND : O_RDWR | O_CREAT | O_TRUNC, 0644)))
