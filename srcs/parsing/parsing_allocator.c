@@ -30,8 +30,7 @@ size_t			bloc_counter(char *s, size_t i, size_t block)
 		if (s[i] == '\"')
 		{
 			block++;
-			i += ft_charpos(s + i + 1, '\"') + 2;
-			dprintf(1, "out\t: %s\n", s + i);
+			quotes_splitter(s, &i, '\"');
 		}
 		else if (s[i] == '\'')
 		{
@@ -57,18 +56,22 @@ static char		*clear_str(char *s)
 	i = 0;
 	while (s[i])
 	{
-		if ((s[i] == '\"' || s[i] == '\'') && s[i - 1] != ' ')
+		if (s[i] == '\"' || s[i] == '\'')
 		{
 			c = s[i];
-			var = ft_substr(s, i + 1, ft_charpos(s + i + 1, c));
-			s = ft_insert(s, var, i, ft_strlen(var) + 2);
-			i += ft_strlen(var);
-			ft_strdel(&var);
+			if (s[i - 1] != ' ')
+			{
+				var = ft_substr(s, i + 1, ft_charpos(s + i + 1, c));
+				s = ft_insert(s, var, i, ft_strlen(var) + 2);
+				i += ft_strlen(var);
+				ft_strdel(&var);
+			}
+			else
+				i += ft_charpos(s + i + 1, c) + 2;
 		}
 		else
 			i++;
 	}
-	s[i] = 0;
 	return (s);
 }
 
