@@ -63,7 +63,6 @@ void		builtin_echo(char **cmd)
 		i++;
 	while (cmd[i])
 	{
-		ft_dprintf(1, "%s", cmd[i]);
 		i++;
 		if (cmd[i])
 			write(1, " ", 1);
