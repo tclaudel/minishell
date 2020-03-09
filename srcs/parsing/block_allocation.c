@@ -21,8 +21,8 @@ char	*double_quote_allocator(char **s, size_t *j)
 	i = *j;
 	i = ft_charpos(*s + *j + 1, '\"');
 	tmp = ft_strndup(*s + *j + 1, i);
+	printf("%p\n", tmp);
 	cmd = ft_clearcharset(tmp, "\"");
-	free(tmp);
 	*j += i + 2;
 	return (cmd);
 }

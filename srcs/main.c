@@ -38,7 +38,6 @@ void			main_loop(char *buf)
 	if (analyser(buf))
 	{
 		sep = ft_split(buf, ';');
-		ft_display_tab(sep, "sep");
 		while (sep[i])
 		{
 			parsing(sep[i]);
@@ -50,8 +49,7 @@ void			main_loop(char *buf)
 			ft_strdel(&sh()->redir);
 			i++;
 		}
-		ft_display_tab(sep, "sep");
-		ft_free_tab(sep);
+		free(sep);
 	}
 	print_prompt(sh()->env);
 }
