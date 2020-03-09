@@ -5,7 +5,6 @@ includes
 libft
 minishell
 obj
-pouet
 srcs
 test
 tester
