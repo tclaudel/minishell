@@ -53,7 +53,6 @@ void		builtin_echo(char **cmd)
 {
 	size_t i;
 
-	ft_display_tab(cmd, "cmd");
 	i = 1;
 	if (!cmd[1])
 	{

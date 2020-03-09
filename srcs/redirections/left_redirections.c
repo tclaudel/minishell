@@ -21,7 +21,8 @@ void		left_redir(int *i)
 	close(fd);
 	dup2(STDIN_FILENO, sh()->stdin_bkp);
 	close(sh()->stdin_bkp);
-	if (!(sh()->redir[(*i) - 2] && sh()->redir[(*i) - 2] == '|' &&
-		((*i) - saved) == 1))
-		ft_exec(saved);
+	if (sh()->redir[(*i) + 1] && (sh()->redir[(*i) + 1] == '>' ||
+		sh()->redir[(*i) + 1] == 'd'))
+		left_redir(i);
+	ft_exec(saved);
 }

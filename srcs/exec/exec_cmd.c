@@ -98,7 +98,8 @@ void		exec_cmd(t_sh *sh, char **cmd)
 			ft_strdel(&cmd[0]);
 		}
 		if (errno == ENOENT)
-			ft_dprintf(2, "minishell: %s: command not found\n", current_cmd);
+			ft_dprintf(2, "minishell: %s: command not found\n",
+				current_cmd + 1);
 		else
 			ft_dprintf(2, "%s\n", strerror(errno));
 		ft_free_tab(env_cpy);
