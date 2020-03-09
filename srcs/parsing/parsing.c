@@ -101,7 +101,6 @@ void		parsing(char *str)
 	i = 0;
 	j = 0;
 	str = fill_str_with_var(str, 0, 0, NULL);
-	// dprintf(1, "str\t%s\n", str);
 	str = ft_clearcharset(str, "\'\"");
 	str = quote_checker(str, 0, 0);
 	sh()->cmd = alloc_commands(str, &nb);

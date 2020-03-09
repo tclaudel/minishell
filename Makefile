@@ -194,6 +194,12 @@ git-%:
 	@echo ""
 	@printf "\33[2K\r$(GREEN)Everything done\n\n\033[0m"
 
+pull:
+	@git checkout master
+	@git pull origin master
+	@gco -b tclaudel 2> /dev/null
+	@git merge master
+
 call: all
 	@nm -g $(addprefix ${OBJ_PATH}, ${OBJ_NAME})
 
