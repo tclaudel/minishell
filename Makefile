@@ -197,7 +197,7 @@ git-%:
 pull:
 	@git checkout master
 	@git pull origin master
-	@gco -b tclaudel 2> /dev/null
+	@gco -b $USER 2> /dev/null
 	@git merge master
 
 call: all
