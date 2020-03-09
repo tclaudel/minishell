@@ -18,7 +18,7 @@ char			*complete_cmd(char *s, char c)
 		if (buff[0] != 0)
 			ft_printf(""YELLOW_BOLD"> "RESET"");
 	}
-	s = ft_strfjoin(s, str, 2);
+	s = ft_strfjoin(s, str, 3);
 	return (s);
 }
 

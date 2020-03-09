@@ -38,6 +38,7 @@ void			main_loop(char *buf)
 	if (analyser(buf))
 	{
 		sep = ft_split(buf, ';');
+		ft_display_tab(sep, "sep");
 		while (sep[i])
 		{
 			parsing(sep[i]);
@@ -49,6 +50,8 @@ void			main_loop(char *buf)
 			ft_strdel(&sh()->redir);
 			i++;
 		}
+		ft_display_tab(sep, "sep");
+		ft_free_tab(sep);
 	}
 	print_prompt(sh()->env);
 }
@@ -63,7 +66,6 @@ t_sh			*sh(void)
 int				main(int ac, char **av, char **env)
 {
 	char	*buf;
-	t_hash	*top;
 
 	(void)av[ac];
 	printf_welcome();
@@ -73,10 +75,6 @@ int				main(int ac, char **av, char **env)
 	signal(SIGQUIT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
 	{
-		top = sh()->env->top;
-		while (sh()->env)
-			sh()->env = sh()->env->next;
-		sh()->env = top;
 		main_loop(buf);
 		ft_strdel(&buf);
 	}

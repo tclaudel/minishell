@@ -48,6 +48,8 @@ LIBFT			=	libft/libft.a
 all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
 
+e:	exec
+
 exec:
 	@${MAKE} all
 	@./minishell
