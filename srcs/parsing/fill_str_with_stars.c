@@ -1,19 +1,14 @@
 #include "minishell.h"
 
-char	*fill_str_with_var(char *s, size_t i, size_t j, char is_quote)
+char	*fill_str_with_var(char *s, size_t i, size_t j, char *var)
 {
-	char	*var;
 	char	*value;
 
-	is_quote = 0;
 	while (s[i])
 	{
-		// while (s[i + 1] && s[i + 1] != '\'')
-		// 	i++;
 		if (s[i] == '$')
 		{
-			i++;
-			j = i;
+			j = ++i;
 			while (s[j] && s[j] != '\"' && s[j] != ' ' && s[j] != '$')
 				j++;
 			var = ft_substr(s, i, j - i);
@@ -23,7 +18,7 @@ char	*fill_str_with_var(char *s, size_t i, size_t j, char is_quote)
 				value = sh()->env->search(sh()->env, var);
 			if (value)
 				s = ft_insert(s, value, i - 1, ft_strlen(var) + 1);
-			else 
+			else
 				s = ft_insert(s, " ", i - 1, ft_strlen(var) + 1);
 			i += value ? ft_strlen(value) - 1 : 0;
 			ft_strdel(&var);
