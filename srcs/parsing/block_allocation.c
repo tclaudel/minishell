@@ -6,7 +6,7 @@ char	*simple_quote_allocator(char *s, size_t *j)
 	size_t	i;
 
 	i = *j;
-	i = ft_charrpos(s + *j + 1, '\'');
+	i = ft_charpos(s + *j + 1, '\'');
 	cmd = ft_strndup(s + *j + 1, i);
 	*j += i + 2;
 	return (cmd);
@@ -19,7 +19,7 @@ char	*double_quote_allocator(char **s, size_t *j)
 	size_t	i;
 
 	i = *j;
-	i = ft_charrpos(*s + *j + 1, '\"');
+	i = ft_charpos(*s + *j + 1, '\"');
 	tmp = ft_strndup(*s + *j + 1, i);
 	cmd = ft_clearcharset(tmp, "\"");
 	free(tmp);
@@ -41,12 +41,6 @@ char	*non_special_allocator(char **s, size_t *j)
 
 void	quotes_splitter(char *s, size_t *i, char c)
 {
-	size_t		j;
-	size_t		k;
-
-	j = ft_charpos(s + *i + 1, c);
-	k = ft_charpos(s + *i + 1, ' ');
-	(*i) += j + 2;
-	if (k == 0)
-		(*i) += ft_charrpos(s + *i + 1, c);
+	(*i)++;
+	*i += ft_charpos(s + *i + 1, c) + 2;
 }
