@@ -48,6 +48,8 @@ LIBFT			=	libft/libft.a
 all: $(OBJ_PATH) $(LIBFT) $(NAME) $(HEADER)
 	@:
 
+e:	exec
+
 exec:
 	@${MAKE} all
 	@./minishell
@@ -220,4 +222,4 @@ full_check: all
 	@echo ""
 	@$(MAKE) push
 
-.PHONY: all clean fclean re bonus norme push cleanlib fcleanlib relib continue git-% call ew full_check
+.PHONY: all clean fclean re bonus norme push cleanlib fcleanlib relib continue git-% call ew full_check e exec
