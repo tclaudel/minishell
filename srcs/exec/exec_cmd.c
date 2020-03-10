@@ -48,12 +48,15 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 
 	status = 0;
 	pid = 0;
+	signal(SIGQUIT, child_sigint);
+	signal(SIGINT, child_sigint);
 	if ((pid = fork()) == -1)
 		ft_dprintf(2, "%s\n", strerror(errno));
 	if (pid == 0)
 		exec_cmd(sh, cmd);
 	else
 	{
+		signal(pid, handle_sigint);
 		wait(&status);
 		if (WIFSIGNALED(status))
 			sh->question_mark = WTERMSIG(status) + 128;
@@ -61,6 +64,8 @@ int			ft_fork_process(t_sh *sh, char **cmd)
 			sh->question_mark = WEXITSTATUS(status);
 		handle_sigint(0);
 	}
+	signal(SIGQUIT, handle_sigint);
+	signal(SIGINT, handle_sigint);
 	return (1);
 }
 

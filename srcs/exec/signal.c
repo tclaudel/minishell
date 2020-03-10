@@ -17,10 +17,14 @@ void		handle_sigint(int sig)
 			if (sig == SIGQUIT)
 				ft_printf("Quit: 3\n", pid);
 		}
-		else if (sig == SIGINT)
-		{
-			ft_printf("\n");
-			print_prompt(sh()->env);
-		}
+		write(1, "\n", 1);
+		print_prompt(sh()->env);
 	}
+}
+
+void		child_sigint(int sig)
+{
+	(void)sig;
+	write(0, "\n", 1);
+	write(1, "\n", 1);
 }

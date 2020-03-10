@@ -197,7 +197,7 @@ git-%:
 pull:
 	@git checkout master
 	@git pull origin master
-	@gco -b $USER 2> /dev/null
+	@gco $USER 2> /dev/null
 	@git merge master
 
 call: all
