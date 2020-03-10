@@ -22,6 +22,7 @@ typedef struct		s_sh
 	t_hash		*hash;
 	t_hash		*env;
 	t_hash		*add;
+	char		printed;
 	short		question_mark;
 	char		*redir;
 	int			fd[2];
@@ -57,6 +58,7 @@ int					is_builtin(char *cmd);
 */
 
 void				handle_sigint(int sig);
+void				child_sigint(int sig);
 
 /*
 ** PARSING

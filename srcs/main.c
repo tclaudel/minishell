@@ -51,7 +51,6 @@ void			main_loop(char *buf)
 		}
 		free(sep);
 	}
-	print_prompt(sh()->env);
 }
 
 t_sh			*sh(void)
@@ -69,11 +68,12 @@ int				main(int ac, char **av, char **env)
 	printf_welcome();
 	get_env_var(sh(), env);
 	print_prompt(sh()->env);
-	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, handle_sigint);
+	signal(SIGINT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
 	{
 		main_loop(buf);
+		print_prompt(sh()->env);
 		ft_strdel(&buf);
 	}
 	ft_dprintf(1, "%s\n", "exit");

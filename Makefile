@@ -41,7 +41,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address
+FLAG			=	-Wall -Wextra -Werror -g3 -O3 -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
@@ -197,7 +197,7 @@ git-%:
 pull:
 	@git checkout master
 	@git pull origin master
-	@gco -b $USER 2> /dev/null
+	@gco $USER 2> /dev/null
 	@git merge master
 
 call: all
