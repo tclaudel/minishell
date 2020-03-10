@@ -22,7 +22,7 @@ int			analyser(char *buf)
 	}
 	while (buf[i])
 	{
-		if (buf[i] == ';' && (buf[i + 1] == ';' || buf[i + 1] == '|'))
+		if ((buf[i] == ';' || buf[i] == '|') && (buf[i + 1] == ';' || buf[i + 1] == '|'))
 		{
 			ft_dprintf(2, "minishell: parse \
 			error near `%c%c'\n", buf[i], buf[i + 1]);
