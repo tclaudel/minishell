@@ -194,6 +194,12 @@ git-%:
 	@echo ""
 	@printf "\33[2K\r$(GREEN)Everything done\n\n\033[0m"
 
+pull:
+	@git checkout master
+	@git pull origin master
+	@gco -b tclaudel 2> /dev/null
+	@git merge master
+
 call: all
 	@nm -g $(addprefix ${OBJ_PATH}, ${OBJ_NAME})
 
@@ -222,4 +228,4 @@ full_check: all
 	@echo ""
 	@$(MAKE) push
 
-.PHONY: all clean fclean re bonus norme push cleanlib fcleanlib relib continue git-% call ew full_check
+.PHONY: all clean fclean re bonus norme push cleanlib fcleanlib relib continue git-% call ew full_check e exec
