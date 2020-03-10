@@ -29,8 +29,9 @@ char		*fill_str_with_var(char *s, size_t i, size_t j, char *var)
 				value = sh()->env->search(sh()->env, var);
 			s = ft_insert(s, value ? value : " ", i - 1, ft_strlen(var) + 1);
 			i += value ? ft_strlen(value) - 1 : 0;
+			if (ft_strcmp(var, "_"))
+				ft_strdel(&value);
 			ft_strdel(&var);
-			ft_strdel(&value);
 		}
 		else
 			i++;

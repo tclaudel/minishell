@@ -7,6 +7,17 @@ static void			search_pwd(t_sh *sh)
 	sh->env->change(sh->env, "PWD", getcwd(str, 1024), "string");
 }
 
+static void			change_shlvl(t_sh *sh)
+{
+	char		*nbr;
+	t_hash		*tmp;
+
+	tmp = sh->hash->find(sh->env, "SHLVL");
+	nbr = ft_itoa(ft_atoi((char *)tmp->value) + 1);
+	if (sh->env)
+		sh->env->change(sh->env, "SHLVL", nbr, "string");
+}
+
 void				get_env_var(t_sh *sh, char **env)
 {
 	size_t		i;
@@ -14,6 +25,8 @@ void				get_env_var(t_sh *sh, char **env)
 
 	i = 1;
 	sh->hash = ft_hash_init();
+	if (!env[0])
+		return ;
 	token[0] = ft_strtok(env[0], "=");
 	token[1] = ft_strtok(NULL, "=");
 	if (!token[1])
@@ -29,7 +42,8 @@ void				get_env_var(t_sh *sh, char **env)
 		sh->env->add_back(&sh->env, sh->add);
 		i++;
 	}
-	change_sh_path(sh->env);
+	change_shlvl(sh);
+	change_sh_path(sh->env, sh->hash);
 	search_pwd(sh);
 }
 
