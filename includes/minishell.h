@@ -104,7 +104,7 @@ void				final_redir(int i, int in_fd);
 */
 
 void				ft_exit(int exit_code, int i);
-void				change_sh_path(t_hash *env);
+void				change_sh_path(t_hash *env, t_hash *hash);
 t_sh				*sh(void);
 
 #endif

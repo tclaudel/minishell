@@ -15,6 +15,8 @@ int			is_builtin(char *cmd)
 
 void		builtin_env(t_sh *sh, t_hash *env)
 {
+	if (env)
+		env->change(env, "_", "env", "string");
 	while (env)
 	{
 		ft_dprintf(1, "%s", env->key);
@@ -25,11 +27,11 @@ void		builtin_env(t_sh *sh, t_hash *env)
 	sh->question_mark = 0;
 }
 
-void		change_sh_path(t_hash *env)
+void		change_sh_path(t_hash *env, t_hash *hash)
 {
 	if (sh()->path)
 		ft_free_tab(sh()->path);
-	if (env->search(env, "PATH"))
+	if (hash->search(env, "PATH"))
 		sh()->path = ft_split(env->search(env, "PATH"), ':');
 	else
 		sh()->path = ft_calloc(sizeof(char *), 1);
@@ -46,7 +48,7 @@ void		builtin_unset(t_sh *sh, char **key, size_t j)
 			sh->env->del(&sh->env, sh->env->before, sh->env->next);
 		}
 	}
-	change_sh_path(sh->env);
+	change_sh_path(sh->env, sh->hash);
 }
 
 void		builtin_echo(char **cmd)

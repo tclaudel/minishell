@@ -8,6 +8,9 @@ void		ft_exec(size_t i)
 	{
 		ft_fork_process(sh(), sh()->cmd[i]);
 	}
+	if (sh()->env)
+		sh()->env->change(sh()->env, "_",
+		sh()->cmd[i][ft_tablen(sh()->cmd[i]) - 1], "string");
 }
 
 void		exec_builtin(t_sh *sh, size_t j)
@@ -66,6 +69,8 @@ static char	**cpy_environ(t_hash *env)
 	size_t	i;
 	char	**env_cpy;
 
+	if (!env)
+		return (NULL);
 	env_cpy = malloc(sizeof(char *) * (env->len(env) + 1));
 	i = 0;
 	while (env)
