@@ -14,7 +14,7 @@ int			analyser(char *buf)
 	i = 0;
 	while (ft_isspace(buf[i]))
 		i++;
-	if (buf[i] == '|')
+	if (buf[i] == '|' || buf[i] == '>' || buf[i] == '<')
 	{
 		ft_dprintf(2, "minishell: parse error \
 		near `%c%c'\n", buf[i], buf[i + 1]);
@@ -29,6 +29,12 @@ int			analyser(char *buf)
 			return (0);
 		}
 		i++;
+	}
+	if (buf[i - 1] == '<' || buf[i - 1] == '>' || buf[i - 1] == '|')
+	{
+		ft_dprintf(2, "minishell: parse error \
+		near `%c%c'\n", buf[i], buf[i - 1]);
+		return (0);
 	}
 	return (1);
 }
