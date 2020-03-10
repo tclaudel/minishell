@@ -7,6 +7,8 @@ static void		builtin_export_empty(t_sh *sh, t_hash **env)
 	t_hash	*cpy;
 	t_hash	*add_cpy;
 
+	if (!*env)
+		return ;
 	top = *env;
 	cpy = sh->hash->new((*env)->key, (*env)->value, "string");
 	*env = (*env)->next;
@@ -59,15 +61,20 @@ static void		add_key(t_sh *sh, char **key, size_t j)
 		}
 		if (!token[1])
 			token[1] = "";
-		if (token[0][0] && sh->env->search(sh->env, token[0]))
+		if (token[0][0] && sh->hash->search(sh->env, token[0]))
 		{
 			sh->env->change(sh->env, token[0], token[1], "string");
 			continue ;
 		}
 		if (ft_strchr(key[j], '='))
 			continue ;
-		sh->add = sh->hash->new(token[0], token[1], "string");
-		sh->env->add_back(&sh->env, sh->add);
+		if (sh->env)
+		{
+			sh->add = sh->hash->new(token[0], token[1], "string");
+			sh->env->add_back(&sh->env, sh->add);
+		}
+		else
+			sh->env = sh->hash->new(token[0], token[1], "string");
 	}
 }
 
@@ -77,5 +84,5 @@ void			builtin_export(t_sh *sh, char **key)
 		builtin_export_empty(sh, &sh->env);
 	add_key(sh, key, 0);
 	sh->question_mark = 0;
-	change_sh_path(sh->env);
+	change_sh_path(sh->env, sh->hash);
 }

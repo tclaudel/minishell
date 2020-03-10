@@ -83,10 +83,11 @@ void		exec_cmd(t_sh *sh, char **cmd)
 {
 	size_t	i;
 	char	*current_cmd;
-	char	**env_cpy;
+	char	**env_cpy = NULL;
 
 	i = 0;
-	env_cpy = cpy_environ(sh->env);
+	if (sh->env)
+		env_cpy = cpy_environ(sh->env);
 	if (execve(cmd[0], cmd, env_cpy) == -1)
 	{
 		current_cmd = ft_strfjoin("/", cmd[0], 2);
@@ -102,7 +103,8 @@ void		exec_cmd(t_sh *sh, char **cmd)
 				current_cmd + 1);
 		else
 			ft_dprintf(2, "%s\n", strerror(errno));
-		ft_free_tab(env_cpy);
+		if (env_cpy)
+			ft_free_tab(env_cpy);
 		ft_strdel(&current_cmd);
 		exit(127);
 	}

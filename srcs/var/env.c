@@ -14,6 +14,8 @@ void				get_env_var(t_sh *sh, char **env)
 
 	i = 1;
 	sh->hash = ft_hash_init();
+	if (!env[0])
+		return ;
 	token[0] = ft_strtok(env[0], "=");
 	token[1] = ft_strtok(NULL, "=");
 	if (!token[1])
@@ -29,7 +31,7 @@ void				get_env_var(t_sh *sh, char **env)
 		sh->env->add_back(&sh->env, sh->add);
 		i++;
 	}
-	change_sh_path(sh->env);
+	change_sh_path(sh->env, sh->hash);
 	search_pwd(sh);
 }
 

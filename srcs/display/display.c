@@ -21,15 +21,15 @@ void		printf_welcome(void)
 	ft_printf("\tGithub\t\t: https://github.com/tclaudel/minishell\n\n\n");
 }
 
-void		print_prompt(t_hash *hash)
+void		print_prompt(t_hash *env)
 {
-	if (hash->search(hash, "PWD"))
+	if (sh()->hash->search(env, "PWD"))
 	{
 		ft_dprintf(1, ""YELLOW_BOLD "%s: "DARK_BLUE"%s : " RESET"",
-			hash->search(hash, "USER"),
-			ft_strrchr(hash->search(hash, "PWD"), '/'));
+			sh()->hash->search(env, "USER"),
+			ft_strrchr(sh()->hash->search(env, "PWD"), '/'));
 	}
 	else
 		ft_dprintf(1, ""YELLOW_BOLD "%s: "DARK_BLUE"%s : " RESET"",
-			hash->search(hash, "USER"), NULL);
+			sh()->hash->search(env, "USER"), NULL);
 }
