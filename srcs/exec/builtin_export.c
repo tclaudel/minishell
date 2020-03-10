@@ -7,8 +7,6 @@ static void		builtin_export_empty(t_sh *sh, t_hash **env)
 	t_hash	*cpy;
 	t_hash	*add_cpy;
 
-	if (!*env)
-		return ;
 	top = *env;
 	cpy = sh->hash->new((*env)->key, (*env)->value, "string");
 	*env = (*env)->next;
@@ -22,7 +20,8 @@ static void		builtin_export_empty(t_sh *sh, t_hash **env)
 	top_cpy = cpy;
 	while (cpy)
 	{
-		ft_dprintf(1, "declare -x %s=\"%s\"\n", cpy->key, cpy->value);
+		if (ft_strcmp(cpy->key, "_"))
+			ft_dprintf(1, "declare -x %s=\"%s\"\n", cpy->key, cpy->value);
 		cpy = cpy->next;
 	}
 	cpy = top_cpy;
@@ -45,10 +44,8 @@ static char		is_valid_key(char *key)
 	return (key[i] == 0);
 }
 
-static void		add_key(t_sh *sh, char **key, size_t j)
+static void		add_key(t_sh *sh, char **key, size_t j, char **token)
 {
-	static char	*token[2] = {0};
-
 	while (key[++j])
 	{
 		token[0] = ft_strtok(key[j], "=");
@@ -68,11 +65,9 @@ static void		add_key(t_sh *sh, char **key, size_t j)
 		}
 		if (ft_strchr(key[j], '='))
 			continue ;
+		sh->add = sh->hash->new(token[0], token[1], "string");
 		if (sh->env)
-		{
-			sh->add = sh->hash->new(token[0], token[1], "string");
 			sh->env->add_back(&sh->env, sh->add);
-		}
 		else
 			sh->env = sh->hash->new(token[0], token[1], "string");
 	}
@@ -80,9 +75,11 @@ static void		add_key(t_sh *sh, char **key, size_t j)
 
 void			builtin_export(t_sh *sh, char **key)
 {
-	if (!key[1])
+	static char	*token[2] = {0};
+
+	if (!key[1] && sh->env)
 		builtin_export_empty(sh, &sh->env);
-	add_key(sh, key, 0);
+	add_key(sh, key, 0, token);
 	sh->question_mark = 0;
 	change_sh_path(sh->env, sh->hash);
 }

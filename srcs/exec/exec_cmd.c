@@ -8,6 +8,9 @@ void		ft_exec(size_t i)
 	{
 		ft_fork_process(sh(), sh()->cmd[i]);
 	}
+	if (sh()->env)
+		sh()->env->change(sh()->env, "_",
+		sh()->cmd[i][ft_tablen(sh()->cmd[i]) - 1], "string");
 }
 
 void		exec_builtin(t_sh *sh, size_t j)
@@ -66,6 +69,8 @@ static char	**cpy_environ(t_hash *env)
 	size_t	i;
 	char	**env_cpy;
 
+	if (!env)
+		return (NULL);
 	env_cpy = malloc(sizeof(char *) * (env->len(env) + 1));
 	i = 0;
 	while (env)
@@ -83,11 +88,10 @@ void		exec_cmd(t_sh *sh, char **cmd)
 {
 	size_t	i;
 	char	*current_cmd;
-	char	**env_cpy = NULL;
+	char	**env_cpy;
 
 	i = 0;
-	if (sh->env)
-		env_cpy = cpy_environ(sh->env);
+	env_cpy = cpy_environ(sh->env);
 	if (execve(cmd[0], cmd, env_cpy) == -1)
 	{
 		current_cmd = ft_strfjoin("/", cmd[0], 2);
@@ -103,8 +107,7 @@ void		exec_cmd(t_sh *sh, char **cmd)
 				current_cmd + 1);
 		else
 			ft_dprintf(2, "%s\n", strerror(errno));
-		if (env_cpy)
-			ft_free_tab(env_cpy);
+		ft_free_tab(env_cpy);
 		ft_strdel(&current_cmd);
 		exit(127);
 	}

@@ -15,6 +15,8 @@ int			is_builtin(char *cmd)
 
 void		builtin_env(t_sh *sh, t_hash *env)
 {
+	if (env)
+		env->change(env, "_", "env", "string");
 	while (env)
 	{
 		ft_dprintf(1, "%s", env->key);
@@ -43,13 +45,7 @@ void		builtin_unset(t_sh *sh, char **key, size_t j)
 		if (sh->env->search(sh->env, key[j]))
 		{
 			sh->env = sh->env->find(sh->env, key[j]);
-			// if (!sh->env->before && !sh->env->next)
-			// {
-			// 	ft_strdel(&sh->env->key);
-			// 	ft_memdel(&sh->env->value);
-			// }
-			// else
-				sh->env->del(&sh->env, sh->env->before, sh->env->next);
+			sh->env->del(&sh->env, sh->env->before, sh->env->next);
 		}
 	}
 	change_sh_path(sh->env, sh->hash);
