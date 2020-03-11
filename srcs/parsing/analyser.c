@@ -35,6 +35,13 @@ static int	ft_return(char *cpy, char *token, size_t i, size_t j)
 	return (0);
 }
 
+// char	*clear_quotes(char *str)
+// {
+// 	size_t	i;
+// 	int		nb_quotes;
+// 	int		nb_dquotes;
+// }
+
 char	*handle_dquotes(char *str)
 {
 	size_t	i;
@@ -50,7 +57,6 @@ char	*handle_dquotes(char *str)
 	}
 	if (j % 2 != 0)
 		return (NULL);
-	str = ft_clearcharset(str, "\'\"");
 	return (str);
 }
 
