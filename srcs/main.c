@@ -40,7 +40,8 @@ void			main_loop(char *buf)
 		sep = ft_split(buf, ';');
 		while (sep[i])
 		{
-			parsing(sep[i]);
+			if (!parsing(sep[i]))
+				return ;
 			if (sh()->redir[0] != 0)
 				redirections(0, 0);
 			else

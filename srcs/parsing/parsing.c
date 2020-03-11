@@ -16,8 +16,6 @@ char		**fill_cmd(char *s, char **cmd, size_t j)
 			cmd[k] = non_special_allocator(&s, &j);
 		k++;
 	}
-	if (k > 1 && cmd[k - 1])
-		cmd[k] = NULL;
 	ft_strdel(&s);
 	return (cmd);
 }
@@ -90,7 +88,7 @@ char		***alloc_commands(char *str, size_t *nb)
 	return (cmd);
 }
 
-void		parsing(char *str)
+char		parsing(char *str)
 {
 	size_t	i;
 	size_t	j;
@@ -100,7 +98,11 @@ void		parsing(char *str)
 	i = 0;
 	j = 0;
 	str = fill_str_with_var(str, 0, 0, NULL);
-	str = ft_clearcharset(str, "\'\"");
+	if (!(str = handle_dquotes(str)))
+	{
+		ft_dprintf(2, "minishell: parse error: quotes not completed\n");
+		return (0);
+	}
 	str = quote_checker(str, 0, 0);
 	sh()->cmd = alloc_commands(str, &nb);
 	entries = ft_split_cmd(str, nb, 0, 0);
@@ -111,4 +113,5 @@ void		parsing(char *str)
 	}
 	ft_strdel(&str);
 	free(entries);
+	return (1);
 }

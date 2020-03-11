@@ -1,34 +1,98 @@
 #include "minishell.h"
 
-static char	ft_isspace(int c)
+static char	*ft_strsep(char **stringp, const char *delim)
 {
-	if ((9 <= c && c <= 13) || c == 32)
-		return (1);
+	char	*begin;
+	char	*end;
+
+	begin = *stringp;
+	if (begin == NULL)
+		return NULL;
+	end = begin + ft_strcspn(begin, delim);
+	if (*end)
+	{
+		*end++ = '\0';
+		*stringp = end;
+	}
+	else
+		*stringp = NULL;
+	return (begin);
+}
+
+static int	ft_return(char *cpy, char *token, size_t i, size_t j)
+{
+	if (j == 0)
+	{
+		ft_dprintf(2, "minishell: parse error near `%c'\n",
+		token[i]);
+	}
+	else
+	{
+		ft_dprintf(2, "minishell: parse error near `%c%c'\n",
+		token[i], token[j]);
+	}
+	ft_strdel(&cpy);
 	return (0);
 }
 
-int			analyser(char *buf)
+// char	*clear_quotes(char *str)
+// {
+// 	size_t	i;
+// 	int		nb_quotes;
+// 	int		nb_dquotes;
+// }
+
+char	*handle_dquotes(char *str)
 {
 	size_t	i;
+	short	quotes;
+	short	dquotes;
 
 	i = 0;
-	while (ft_isspace(buf[i]))
+	quotes = 0;
+	dquotes = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			quotes++;
+		if (str[i] == '\"')
+			dquotes++;
 		i++;
-	if (buf[i] == '|')
-	{
-		ft_dprintf(2, "minishell: parse error \
-		near `%c%c'\n", buf[i], buf[i + 1]);
-		return (0);
 	}
-	while (buf[i])
+	if (quotes % 2 != 0)
+		return (NULL);
+	if (dquotes % 2 != 0)
+		return (NULL);
+	return (str);
+}
+
+int			analyser(char *str)
+{
+	char	*token;
+	char	*cpy;
+	char	*start;
+	size_t	i;
+
+	cpy = ft_strdup(str);
+	cpy = ft_clearcharset(cpy, " \t");
+	start = cpy;
+	while ((token = ft_strsep(&cpy, ";")))
 	{
-		if (buf[i] == ';' && (buf[i + 1] == ';' || buf[i + 1] == '|'))
+		if (token[0])
 		{
-			ft_dprintf(2, "minishell: parse \
-			error near `%c%c'\n", buf[i], buf[i + 1]);
-			return (0);
+			i = 0;
+			if (ft_strchr("<>&|", token[i]))
+				return (ft_return(start, token, i, 0));
+			while (token[i + 1])
+			{
+				if (ft_strchr("<>&|", token[i]) && ft_strchr("<>&|", token[i + 1]))
+					return (ft_return(start, token, i, i + 1));
+				i++;
+			}
+			if (ft_strchr("<>&|", token[i]))
+				return (ft_return(start, token, i, 0));
 		}
-		i++;
 	}
+	ft_strdel(&start);
 	return (1);
 }
