@@ -45,17 +45,23 @@ static int	ft_return(char *cpy, char *token, size_t i, size_t j)
 char	*handle_dquotes(char *str)
 {
 	size_t	i;
-	short	j;
+	short	quotes;
+	short	dquotes;
 
 	i = 0;
-	j = 0;
+	quotes = 0;
+	dquotes = 0;
 	while (str[i])
 	{
-		if (str[i] == '\"' || str[i] == '\'')
-			j++;
+		if (str[i] == '\'')
+			quotes++;
+		if (str[i] == '\"')
+			dquotes++;
 		i++;
 	}
-	if (j % 2 != 0)
+	if (quotes % 2 != 0)
+		return (NULL);
+	if (dquotes % 2 != 0)
 		return (NULL);
 	return (str);
 }
