@@ -59,7 +59,7 @@ static char		*clear_str(char *s)
 		if (s[i] == '\"' || s[i] == '\'')
 		{
 			c = s[i];
-			if (s[i - 1] != ' ')
+			if (i != 0 && s[i - 1] != ' ')
 			{
 				var = ft_substr(s, i + 1, ft_charpos(s + i + 1, c));
 				s = ft_insert(s, var, i, ft_strlen(var) + 2);
