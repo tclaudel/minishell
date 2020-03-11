@@ -64,7 +64,7 @@ void				child_sigint(int sig);
 ** PARSING
 */
 
-void				parsing(char *str);
+char				parsing(char *str);
 char				***alloc_commands(char *str, size_t *nb);
 size_t				bloc_counter(char *s, size_t i, size_t block);
 char				**parse(char *s);
@@ -79,6 +79,7 @@ char				*complete_cmd(char *s, char c);
 char				*found_redir(char *s, size_t *j, size_t *i, size_t nb);
 size_t				separator_counter(char *s, size_t i, size_t block);
 int					analyser(char *buf);
+char				*handle_dquotes(char *str);
 char				*fill_str_with_var(char *s, size_t i, size_t j, char *var);
 
 /*
