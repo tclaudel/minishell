@@ -36,5 +36,6 @@ char		*fill_str_with_var(char *s, size_t i, size_t j, char *var)
 		else
 			i++;
 	}
+	// dprintf(1, "%s\n", s);
 	return (s);
 }

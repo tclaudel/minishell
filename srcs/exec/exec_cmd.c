@@ -8,9 +8,11 @@ void		ft_exec(size_t i)
 	{
 		ft_fork_process(sh(), sh()->cmd[i]);
 	}
-	if (sh()->env)
+	if (sh()->env && sh()->cmd[i] && sh()->cmd[i][0])
+	{
 		sh()->env->change(sh()->env, "_",
 		sh()->cmd[i][ft_tablen(sh()->cmd[i]) - 1], "string");
+	}
 }
 
 void		exec_builtin(t_sh *sh, size_t j)
