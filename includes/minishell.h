@@ -47,7 +47,7 @@ void				builtin_export(t_sh *sh, char **key);
 void				exec_builtin(t_sh *sh, size_t j);
 void				builtin_env(t_sh *sh, t_hash *env);
 void				builtin_cd(t_sh *sh, char **cmd);
-void				get_env_var(t_sh *sh, char **env);
+void				get_env_var(t_sh *sh, char **env, size_t i);
 void				replace_env_var(t_sh *sh, char **cmd, size_t i);
 void				builtin_echo(char **cmd);
 void				builtin_unset(t_sh *sh, char **key, size_t j);
@@ -78,7 +78,7 @@ void				quotes_splitter(char *s, size_t *i, char c);
 char				*complete_cmd(char *s, char c);
 char				*found_redir(char *s, size_t *j, size_t *i, size_t nb);
 size_t				separator_counter(char *s, size_t i, size_t block);
-int					analyser(char *buf);
+int					analyser(char *str, char *tok, size_t i);
 char				*handle_dquotes(char *str);
 char				*fill_str_with_var(char *s, size_t i, size_t j, char *var);
 
