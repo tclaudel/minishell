@@ -33,9 +33,11 @@ void			main_loop(char *buf)
 {
 	size_t	i;
 	char	**sep;
+	char	*tok;
 
 	i = 0;
-	if (analyser(buf, NULL, NULL))
+	tok = 0;
+	if (analyser(buf, tok, 0))
 	{
 		sep = ft_split(buf, ';');
 		while (sep[i])
@@ -67,7 +69,7 @@ int				main(int ac, char **av, char **env)
 
 	(void)av[ac];
 	printf_welcome();
-	get_env_var(sh(), env);
+	get_env_var(sh(), env, 1);
 	print_prompt(sh()->env);
 	signal(SIGQUIT, handle_sigint);
 	signal(SIGINT, handle_sigint);

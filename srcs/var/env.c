@@ -29,12 +29,10 @@ static void			change_shlvl(t_sh *sh)
 	ft_strdel(&nbr);
 }
 
-void				get_env_var(t_sh *sh, char **env)
+void				get_env_var(t_sh *sh, char **env, size_t i)
 {
-	size_t		i;
 	static char	*token[2] = {0};
 
-	i = 1;
 	sh->hash = ft_hash_init();
 	if (env[0])
 	{
@@ -53,7 +51,7 @@ void				get_env_var(t_sh *sh, char **env)
 			sh->env->add_back(&sh->env, sh->add);
 			i++;
 		}
-	change_sh_path(sh->env, sh->hash);
+		change_sh_path(sh->env, sh->hash);
 	}
 	change_shlvl(sh);
 	search_pwd(sh);
