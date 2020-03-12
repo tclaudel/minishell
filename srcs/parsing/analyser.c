@@ -76,7 +76,8 @@ int			analyser(char *str, char *tok, char *cpy)
 				return (ft_return(start, tok, i, 0));
 			while (tok[i + 1])
 			{
-				if (ft_strchr("<>&|", tok[i]) && ft_strchr("<>&|", tok[i + 1]))
+				if ((ft_strchr("<>&|", tok[i]) && ft_strchr("<&|", tok[i + 1])) ||
+				(ft_strchr("<&|", tok[i]) && ft_strchr("<>&|", tok[i + 1])))
 					return (ft_return(start, tok, i, i + 1));
 				i++;
 			}

@@ -23,6 +23,7 @@ void		left_redir(int *i)
 	close(sh()->stdin_bkp);
 	if (sh()->redir[(*i) + 1] && (sh()->redir[(*i) + 1] == '>' ||
 		sh()->redir[(*i) + 1] == 'd'))
-		left_redir(i);
+		right_redir(i);
+	redirect(sh()->fd[1], 1);
 	ft_exec(saved);
 }
