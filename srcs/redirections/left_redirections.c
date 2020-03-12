@@ -24,6 +24,7 @@ void		left_redir(int *i)
 	if (sh()->redir[(*i) + 1] && (sh()->redir[(*i) + 1] == '>' ||
 		sh()->redir[(*i) + 1] == 'd'))
 		right_redir(i);
-	redirect(sh()->fd[1], 1);
+	if (sh()->redir[*i] == '|')
+		redirect(sh()->fd[1], 1);
 	ft_exec(saved);
 }

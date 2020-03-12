@@ -12,11 +12,11 @@ WORKDIR /home/
 
 COPY ./ ./
 
-RUN		make
-RUN		touch valgrind_output
+RUN             make
+RUN             touch valgrind_output
 # PLEASE CHANGE THIS LINE TO COMPILE YOUR CORRECT FILES
-RUN		gcc test.c libftprintf.a > /dev/null 2>&1
+RUN             gcc test.c libftprintf.a > /dev/null 2>&1
 # PLEASE CHANGE ./a.out FOR YOUR CORRECT EXE
-RUN		valgrind --leak-check=full --log-file="valgrind_output" ./minishell > /dev/null 2>&1
-RUN		cat valgrind_output
-CMD		exit
+RUN             valgrind --leak-check=full --log-file="valgrind_output" ./minishell > /dev/null 2>&1
+RUN             cat valgrind_output
+CMD             exit
