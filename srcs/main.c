@@ -35,7 +35,7 @@ void			main_loop(char *buf)
 	char	**sep;
 
 	i = 0;
-	if (analyser(buf))
+	if (analyser(buf, NULL, NULL))
 	{
 		sep = ft_split(buf, ';');
 		while (sep[i])

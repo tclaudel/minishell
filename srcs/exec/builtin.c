@@ -61,7 +61,6 @@ void		builtin_echo(char **cmd)
 		write(1, "\n", 1);
 		return ;
 	}
-	ft_display_tab(cmd, "cmd");
 	if (!ft_strncmp(cmd[1], "-n", 3))
 		i++;
 	while (cmd[i])

@@ -78,7 +78,7 @@ void				quotes_splitter(char *s, size_t *i, char c);
 char				*complete_cmd(char *s, char c);
 char				*found_redir(char *s, size_t *j, size_t *i, size_t nb);
 size_t				separator_counter(char *s, size_t i, size_t block);
-int					analyser(char *buf);
+int					analyser(char *str, char *tok, char *cpy);
 char				*handle_dquotes(char *str);
 char				*fill_str_with_var(char *s, size_t i, size_t j, char *var);
 

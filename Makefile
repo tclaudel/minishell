@@ -204,7 +204,7 @@ call: all
 	@nm -g $(addprefix ${OBJ_PATH}, ${OBJ_NAME})
 
 ew:
-	@say -v Thomas "Nom d'une pipe !"
+	@say -v Fiona"Aurelien comment va ton print f ?"
 
 test: all
 	@sh tester/test.sh 0.01
