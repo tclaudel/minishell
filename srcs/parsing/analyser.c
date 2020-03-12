@@ -35,13 +35,6 @@ static int	ft_return(char *cpy, char *token, size_t i, size_t j)
 	return (0);
 }
 
-// char	*clear_quotes(char *str)
-// {
-// 	size_t	i;
-// 	int		nb_quotes;
-// 	int		nb_dquotes;
-// }
-
 char	*handle_dquotes(char *str)
 {
 	size_t	i;
@@ -85,7 +78,8 @@ int			analyser(char *str)
 				return (ft_return(start, token, i, 0));
 			while (token[i + 1])
 			{
-				if (ft_strchr("<>&|", token[i]) && ft_strchr("<>&|", token[i + 1]))
+				if ((ft_strchr("<>&|", token[i]) && ft_strchr("<&|", token[i + 1])) ||
+				(ft_strchr("<&|", token[i]) && ft_strchr("<>&|", token[i + 1])))
 					return (ft_return(start, token, i, i + 1));
 				i++;
 			}
