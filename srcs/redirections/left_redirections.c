@@ -21,10 +21,10 @@ void		left_redir(int *i)
 	close(fd);
 	dup2(STDIN_FILENO, sh()->stdin_bkp);
 	close(sh()->stdin_bkp);
-	if (sh()->redir[(*i) + 1] && (sh()->redir[(*i) + 1] == '>' ||
-		sh()->redir[(*i) + 1] == 'd'))
-		right_redir(i);
-	if (sh()->redir[*i] == '|')
+	if (sh()->redir[(*i)] && (sh()->redir[(*i)] == '>' ||
+		sh()->redir[(*i)] == 'd'))
+		right_redir(&saved);
+	if (sh()->redir[*i] != 0)
 		redirect(sh()->fd[1], 1);
 	ft_exec(saved);
 }
