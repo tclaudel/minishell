@@ -22,6 +22,7 @@ void	exec_child(int i, int in_fd)
 		redirect(sh()->fd[1], 1);
 		ft_exec(i);
 	}
+	close(sh()->fd[1]);
 	exit(EXIT_SUCCESS);
 }
 

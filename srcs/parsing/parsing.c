@@ -48,32 +48,28 @@ char		**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 	return (entry);
 }
 
-char		*quote_checker(char *s, size_t quote, size_t dquote)
+char		*join_quotes(char *s)
 {
-	size_t	i;
 	char	*dest;
-	char	c;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
+	j = 0;
+	dest = (char *)ft_calloc(sizeof(char *), ft_strlen(s) + 1);
 	while (s[i])
 	{
-		if (s[i] == '\'' && !(dquote % 2))
-			quote++;
-		if (s[i] == '\"' && !(quote % 2))
-			dquote++;
-		i++;
+		while (s[i] && !ft_strchr("\"'\"", s[i]))
+			dest[j++] = s[i++];
+		if (s[i] && s[i + 1] && (s[i + 1] == '\'' || s[i + 1] == '\"'))
+			i += 2;
+		else if (s[i])
+		{
+			dest[j++] = '\"';
+			i++;
+		}
 	}
-	if (dquote % 2)
-		dest = complete_cmd(s, '\"');
-	else if (quote % 2)
-		dest = complete_cmd(s, '\'');
-	else if (quote % 2 && dquote % 2)
-	{
-		c = ft_strrchr(s, '\'') < ft_strrchr(s, '\"') ? '\'' : '\"';
-		dest = complete_cmd(s, c);
-	}
-	else
-		dest = s;
+	ft_strdel(&s);
 	return (dest);
 }
 
@@ -103,7 +99,8 @@ char		parsing(char *str)
 		ft_dprintf(2, "minishell: parse error: quotes not completed\n");
 		return (0);
 	}
-	str = quote_checker(str, 0, 0);
+	if (ft_strchr(str, '\'') || ft_strchr(str, '\"'))
+		str = join_quotes(str);
 	sh()->cmd = alloc_commands(str, &nb);
 	entries = ft_split_cmd(str, nb, 0, 0);
 	while (entries[j])
