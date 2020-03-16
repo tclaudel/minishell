@@ -41,7 +41,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -Werror -g3 -O3 #-fsanitize=address
+FLAG			=	-Wall -Wextra -g3 -O3 #-Werror -fsanitize=address
 
 LIBFT			=	libft/libft.a
 
@@ -64,7 +64,7 @@ libft/includes/libft.h:
 	@git submodule update --init --recursive
 
 $(NAME): $(OBJ)
-	@gcc $(FLAG) $(LIBFT) $(OBJ) -o $(NAME)
+	@gcc $(FLAG) $(OBJ) $(LIBFT) -o $(NAME)
 	@printf "	\033[2K\r$(DARK_BLUE)minishell\t: $(LIGHT_GREEN)Updated\n\033[0m"
 
 $(OBJ_PATH):
@@ -169,11 +169,11 @@ continue:
 	@while [ -z "$$CONTINUE" ]; do \
 		read -r -p "Press [y/N] to continue : " CONTINUE; \
 	done ; \
-	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..."; $(MAKE) ew ; exit 1 2> /dev/null)
+	[ $$CONTINUE == "y" ] || [ $$CONTINUE == "Y" ] || (echo "Exiting ..." ; exit 1 2> /dev/null)
 
 git-%:
 	@$(MAKE) clfd
-	@$(MAKE) norme
+	# @$(MAKE) norme
 	@$(MAKE) continue
 	@echo ""
 	@$(MAKE) test
