@@ -49,8 +49,10 @@ char **ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 
 char *join_quotes(char *s, size_t i, size_t j, char c)
 {
-	char *dest;
+	char	*dest;
+	char	closed;
 
+	closed = 0;
 	dest = (char *)ft_calloc(sizeof(char *), ft_strlen(s) + 1);
 	while (s[i])
 	{
@@ -61,14 +63,18 @@ char *join_quotes(char *s, size_t i, size_t j, char c)
 		c = s[i];
 		dest[j++] = '\'';
 		i++;
-		while (s[i] && s[i] != c)
+		while (s[i] && s[i] != c && s[i] != ' ')
+		{
 			dest[j++] = s[i++];
+			closed = s[i];
+		}
 		if (s[i] && s[i + 1] && (s[i + 1] == '\'' || s[i + 1] == '\"'))
 			i += 2;
 		else if (s[i])
 			i++;
+		if (closed == '\'')
+			ft_strrchr(dest, '\'')[0] = ' ';
 	}
-	dest[j] = '\'';
 	ft_strdel(&s);
 	return (dest);
 }
@@ -97,6 +103,7 @@ char parsing(char *str)
 	}
 	if (ft_strchr(str, '\'') || ft_strchr(str, '\"'))
 		str = join_quotes(str, 0, 0, 0);
+	// dprintf(1, "str\t: %s\n", str);
 	sh()->cmd = alloc_commands(str, &nb);
 	entries = ft_split_cmd(str, nb, 0, 0);
 	while (entries[j])
