@@ -74,6 +74,7 @@ char *join_quotes(char *s, size_t i, size_t j, char c)
 			i++;
 		if (closed == '\'' || closed == '\"')
 			ft_strrchr(dest, '\'')[0] = ' ';
+		closed = 0;
 	}
 	ft_strdel(&s);
 	return (dest);
