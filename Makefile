@@ -11,7 +11,9 @@ GREY = \033[3;90m
 ORANGE = \033[3;91m
 YELLOW = \033[0;33m
 
-SRCS_PARSING	=	$(addprefix parsing/, parsing.c parsing_allocator.c block_allocation.c set_redirections.c separator_counter.c analyser.c fill_str_with_stars.c)
+SRCS_PARSING	=	$(addprefix parsing/, parsing.c parsing_allocator.c block_allocation.c \
+					set_redirections.c separator_counter.c analyser.c fill_str_with_stars.c \
+					join_quotes.c)
 
 SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c builtin_cd.c) 
 
@@ -41,7 +43,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -g3 -O3 #-Werror -fsanitize=address
+FLAG			=	-Wall -Wextra -g3 -O3 #-fsanitize=address #-Werror 
 
 LIBFT			=	libft/libft.a
 
@@ -109,13 +111,13 @@ re:
 	@$(MAKE) all
 
 norme:
-	@norminette $(SRC_PATH) $(HEADER) | grep -v "42 header"
+	@~/.norminette/norminette.rb $(SRC_PATH) $(HEADER) | grep -v "42 header"
 
 full_norme: norme
 	@make -C libft/ norme
 
 normed:
-	@norminette $(SRC_PATH) $(HEADER)
+	@~/.norminette/norminette.rb $(SRC_PATH) $(HEADER)
 	@$(MAKE) continue
 	@echo ""
 	@git add .

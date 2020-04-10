@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char dont_replace_with_quotes(char *s, size_t *i)
+char	dont_replace_with_quotes(char *s, size_t *i)
 {
 	if (s[*i] == '\'')
 	{
@@ -11,15 +11,14 @@ char dont_replace_with_quotes(char *s, size_t *i)
 	return (s[*i] != 0 ? 1 : 0);
 }
 
-char *fill_str_with_var(char *s, size_t i, size_t j, char *var)
+char	*fill_str_with_var(char *s, size_t i, size_t j, char *var)
 {
 	char *value;
 
 	while (s[i])
 	{
-
 		if (!dont_replace_with_quotes(s, &i))
-			break;
+			break ;
 		if (s[i] == '$')
 		{
 			j = ++i;
