@@ -79,9 +79,10 @@ char				*complete_cmd(char *s, char c);
 char				*found_redir(char *s, size_t *j, size_t *i, size_t nb);
 size_t				separator_counter(char *s, size_t i, size_t block);
 int					analyser(char *str, char *tok, size_t i);
-char				*handle_dquotes(char *str);
+int					quotes_error(char *s);
 char				*fill_str_with_var(char *s, size_t i, size_t j, char *var);
 char				*join_quotes(char *s, size_t i, size_t j);
+char				**fill_cmd(char *s, char **cmd, size_t i, size_t j);
 
 /*
 ** DISPLAY

@@ -9,7 +9,7 @@ void	end_quotes(char *s, size_t *i, size_t *j, char *dest)
 	if ((*i) == 0 || s[(*i) - 1] != ' ' ||
 		s[(*i) - 1] != '\'' || s[(*i) - 1] != '\"')
 	{
-		if (s[*i] == '\'')
+		if (s[*i] == '\'' || s[*i] == '\"')
 			dest[(*j)++] = s[(*i)++];
 		else
 			(*i)++;

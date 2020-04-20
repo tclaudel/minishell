@@ -11,9 +11,9 @@ GREY = \033[3;90m
 ORANGE = \033[3;91m
 YELLOW = \033[0;33m
 
-SRCS_PARSING	=	$(addprefix parsing/, parsing.c parsing_allocator.c block_allocation.c \
+SRCS_PARSING	=	$(addprefix parsing/, parsing.c parsing_allocator.c\
 					set_redirections.c separator_counter.c analyser.c fill_str_with_stars.c \
-					join_quotes.c)
+					join_quotes.c fill_cmd.c quotes_error.c)
 
 SRCS_EXEC		=	$(addprefix exec/, exec_cmd.c builtin.c signal.c builtin_export.c builtin_cd.c) 
 
@@ -43,7 +43,7 @@ NAME			=	minishell
 
 RM				=	rm -rf
 
-FLAG			=	-Wall -Wextra -g3 -O3 #-fsanitize=address #-Werror 
+FLAG			=	-Wall -Wextra -g3 -O3 -fsanitize=address #-Werror 
 
 LIBFT			=	libft/libft.a
 

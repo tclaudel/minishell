@@ -1,0 +1,12 @@
+ls
+echo 'ls'
+ls > ble
+cat < ble
+echo $USER
+'ls > ble'
+"ls '>' ble"
+'echo 'ls''
+'echo 'ls'' pouet
+'ech'o'' pouet
+'ech'o' 'pouet''
+pouet'ech'o'' pouet

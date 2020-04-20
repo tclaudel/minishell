@@ -1,0 +1,60 @@
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+ls
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo 'ls'
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+ls > ble
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+cat < ble
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo $USER
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+'ls > ble'
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+"ls '>' ble"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+'echo 'ls''
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+'echo 'ls'' pouet
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+'ech'o'' pouet
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+'ech'o' 'pouet''
+echo "pouet"
+echo "pouet"
+echo "pouet"
+echo "pouet"
+pouet'ech'o'' pouet

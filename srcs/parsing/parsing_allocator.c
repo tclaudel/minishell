@@ -55,7 +55,7 @@ char			**parse(char *s)
 	char		**cmd;
 
 	nb = bloc_counter(s, 0, 0);
-	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
+	cmd = (char **)malloc(sizeof(char *) * (nb + 2));
 	cmd[nb] = NULL;
 	cmd = fill_cmd(s, cmd, 0, 0);
 	return (cmd);

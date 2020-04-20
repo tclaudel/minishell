@@ -8,7 +8,6 @@ int			right_fd(int *i)
 	while (sh()->cmd[(*i)][j + 1] && sh()->redir[(*i)] == '>' &&
 		sh()->redir[(*i)] == 'd')
 		j++;
-	dprintf(1, "return\t: %s\n", sh()->cmd[(*i)][j]);
 	return (j);
 }
 

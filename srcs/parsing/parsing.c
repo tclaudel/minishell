@@ -1,31 +1,9 @@
 #include "minishell.h"
 
-char	**fill_cmd(char *s, char **cmd, size_t i, size_t j)
+void	quotes_splitter(char *s, size_t *i, char c)
 {
-	size_t	k;
-	char	quotes;
-
-	k = 0;
-	while (s[i])
-	{
-		i += ft_count_whitespaces(s + i);
-		j = i;
-		if (s[i] == 0)
-			break ;
-		if (ft_strchr(s + i, '\''))
-			quotes = '\'';
-		else
-			quotes = ' ';
-		i += ft_charpos(s + i, '\'') + 1;
-		i += ft_charpos(s + i, '\'');
-		i += ft_strchr(s + i, ' ') ? ft_charpos(s + i, ' ') : ft_strlen(s + i);
-		while (s[i] && s[i] != quotes)
-			i++;
-		cmd[k++] = ft_clearcharset(ft_substr(s, j, i - j), "\'");
-		i += (quotes == '\'');
-	}
-	cmd[k] = NULL;
-	return (cmd);
+	(*i)++;
+	*i += ft_charpos(s + *i + 1, c) + 2;
 }
 
 char	**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
@@ -51,7 +29,8 @@ char	**ft_split_cmd(char *s, size_t nb, size_t i, size_t k)
 		else if (s[i] && (ft_strchr(";|<>", s[i]) || ft_strcmp(">>", s + i)))
 			entry[k++] = found_redir(s, &j, &i, nb);
 	}
-	entry[k] = ft_substr(s, j, i);
+	j += ft_count_whitespaces(s + j);
+	entry[k] = ft_substr(s, j, i - j);
 	entry[k + 1] = NULL;
 	return (entry);
 }
@@ -73,11 +52,8 @@ char	parsing(char *str)
 
 	j = 0;
 	str = fill_str_with_var(str, 0, 0, NULL);
-	if (!(str = handle_dquotes(str)))
-	{
-		ft_dprintf(2, "minishell: parse error: quotes not completed\n");
+	if (quotes_error(str))
 		return (0);
-	}
 	if (ft_strchr(str, '\'') || ft_strchr(str, '\"'))
 		str = join_quotes(str, 0, 0);
 	sh()->cmd = alloc_commands(str, &nb);
@@ -88,6 +64,6 @@ char	parsing(char *str)
 		j++;
 	}
 	ft_strdel(&str);
-	free(entries);
+	ft_free_tab(entries);
 	return (1);
 }

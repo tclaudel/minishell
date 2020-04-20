@@ -21,7 +21,6 @@ static void		skip_next_left_redir(int *i)
 			ft_exit(EXIT_FAILURE, *i);
 		close(fd);
 		(*i)++;
-		dprintf(1, "redir\t: %s\n", sh()->redir + *i);
 		if (sh()->redir[(*i)] == '<' || sh()->redir[(*i)] == 'd')
 			break ;
 	}
