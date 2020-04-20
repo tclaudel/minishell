@@ -35,30 +35,6 @@ static int	ft_return(char *cpy, char *tok, size_t i, size_t j)
 	return (0);
 }
 
-char		*handle_dquotes(char *str)
-{
-	size_t	i;
-	short	quotes;
-	short	dquotes;
-
-	i = 0;
-	quotes = 0;
-	dquotes = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			quotes++;
-		if (str[i] == '\"')
-			dquotes++;
-		i++;
-	}
-	if (quotes % 2 != 0)
-		return (NULL);
-	if (dquotes % 2 != 0)
-		return (NULL);
-	return (str);
-}
-
 static int	condition_analyse(char *tok, size_t i, char *start)
 {
 	if ((ft_strchr("<>&|", tok[i]) &&

@@ -24,55 +24,29 @@ char			*complete_cmd(char *s, char c)
 
 size_t			bloc_counter(char *s, size_t i, size_t block)
 {
-	while (s[i] && s[i] != '\n')
+	char	quotes;
+
+	while (s[i])
 	{
 		i += ft_count_whitespaces(s + i);
-		if (s[i] == '\"')
+		if (ft_strchr(s + i, '\'') || ft_strchr(s + i, '\"'))
 		{
-			block++;
-			quotes_splitter(s, &i, '\"');
-		}
-		else if (s[i] == '\'')
-		{
-			block++;
-			quotes_splitter(s, &i, '\'');
-		}
-		else if (s[i] && !ft_strchr(" \t\'\"", s[i]))
-		{
-			block++;
-			while (s[i] && !ft_strchr(" \t\'\"", s[i]))
+			quotes = s[i++];
+			if (quotes != '\'' && quotes != '\"')
+				quotes = ' ';
+			while (s[i] && s[i] != quotes)
 				i++;
+			block++;
+		}
+		else
+		{
+			while (s[i] && s[i] != ' ')
+				i++;
+			block++;
+			break ;
 		}
 	}
 	return (block);
-}
-
-static char		*clear_str(char *s)
-{
-	size_t	i;
-	char	c;
-	char	*var;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == '\"' || s[i] == '\'')
-		{
-			c = s[i];
-			if (i != 0 && s[i - 1] != ' ')
-			{
-				var = ft_substr(s, i + 1, ft_charpos(s + i + 1, c));
-				s = ft_insert(s, var, i, ft_strlen(var) + 2);
-				i += ft_strlen(var);
-				ft_strdel(&var);
-			}
-			else
-				i += ft_charpos(s + i + 1, c) + 2;
-		}
-		else
-			i++;
-	}
-	return (s);
 }
 
 char			**parse(char *s)
@@ -80,10 +54,9 @@ char			**parse(char *s)
 	size_t		nb;
 	char		**cmd;
 
-	s = clear_str(s);
 	nb = bloc_counter(s, 0, 0);
-	cmd = (char **)malloc(sizeof(char *) * (nb + 1));
+	cmd = (char **)malloc(sizeof(char *) * (nb + 2));
 	cmd[nb] = NULL;
-	cmd = fill_cmd(s, cmd, 0);
+	cmd = fill_cmd(s, cmd, 0, 0);
 	return (cmd);
 }

@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+int			right_fd(int *i)
+{
+	size_t	j;
+
+	j = 0;
+	while (sh()->cmd[(*i)][j + 1] && sh()->redir[(*i)] == '>' &&
+		sh()->redir[(*i)] == 'd')
+		j++;
+	return (j);
+}
+
 void		left_redir(int *i)
 {
 	int		fd;
@@ -14,7 +25,7 @@ void		left_redir(int *i)
 		close(fd);
 		(*i)++;
 	}
-	if ((fd = open(sh()->cmd[(*i)][0], O_RDONLY)) == -1)
+	if ((fd = open(sh()->cmd[(*i)][right_fd(i)], O_RDONLY)) == -1)
 		ft_exit(EXIT_FAILURE, *i);
 	if (dup2(fd, STDIN_FILENO) < 0)
 		ft_exit(EXIT_FAILURE, *i);

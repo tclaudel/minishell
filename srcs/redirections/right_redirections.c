@@ -11,6 +11,21 @@ static void		wrap_openning_fd(int fd, int saved, int *i)
 	(*i)++;
 }
 
+static void		skip_next_left_redir(int *i)
+{
+	int		fd;
+
+	while (1)
+	{
+		if ((fd = open(sh()->cmd[(*i)][0], O_RDONLY)) == -1)
+			ft_exit(EXIT_FAILURE, *i);
+		close(fd);
+		(*i)++;
+		if (sh()->redir[(*i)] == '<' || sh()->redir[(*i)] == 'd')
+			break ;
+	}
+}
+
 void			right_redir(int *i)
 {
 	int fd;
@@ -25,12 +40,12 @@ void			right_redir(int *i)
 	if (!(fd = open(sh()->cmd[(*i)][0], sh()->redir[(*i) - 1] == 'd' ?
 		O_RDWR | O_CREAT | O_APPEND : O_RDWR | O_CREAT | O_TRUNC, 0644)))
 		ft_exit(EXIT_FAILURE, *i);
-	if (sh()->redir[(*i)] == '<')
-		left_redir(i);
 	if (dup2(fd, STDOUT_FILENO) < 1)
 		ft_exit(EXIT_FAILURE, *i);
 	sh()->fd[1] = fd;
 	redirect(sh()->fd[1], 1);
 	(*i)++;
+	if (sh()->redir[(*i)] == '<' || sh()->redir[(*i)] == 'd')
+		skip_next_left_redir(i);
 	ft_exec(saved);
 }

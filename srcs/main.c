@@ -29,13 +29,11 @@ void			replace_question_mark(char **cmd)
 	}
 }
 
-void			main_loop(char *buf)
+void			main_loop(char *buf, size_t i)
 {
-	size_t	i;
 	char	**sep;
 	char	*tok;
 
-	i = 0;
 	tok = 0;
 	if (analyser(buf, tok, 0))
 	{
@@ -43,7 +41,10 @@ void			main_loop(char *buf)
 		while (sep[i])
 		{
 			if (!parsing(sep[i]))
+			{
+				ft_free_tab(sep);
 				return ;
+			}
 			if (sh()->redir[0] != 0)
 				redirections(0, 0);
 			else
@@ -68,14 +69,14 @@ int				main(int ac, char **av, char **env)
 	char	*buf;
 
 	(void)av[ac];
-	printf_welcome();
+	// printf_welcome();
 	get_env_var(sh(), env, 1);
 	print_prompt(sh()->env);
 	signal(SIGQUIT, handle_sigint);
 	signal(SIGINT, handle_sigint);
 	while (get_next_line(0, &buf) > 0)
 	{
-		main_loop(buf);
+		main_loop(buf, 0);
 		print_prompt(sh()->env);
 		ft_strdel(&buf);
 	}

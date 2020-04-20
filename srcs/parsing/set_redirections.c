@@ -22,6 +22,7 @@ char		*found_redir(char *s, size_t *j, size_t *i, size_t nb)
 
 	(void)nb;
 	grep_redir(s, i, nb);
+	(*j) += ft_count_whitespaces(s + (*j));
 	str = ft_strndup(s + (*j), (*i) - (*j));
 	if (!ft_strncmp(">>", s + (*i), 2))
 		(*i)++;
