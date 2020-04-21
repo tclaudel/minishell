@@ -28,14 +28,25 @@ char			multiple_uniquotes(char *s)
 	size_t		i;
 
 	i = 0;
-	simple_quotes = ft_char_counter(s, '\'');
-	double_quotes = ft_char_counter(s, '\"');
-	if (simple_quotes > 2 && double_quotes == 0)
-		quote = '\'';
-	else if (double_quotes > 2 && simple_quotes == 0)
-		quote = '\"';
-	else
+	simple_quotes = 0;
+	double_quotes = 0;
+	quote = 0;
+	while (s[i] && s[i] != ' ')
+	{
+		if (s[i] == '\'' || s[i] == '\"')
+		{
+			quote = s[i];
+			i += ft_charrpos(s + i + 1, quote) + 1;
+			if (quote == '\'')
+				simple_quotes++;
+			else
+				double_quotes++;
+		}
+		i++;
+	}
+	if (simple_quotes == 0 && double_quotes == 0)
 		return (' ');
+	i = 0;
 	i += ft_charpos(s + i, quote) + 1;
 	simple_quotes = 0;
 	while (s[i] && s[i] != ' ')
@@ -69,8 +80,6 @@ static char		set_quotes(char *s, size_t i)
 	return (quotes);
 }
 
-
-
 char			**fill_cmd(char *s, char **cmd, size_t i, size_t k)
 {
 	size_t	j;
@@ -83,6 +92,7 @@ char			**fill_cmd(char *s, char **cmd, size_t i, size_t k)
 		j = i;
 		if (s[i] == 0)
 			break ;
+		dprintf(1, "return\t: %c\n", multiple_uniquotes(s + i));
 		if ((quotes = multiple_uniquotes(s + i)) != ' ' && quotes != 'd')
 		{
 			i += ft_charrpos(s + i, quotes) + 1;
