@@ -31,6 +31,7 @@ char			multiple_uniquotes(char *s)
 	simple_quotes = 0;
 	double_quotes = 0;
 	quote = 0;
+	i += ft_charpos(s + i, quote) + 1;
 	while (s[i] && s[i] != ' ')
 	{
 		if (s[i] == '\'' || s[i] == '\"')
@@ -92,7 +93,6 @@ char			**fill_cmd(char *s, char **cmd, size_t i, size_t k)
 		j = i;
 		if (s[i] == 0)
 			break ;
-		dprintf(1, "return\t: %c\n", multiple_uniquotes(s + i));
 		if ((quotes = multiple_uniquotes(s + i)) != ' ' && quotes != 'd')
 		{
 			i += ft_charrpos(s + i, quotes) + 1;
