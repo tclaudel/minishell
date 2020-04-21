@@ -52,7 +52,7 @@ int			analyser(char *str, char *tok, size_t i)
 	char	*start;
 
 	cpy = ft_strdup(str);
-	cpy = ft_clearcharset(cpy, " \t");
+	cpy = ft_clearcharset(cpy, " \t", 1);
 	start = cpy;
 	while ((tok = ft_strsep(&cpy, ";")))
 	{

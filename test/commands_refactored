@@ -16,9 +16,7 @@ printf "\33[2K\r\n###############\ntesting : %s\n###############\n\n" ''echo 'ls
 'echo 'ls''
 printf "\33[2K\r\n###############\ntesting : %s\n###############\n\n" ''echo 'ls'' pouet'
 'echo 'ls'' pouet
-printf "\33[2K\r\n###############\ntesting : %s\n###############\n\n" ''ech'o'' pouet'
-'ech'o'' pouet
+printf "\33[2K\r\n###############\ntesting : %s\n###############\n\n" ''echo 'ls'' pouet'
+'echo 'ls'' pouet
 printf "\33[2K\r\n###############\ntesting : %s\n###############\n\n" ''ech'o' 'pouet'''
 'ech'o' 'pouet''
-printf "\33[2K\r\n###############\ntesting : %s\n###############\n\n" 'pouet'ech'o'' pouet'
-pouet'ech'o'' pouet

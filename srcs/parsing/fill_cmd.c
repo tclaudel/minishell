@@ -24,15 +24,27 @@ char			multiple_uniquotes(char *s)
 {
 	size_t		simple_quotes;
 	size_t		double_quotes;
+	char		quote;
+	size_t		i;
 
+	i = 0;
 	simple_quotes = ft_char_counter(s, '\'');
 	double_quotes = ft_char_counter(s, '\"');
 	if (simple_quotes > 2 && double_quotes == 0)
-		return ('\'');
+		quote = '\'';
 	else if (double_quotes > 2 && simple_quotes == 0)
-		return ('\"');
+		quote = '\"';
 	else
 		return (' ');
+	i += ft_charpos(s + i, quote) + 1;
+	simple_quotes = 0;
+	while (s[i] && s[i] != ' ')
+	{
+		if (s[i] == quote)
+			simple_quotes++;
+		i++;
+	}
+	return (simple_quotes % 2 ? 'd' : quote);
 }
 
 static char		set_quotes(char *s, size_t i)
@@ -57,38 +69,43 @@ static char		set_quotes(char *s, size_t i)
 	return (quotes);
 }
 
-char			**fill_cmd(char *s, char **cmd, size_t i, size_t j)
-{
-	size_t	k;
-	char	quotes;
 
-	k = 0;
+
+char			**fill_cmd(char *s, char **cmd, size_t i, size_t k)
+{
+	size_t	j;
+	char	quotes;
+	char	*tmp;
+
 	while (s[i])
 	{
 		i += ft_count_whitespaces(s + i);
 		j = i;
 		if (s[i] == 0)
 			break ;
-		if ((quotes = multiple_uniquotes(s + i)) != ' ')
+		if ((quotes = multiple_uniquotes(s + i)) != ' ' && quotes != 'd')
 		{
 			i += ft_charrpos(s + i, quotes) + 1;
-			cmd[k++] = ft_clearcharset(ft_substr(s, j, i - j - 1),
-				quotes == '\'' ? "\'" : "\"");
+			tmp = ft_substr(s, j, i - j - 1);
+			cmd[k++] = ft_clearcharset(tmp, quotes == '\'' ? "\'" : "\"", 1);
+			continue ;
 		}
-		else
+		if (quotes == 'd')
 		{
-			quotes = set_quotes(s, i);
-			if (quotes == ' ')
-				standart_fill(s, &i);
-			else
-				quotes_fill(s, &i, quotes);
-			if (ft_strchr(s + j, quotes))
-				j += ft_charpos(s + j, quotes) != 0 ? 0 : 1;
-			i -= (quotes != ' ' && s[i - 1] == quotes);
-			cmd[k++] = ft_substr(s, j, i - j);
-			i += (quotes != ' ' && s[i] == quotes);
+			quotes = ft_strchr(s, '\'') ? '\'' : '\"';
+			s = ft_clearcharset(s, "\'\"", 1);
 		}
+		quotes = set_quotes(s, i);
+		if (quotes == ' ')
+			standart_fill(s, &i);
+		else
+			quotes_fill(s, &i, quotes);
+		if (ft_strchr(s + j, quotes))
+			j += ft_charpos(s + j, quotes) != 0 ? 0 : 1;
+		i -= (quotes != ' ' && s[i - 1] == quotes);
+		cmd[k++] = ft_substr(s, j, i - j);
+		i += (quotes != ' ' && s[i] == quotes);
 	}
-	cmd[k] = NULL;
+	free(s);
 	return (cmd);
 }
