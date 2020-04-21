@@ -43,7 +43,6 @@ size_t			bloc_counter(char *s, size_t i, size_t block)
 			while (s[i] && s[i] != ' ')
 				i++;
 			block++;
-			break ;
 		}
 	}
 	return (block);

@@ -64,6 +64,6 @@ char	parsing(char *str)
 		j++;
 	}
 	ft_strdel(&str);
-	ft_free_tab(entries);
+	free(entries);
 	return (1);
 }
