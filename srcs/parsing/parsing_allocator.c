@@ -36,6 +36,8 @@ size_t			bloc_counter(char *s, size_t i, size_t block)
 				quotes = ' ';
 			while (s[i] && s[i] != quotes)
 				i++;
+			if (quotes == '\'' || quotes == '\"')
+				i++;
 			block++;
 		}
 		else
