@@ -44,16 +44,21 @@ char	***alloc_commands(char *str, size_t *nb)
 	return (cmd);
 }
 
-char	parsing(char *str)
+char	parsing(char *sep)
 {
 	size_t	j;
 	size_t	nb;
+	char	*str;
 	char	**entries;
 
 	j = 0;
+	str = ft_strdup(sep);
 	str = fill_str_with_var(str, 0, 0, NULL);
 	if (quotes_error(str))
+	{
+		ft_strdel(&str);
 		return (0);
+	}
 	if (ft_strchr(str, '\'') || ft_strchr(str, '\"'))
 		str = join_quotes(str, 0, 0);
 	sh()->cmd = alloc_commands(str, &nb);
