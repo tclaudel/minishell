@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tclaudel <tclaudel@student.le-101.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/22 11:20:03 by tclaudel          #+#    #+#             */
+/*   Updated: 2020/04/22 11:20:07 by tclaudel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void		free_commands(void)
@@ -69,7 +81,7 @@ int				main(int ac, char **av, char **env)
 	char	*buf;
 
 	(void)av[ac];
-	// printf_welcome();
+	printf_welcome();
 	get_env_var(sh(), env, 1);
 	print_prompt(sh()->env);
 	signal(SIGQUIT, handle_sigint);
