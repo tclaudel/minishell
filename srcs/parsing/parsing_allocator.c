@@ -50,12 +50,11 @@ size_t			bloc_counter(char *s, size_t i, size_t block)
 
 char			**parse(char *s)
 {
-	size_t		nb;
-	char		**cmd;
+	size_t			nb;
+	char			**cmd;
 
 	nb = bloc_counter(s, 0, 0);
-	cmd = (char **)malloc(sizeof(char *) * (nb + 2));
-	cmd[nb] = NULL;
+	cmd = (char **)ft_calloc(sizeof(char *), (nb + 1));
 	cmd = fill_cmd(s, cmd, 0, 0);
 	return (cmd);
 }
