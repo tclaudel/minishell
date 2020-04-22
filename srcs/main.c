@@ -1,15 +1,15 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tclaudel <tclaudel@student.le-101.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/22 11:20:03 by tclaudel          #+#    #+#             */
-/*   Updated: 2020/04/22 11:20:07 by tclaudel         ###   ########.fr       */
-/*                                                                            */
+/*                                                          LE - /            */
+/*                                                              /             */
+/*   main.c                                           .::    .:/ .      .::   */
+/*                                                 +:+:+   +:    +:  +:+:+    */
+/*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
+/*                                                 #+#   #+    #+    #+#      */
+/*   Created: 2020/04/22 11:20:03 by tclaudel     #+#   ##    ##    #+#       */
+/*   Updated: 2020/04/22 13:48:05 by coscialp    ###    #+. /#+    ###.fr     */
+/*                                                         /                  */
+/*                                                        /                   */
 /* ************************************************************************** */
-
 #include "minishell.h"
 
 static void		free_commands(void)
@@ -65,7 +65,7 @@ void			main_loop(char *buf, size_t i)
 			ft_strdel(&sh()->redir);
 			i++;
 		}
-		free(sep);
+		ft_free_tab(sep);
 	}
 }
 
