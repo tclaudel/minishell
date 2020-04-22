@@ -30,6 +30,8 @@ int				quotes_error(char *s)
 		((ft_strchr(s, '\'') < ft_strchr(s, '\"') || !ft_strchr(s, '\"'))))
 		quotes = '\'';
 	i += ft_charpos(s, quotes) + 1;
+	if (!s[i])
+		return (print_quotes_error());
 	while (s[i])
 	{
 		if (ft_strchr(s + i, quotes))
